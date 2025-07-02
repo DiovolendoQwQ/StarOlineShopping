@@ -1,22 +1,222 @@
-<form method="get" action="/product/all">
-  <input type="text" name="keyword" placeholder="搜索商品" value="<%= keyword %>">
-  <button type="submit">搜索</button>
-</form>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - Star Online Shopping</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        .search-page {
+            max-width: 1226px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .search-input {
+            flex: 1;
+            height: 40px;
+            padding: 0 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6700;
+        }
+        .search-btn {
+            height: 44px;
+            padding: 0 20px;
+            background: #ff6700;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .search-btn:hover {
+            background: #e55a00;
+        }
+        .search-info {
+            color: #666;
+            font-size: 14px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6700;
+            margin-bottom: 12px;
+        }
+        .product-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ff6700;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .product-link:hover {
+            background: #e55a00;
+            color: white;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .pagination a {
+            padding: 10px 15px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .pagination a:hover {
+            background: #ff6700;
+            color: white;
+            border-color: #ff6700;
+        }
+        .pagination a.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .no-results h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ff6700;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .back-home:hover {
+            background: #e55a00;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-page">
+        <div class="search-header">
+            <form class="search-form" method="get" action="/products/all">
+                <input type="text" name="keyword" class="search-input" placeholder="搜索商品..." value="<%= keyword %>">
+                <button type="submit" class="search-btn">搜索</button>
+            </form>
+            <div class="search-info">
+                <% if (keyword) { %>
+                    搜索 "<%= keyword %>" 找到 <%= products.length %> 个结果
+                <% } else { %>
+                    显示所有商品
+                <% } %>
+            </div>
+        </div>
 
-<div>
-  <% products.forEach(product=> { %>
-    <div>
-      <img src="<%= product.image %>" alt="<%= product.name %>">
-      <h3>
-        <%= product.name %>
-      </h3>
-      <p>
-        <%= product.price %> 元
-      </p>
-      <a href="/product/<%= product.id %>">查看详情</a>
+        <% if (products.length > 0) { %>
+            <div class="products-grid">
+                <% products.forEach(product => { %>
+                    <div class="product-card">
+                        <img src="<%= product.image || '/image/default.png' %>" alt="<%= product.name %>" class="product-image">
+                        <div class="product-info">
+                            <h3 class="product-name"><%= product.name %></h3>
+                            <div class="product-price">¥<%= product.price %></div>
+                            <a href="/product/<%= product.id %>" class="product-link">查看详情</a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="pagination">
+                <% if (page > 1) { %>
+                    <a href="/products/all?page=<%= page - 1 %>&keyword=<%= keyword %>">上一页</a>
+                <% } else { %>
+                    <a href="#" class="disabled">上一页</a>
+                <% } %>
+                
+                <span style="padding: 10px 15px; background: #ff6700; color: white; border-radius: 4px;">
+                    第 <%= page %> 页
+                </span>
+                
+                <% if (page < totalPages) { %>
+                    <a href="/products/all?page=<%= page + 1 %>&keyword=<%= keyword %>">下一页</a>
+                <% } else { %>
+                    <a href="#" class="disabled">下一页</a>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="no-results">
+                <h3>未找到相关商品</h3>
+                <p>抱歉，没有找到与 "<%= keyword %>" 相关的商品。</p>
+                <p>建议：</p>
+                <ul style="text-align: left; display: inline-block; margin-top: 10px;">
+                    <li>检查拼写是否正确</li>
+                    <li>尝试使用更通用的关键词</li>
+                    <li>减少关键词数量</li>
+                </ul>
+                <a href="/homepage.html" class="back-home">返回首页</a>
+            </div>
+        <% } %>
     </div>
-    <% }); %>
-</div>
-
-<a href="/product/all?page=<%= page - 1 %>&keyword=<%= keyword %>">上一页</a>
-<a href="/product/all?page=<%= page + 1 %>&keyword=<%= keyword %>">下一页</a>
+</body>
+</html>

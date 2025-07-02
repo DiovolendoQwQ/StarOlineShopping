@@ -37,6 +37,7 @@ const productRoutes = require('./routes/productRoutes'); // 引入商品路由
 app.use('/auth', authRoutes);
 app.use('/cart', cartRoutes); // 注册购物车路由
 app.use('/product', productRoutes); // 注册商品路由
+app.use('/products', productRoutes); // 注册商品路由（复数形式，用于搜索）
 
 // 支持直接 POST /login 和 POST /register
 app.post('/register', (req, res) => res.redirect(307, '/auth/register'));
