@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - STAR在线购物平台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <video autoplay muted loop id="background-video">
+    <source src="Picture/login.mp4" type="video/mp4">
+    您的浏览器不支持HTML5视频。
+  </video>
+  <header>
+    <div class="header-container">
+      <h1>STAR在线购物平台</h1>
+    </div>
+  </header>
+
+  <main>
+    <!-- Login Section -->
+    <section id="login">
+      <h2>登录</h2>
+      <form action="/login" method="post" class="login-form">
+        <div class="form-group">
+          <label for="email">电子邮件地址:</label>
+          <input type="email" id="email" name="email" placeholder="请输入您的电子邮件" required>
+        </div>
+        <div class="form-group">
+          <label for="password">密码:</label>
+          <input type="password" id="password" name="password" placeholder="请输入您的密码" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="login-button">登录</button>
+        </div>
+        <div class="form-group">
+          <p>还没有账户吗？ <a href="javascript:void(0);" onclick="showRegisterForm()">立即注册</a></p>
+        </div>
+      </form>
+    </section>
+
+    <!-- Register Section -->
+    <section id="register" style="display: none;">
+      <h2>注册</h2>
+      <form action="/register" method="post" class="register-form">
+        <div class="form-group">
+          <label for="register_username">用户名:</label>
+          <input type="text" id="register_username" name="register_username" placeholder="请输入您的用户名" required>
+        </div>
+        <div class="form-group">
+          <label for="register_email">电子邮件地址:</label>
+          <input type="email" id="register_email" name="register_email" placeholder="请输入您的电子邮件" required>
+        </div>
+        <div class="form-group">
+          <label for="register_password">密码:</label>
+          <input type="password" id="register_password" name="register_password" placeholder="请输入您的密码" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">确认密码:</label>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="请再次输入您的密码" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="register-button">注册</button>
+        </div>
+        <div class="form-group">
+          <p>已有账户？ <a href="javascript:void(0);" onclick="showLoginForm()">立即登录</a></p>
+        </div>
+      </form>
+    </section>
+
+    <footer>
+      <div class="footer-container">
+        <p>版权所有 &copy; 2024 STAR在线购物平台</p>
+      </div>
+    </footer>
+
+    <!-- JavaScript to Toggle Forms -->
+    <script>
+      function showRegisterForm() {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('register').style.display = 'block';
+      }
+
+      function showLoginForm() {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('register').style.display = 'none';
+      }
+
+      // 注册表单前端验证
+      document.querySelector('.register-form').addEventListener('submit', function (event) {
+        const password = document.getElementById('register_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        if (password !== confirmPassword) {
+          event.preventDefault();
+          alert('密码不一致，请重新输入');
+        }
+      });
+    </script>
+</body>
+
+</html>

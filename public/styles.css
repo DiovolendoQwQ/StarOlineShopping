@@ -1,0 +1,241 @@
+/* Background Video */
+#background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100vw;
+  min-height: 100vh;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  object-fit: cover;
+  /* 视频会填充整个背景，适应不同屏幕尺寸 */
+}
+
+/* Header Styles */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 77, 79, 0.8);
+  /* 京东风格的红色背景 */
+  padding: 15px 20px;
+}
+
+.header-container .logo {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header-container nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.header-container nav ul li {
+  margin-right: 20px;
+}
+
+.header-container nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.header-container nav ul li a:hover {
+  color: #ffcc00;
+  /* 悬停效果为金色 */
+}
+
+/* Search Bar Styles */
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  border: 1px solid #ddd;
+  width: 250px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #ff8c00;
+  /* 橙色按钮 */
+  color: white;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+  background-color: #e67600;
+}
+
+/* Main Section Styles */
+#login,
+#register {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 50px auto;
+  color: white;
+}
+
+.login-form .form-group,
+.register-form .form-group {
+  margin-bottom: 15px;
+}
+
+.login-form label,
+.register-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"],
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.login-button,
+.register-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover,
+.register-button:hover {
+  background-color: #0056b3;
+}
+
+/* Product Card Styles */
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.product-item {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  text-align: center;
+  padding: 15px;
+  transition: transform 0.3s;
+}
+
+.product-item img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.product-item h3 {
+  color: #333;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.product-item p {
+  color: #007bff;
+  font-size: 16px;
+}
+
+.product-item button {
+  background-color: #28a745;
+  /* 绿色按钮 */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product-item button:hover {
+  background-color: #218838;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Footer Styles */
+.footer-container {
+  text-align: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Link Styles */
+.login-form a,
+.register-form a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-form a:hover,
+.register-form a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Category Styles */
+.categories {
+  padding: 20px;
+  text-align: center;
+}
+
+.category-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.category-item {
+  background-color: #ff4d4f;
+  /* 京东风格红色 */
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.category-item:hover {
+  background-color: #d9363e;
+}

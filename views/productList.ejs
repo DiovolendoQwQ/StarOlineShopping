@@ -1,0 +1,22 @@
+<form method="get" action="/product/all">
+  <input type="text" name="keyword" placeholder="搜索商品" value="<%= keyword %>">
+  <button type="submit">搜索</button>
+</form>
+
+<div>
+  <% products.forEach(product=> { %>
+    <div>
+      <img src="<%= product.image %>" alt="<%= product.name %>">
+      <h3>
+        <%= product.name %>
+      </h3>
+      <p>
+        <%= product.price %> 元
+      </p>
+      <a href="/product/<%= product.id %>">查看详情</a>
+    </div>
+    <% }); %>
+</div>
+
+<a href="/product/all?page=<%= page - 1 %>&keyword=<%= keyword %>">上一页</a>
+<a href="/product/all?page=<%= page + 1 %>&keyword=<%= keyword %>">下一页</a>

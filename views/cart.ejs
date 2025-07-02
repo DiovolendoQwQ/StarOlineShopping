@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>我的购物车-小米商城</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    body {
+      font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
+    }
+
+    /* 使用flex布局的外层容器，保证footer在页面底部 */
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /* 页面最小高度撑满一屏 */
+    }
+
+    .banner_x {
+      background: #f5f5f5;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .center {
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .fl {
+      float: left;
+    }
+
+    .fr {
+      float: right;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .ml40 {
+      margin-left: 40px;
+    }
+
+    .ml20 {
+      margin-left: 20px;
+    }
+
+    .mt20 {
+      margin-top: 20px;
+    }
+
+    .wdgwc {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 34px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* 温馨提示文字移到右侧显示 */
+    .wxts {
+      float: right;
+      line-height: 34px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .logo img {
+      vertical-align: middle;
+      max-height: 40px;
+    }
+
+    .xiantiao {
+      width: 100%;
+      height: 2px;
+      background: #f60;
+    }
+
+    /* 主内容区域：商品列表和结算栏 */
+    .main-content {
+      flex: 1;
+      /* 占满剩余空间，让footer贴底 */
+      padding: 20px 0;
+    }
+
+    .gwcxd {
+      width: 100%;
+    }
+
+    .top2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .top2 .sub_top {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .top2 .sub_top:nth-child(1) {
+      flex: 4;
+      text-align: left;
+    }
+
+    .top2 .sub_top:nth-child(n+2) {
+      flex: 1;
+    }
+
+    .content2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      line-height: 1.8;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .content2:last-child {
+      border-bottom: none;
+    }
+
+    .sub_content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .content2 .sub_content:nth-child(1) {
+      flex: 4;
+      justify-content: flex-start;
+      text-align: left;
+      padding-left: 10px;
+    }
+
+    .content2 .sub_content:nth-child(n+2) {
+      flex: 1;
+    }
+
+    .content2 .sub_content:last-child {
+      padding-right: 20px;
+    }
+
+    .sub_content img {
+      width: 100px;
+      height: auto;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .shuliang {
+      width: 60px;
+      text-align: center;
+    }
+
+    .jiesuandan {
+      border-top: 1px solid #ddd;
+      padding: 20px 0;
+      margin-top: 20px;
+    }
+
+    .jiesuanjiage span {
+      font-weight: bold;
+      color: #e4393c;
+    }
+
+    .tishi ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .tishi ul li {
+      display: inline-block;
+      margin: 0 5px;
+    }
+
+    .jiesuan {
+      display: flex;
+      align-items: center;
+    }
+
+    .jsanniu {
+      margin-left: 10px;
+    }
+
+    footer {
+      padding: 20px 0;
+      font-size: 12px;
+      text-align: center;
+      color: #777;
+      background: #f5f5f5;
+      width: 100%;
+    }
+
+    .empty-cart-message {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 50px;
+    }
+  </style>
+
+  <script>
+    function removeFromCart(productId) {
+      if (confirm('确认删除该商品吗？')) {
+        fetch(`/cart/remove/${productId}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message) {
+              alert(data.message);
+              window.location.reload();
+            }
+          })
+        window.location.reload();
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="page-container">
+    <!-- 顶部区域 -->
+    <div class="banner_x">
+      <div class="center">
+        <div class="logo fl"><img src="/images/logo.png" alt="小米商城"></div>
+        <div class="wdgwc fl ml40">我的购物车</div>
+        <!-- 将温馨提示移到右侧，并删除登录/注册 -->
+        <div class="wxts fr ml20">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="xiantiao"></div>
+
+    <!-- 主内容区 -->
+    <div class="main-content center">
+      <div class="gwcxd">
+        <div class="top2 center">
+          <div class="sub_top">商品名称</div>
+          <div class="sub_top">单价</div>
+          <div class="sub_top">数量</div>
+          <div class="sub_top">小计</div>
+          <div class="sub_top">操作</div>
+        </div>
+
+        <% if (items && items.length> 0) { %>
+          <% items.forEach(item=> { %>
+            <div class="content2 center">
+              <div class="sub_content">
+                <img src="<%= item.image %>" alt="<%= item.name %>">
+                <span class="ft20">
+                  <%= item.name %>
+                </span>
+              </div>
+              <div class="sub_content">
+                <%= item.price %>元
+              </div>
+              <div class="sub_content">
+                <input class="shuliang" type="number" value="<%= item.quantity %>" step="1" min="1">
+              </div>
+              <div class="sub_content">
+                <%= (item.price * item.quantity).toFixed(2) %>元
+              </div>
+              <div class="sub_content">
+                <% if (item.product_id) { %>
+                  <button onclick="removeFromCart('<%= item.product_id %>')">删除</button>
+                  <% } else { %>
+                    <span>商品 ID 不存在，无法删除</span>
+                    <% } %>
+              </div>
+            </div>
+            <% }); %>
+              <% } else { %>
+                <div class="empty-cart-message">购物网为空</div>
+                <% } %>
+
+                  <% if (items && items.length> 0) { %>
+                    <div class="jiesuandan center">
+                      <div class="tishi fl ml20">
+                        <ul>
+                          <li><a href="/products">继续购物</a></li>
+                          <li>|</li>
+                          <li>共<span>
+                              <%= items.length %>
+                            </span>件商品</li>
+                          <div class="clear"></div>
+                        </ul>
+                      </div>
+                      <div class="jiesuan fr">
+                        <div class="jiesuanjiage fl">合计（不含运费）：<span>
+                            <%= totalPrice.toFixed(2) %>元
+                          </span></div>
+                        <div class="jsanniu fr">
+                          <input class="jsan" type="submit" name="jiesuan" value="去结算" />
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                      <div class="clear"></div>
+                    </div>
+                    <% } %>
+      </div>
+    </div>
+
+    <!-- footer始终在页面底部 -->
+    <footer>
+      <div>小米商城|MIUI|米聊|多看书城|小米路由器|视频电话|小米天猫店|小米淘宝直营店|小米网盟|小米移动|隐私政策|Select Region</div>
+      <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号 京网文[2014]0059-0009号</div>
+      <div>违法和不良信息举报电话：185-0130-1238，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</div>
+    </footer>
+  </div>
+</body>
+
+</html>

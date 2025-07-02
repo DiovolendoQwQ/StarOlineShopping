@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= product.name %> - 小米商城
+  </title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header,
+    footer {
+      padding: 10px 0;
+      background: #f5f5f5;
+      font-size: 12px;
+    }
+
+    .w {
+      width: 1200px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    .top ul li {
+      margin: 0 8px;
+    }
+
+    .top ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .banner_x {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .banner_x .logo {
+      width: 60px;
+      height: 30px;
+      background: #ccc;
+      /* Placeholder */
+    }
+
+    .nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    .nav ul li {
+      margin: 0 15px;
+    }
+
+    .nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .search .shuru {
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .search .sousuo {
+      height: 30px;
+      border: 1px solid #ddd;
+      border-left: 0;
+      border-radius: 0 4px 4px 0;
+      background: #f60;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* 产品详情区 */
+    .product-container {
+      width: 1200px;
+      margin: 40px auto;
+      display: flex;
+      box-sizing: border-box;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+
+    .picture-container,
+    .detail-container {
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .picture-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .picture-container img {
+      max-height: 500px;
+      display: block;
+    }
+
+    .detail-container {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .detail-container h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .detail-container .description {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .detail-container .price {
+      font-size: 20px;
+      color: #f60;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .detail-container .actions input {
+      padding: 10px 20px;
+      border: none;
+      background: #f60;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    .detail-container .actions input:hover {
+      background: #e65c00;
+    }
+
+    footer {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    footer a {
+      color: #999;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- 导航 -->
+  <div class="banner_x w">
+    <a href="/">
+      <div class="logo fl"></div>
+    </a>
+    <div class="nav fl">
+      <ul>
+        <li><a href="#">小米手机</a></li>
+        <li><a href="#">红米</a></li>
+        <li><a href="#">平板笔记本</a></li>
+        <li><a href="#">电视</a></li>
+        <li><a href="#">路由器</a></li>
+        <li><a href="#">智能硬件</a></li>
+        <li><a href="#">服务</a></li>
+        <li><a href="#">社区</a></li>
+      </ul>
+    </div>
+    <div class="search fr">
+      <form action="#" method="post">
+        <input type="text" class="shuru" placeholder="搜索商品...">
+        <input type="submit" class="sousuo" value="搜索">
+      </form>
+    </div>
+  </div>
+
+  <!-- 产品详情 -->
+  <div class="product-container">
+    <div class="picture-container">
+      <img src="/<%= product.image %>" alt="<%= product.name %>">
+    </div>
+    <div class="detail-container">
+      <h1>
+        <%= product.name %>
+      </h1>
+      <div class="description">
+        <%= product.description %>
+      </div>
+      <div class="price">
+        <%= product.price %> 元
+      </div>
+      <div class="actions">
+        <input type="button" value="打开购物车">
+        <input type="button" value="加入购物车">
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer>
+    <div>
+      <a href="#">小米商城</a>|
+      <a href="#">MIUI</a> |
+      <a href="#">米聊</a> |
+      <a href="#">多看书城</a> |
+      <a href="#">小米路由器</a> |
+      <a href="#">隐私政策</a> |
+      <a href="#">Select Region</a>
+    </div>
+    <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号</div>
+    <div>违法和不良信息举报电话：185-0130-1238 所有数据均出自我司实验室测试</div>
+  </footer>
+</body>
+
+</html>
