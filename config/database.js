@@ -1,11 +1,15 @@
 const sqlite3 = require('sqlite3').verbose();
 const { promisify } = require('util');
+require('dotenv').config();
 
-const db = new sqlite3.Database('./database/db.sqlite', (err) => {
+// 使用环境变量中的数据库路径，如果没有则使用默认路径
+const dbPath = process.env.DB_PATH || './database/star_shopping.db';
+
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('❌ 数据库连接失败:', err.message);
   } else {
-    console.log('✅ 成功连接到 SQLite 数据库');
+    console.log('✅ 成功连接到 SQLite 数据库:', dbPath);
   }
 });
 
@@ -53,9 +57,12 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
       name TEXT NOT NULL, 
+      description TEXT, 
       price REAL NOT NULL, 
-      stock INTEGER NOT NULL, 
-      image TEXT
+      image TEXT, 
+      stock INTEGER DEFAULT 0, 
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `, (err) => {
     if (err) console.error('❌ 创建 products 表失败:', err.message);

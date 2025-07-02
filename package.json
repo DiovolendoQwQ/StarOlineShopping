@@ -1,1 +1,35 @@
-{"private":true,"dependencies":{"bcryptjs":"^2.4.3","dotenv":"^16.4.5","ejs":"^3.1.10","express":"^4.21.1","express-session":"^1.18.1","method-override":"^3.0.0","mongoose":"^8.8.4","morgan":"^1.10.0","multer":"^1.4.5-lts.1","sqlite3":"^5.1.7","types-registry":"^0.1.694"},"devDependencies":{"@types/bcryptjs":"^2.4.6","@types/body-parser":"^1.19.5","@types/bytes":"^3.1.4","@types/content-type":"^1.1.8","@types/debug":"^4.1.12","@types/depd":"^1.1.37","@types/express":"^5.0.0","@types/http-errors":"^2.0.4","@types/merge-descriptors":"^1.0.3","@types/node":"^22.9.0","@types/qs":"^6.9.17","@types/serve-static":"^1.15.7","@types/type-is":"^1.6.6"}}
+{
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
+    "migrate": "node scripts/migrate-database.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "sqlite3": "^5.1.7",
+    "types-registry": "^0.1.694"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/body-parser": "^1.19.5",
+    "@types/bytes": "^3.1.4",
+    "@types/content-type": "^1.1.8",
+    "@types/debug": "^4.1.12",
+    "@types/depd": "^1.1.37",
+    "@types/express": "^5.0.0",
+    "@types/http-errors": "^2.0.4",
+    "@types/merge-descriptors": "^1.0.3",
+    "@types/node": "^22.9.0",
+    "@types/qs": "^6.9.17",
+    "@types/serve-static": "^1.15.7",
+    "@types/type-is": "^1.6.6"
+  }
+}

@@ -1,3 +1,9 @@
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
 /* Background Video */
 #background-video {
   position: fixed;
@@ -14,17 +20,28 @@
 /* Header Styles */
 .header-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background-color: rgba(255, 77, 79, 0.8);
-  /* 京东风格的红色背景 */
-  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  /* 与底部一致的背景 */
+  padding: 15px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
-.header-container .logo {
+.header-container h1 {
   color: white;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
+  /* 加粗字体 */
+  margin: 0;
+  font-family: inherit;
+  /* 使用默认字体，与底部一致 */
 }
 
 .header-container nav ul {
@@ -79,27 +96,43 @@
 }
 
 /* Main Section Styles */
+/* Main Section Styles */
 #login,
 #register {
   text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 50px auto;
-  color: white;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  max-width: 420px;
+  margin: 120px auto 80px auto;
+  color: #333;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#login h2,
+#register h2 {
+  color: #2c3e50;
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 .login-form .form-group,
 .register-form .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .login-form label,
 .register-form label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
 }
 
 .login-form input[type="email"],
@@ -108,27 +141,43 @@
 .register-form input[type="email"],
 .register-form input[type="password"] {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 12px 15px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
   box-sizing: border-box;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.login-form input:focus,
+.register-form input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  background: white;
 }
 
 .login-button,
 .register-button {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+  padding: 12px;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
 }
 
 .login-button:hover,
 .register-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #357abd, #2968a3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
 }
 
 /* Product Card Styles */
@@ -199,13 +248,23 @@
 /* Link Styles */
 .login-form a,
 .register-form a {
-  color: #007bff;
+  color: #4a90e2;
   text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .login-form a:hover,
 .register-form a:hover {
+  color: #357abd;
   text-decoration: underline;
+}
+
+.login-form p,
+.register-form p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 15px;
 }
 
 .error-message {

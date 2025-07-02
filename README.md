@@ -106,9 +106,12 @@ STAR_Online_Shopping/
 ### products 表（商品信息）
 - `id` - 商品唯一标识
 - `name` - 商品名称
+- `description` - 商品描述
 - `price` - 商品价格
-- `stock` - 库存数量
 - `image` - 商品图片
+- `stock` - 库存数量（默认0）
+- `created_at` - 创建时间
+- `updated_at` - 更新时间
 
 ### carts 表（购物车）
 - `id` - 购物车唯一标识
@@ -152,8 +155,8 @@ STAR_Online_Shopping/
    
    项目根目录已包含 `.env` 文件，默认配置如下：
    ```env
-   # 数据库连接配置
-   MONGO_URI=mongodb://localhost:27017/star_online_shopping
+   # 数据库配置 - 使用SQLite
+   DB_PATH=./database/star_shopping.db
    
    # 会话密钥，用于加密和验证会话
    SESSION_SECRET=your_secret_key
@@ -162,14 +165,27 @@ STAR_Online_Shopping/
    PORT=3000
    ```
 
-4. **启动应用**
+4. **数据库迁移（可选）**
+   
+   如果你有旧版本的数据库，可以运行迁移脚本：
+   ```bash
+   npm run migrate
+   ```
+   
+   这将会：
+   - 自动检测旧数据库文件
+   - 创建新的统一SQLite数据库
+   - 迁移所有现有数据
+   - 备份旧数据库文件
+
+5. **启动应用**
    ```bash
    npm start
    # 或者使用 node 直接运行
    node app.js
    ```
 
-5. **访问应用**
+6. **访问应用**
    
    打开浏览器访问：`http://localhost:3000`
 
@@ -255,4 +271,4 @@ npm start
 
 ---
 
-**STAR 在线购物平台** - 让购物变得更简单、更愉快！ 
+**STAR 在线购物平台** - 让购物变得更简单、更愉快！

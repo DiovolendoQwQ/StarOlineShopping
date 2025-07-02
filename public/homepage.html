@@ -1392,10 +1392,10 @@
 			<div class="mingxing fl">
 				<div class="sub_mingxing">
 					<!-- 动态链接，指向 /product/1 -->
-					<a href="/products/1"><img src="./image/Product1.jpg" alt="小米MIX"></a>
+					<a href="/product/1"><img src="./image/Product1.jpg" alt="小米MIX"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/products/1">小米MIX</a>
+					<a href="/product/1">小米MIX</a>
 				</div>
 				<div class="youhui">5月9日-21日享花呗12期分期免息</div>
 				<div class="jiage">3499元起</div>
@@ -1406,10 +1406,10 @@
 			<div class="mingxing fl">
 				<div class="sub_mingxing">
 					<!-- 动态链接，指向 /product/2 -->
-					<a href="/products/2"><img src="./image/Product2.png" alt="小米5s"></a>
+					<a href="/product/2"><img src="./image/Product2.png" alt="小米5s"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/products/2">小米5s</a>
+					<a href="/product/2">小米5s</a>
 				</div>
 				<div class="youhui">5月9日-10日，下单立减200元</div>
 				<div class="jiage">1999元</div>
@@ -1420,10 +1420,10 @@
 			<div class="mingxing fl">
 				<div class="sub_mingxing">
 					<!-- 动态链接，指向 /product/3 -->
-					<a href="/products/3"><img src="./image/Product3.jpg" alt="小米手机5"></a>
+					<a href="/product/3"><img src="./image/Product3.jpg" alt="小米手机5"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/products/3">小米手机5 64GB</a>
+					<a href="/product/3">小米手机5 64GB</a>
 				</div>
 				<div class="youhui">5月9日-10日，下单立减100元</div>
 				<div class="jiage">1799元</div>
@@ -1434,10 +1434,10 @@
 			<div class="mingxing fl">
 				<div class="sub_mingxing">
 					<!-- 动态链接，指向 /product/4 -->
-					<a href="/products/4"><img src="./image/Product4.jpg" alt="小米电视3s"></a>
+					<a href="/product/4"><img src="./image/Product4.jpg" alt="小米电视3s"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/products/4">小米电视3s 55英寸</a>
+					<a href="/product/4">小米电视3s 55英寸</a>
 				</div>
 				<div class="youhui">5月9日，下单立减200元</div>
 				<div class="jiage">3999元</div>
@@ -1448,10 +1448,10 @@
 			<div class="mingxing fl">
 				<div class="sub_mingxing">
 					<!-- 动态链接，指向 /product/5 -->
-					<a href="/products/5"><img src="./image/Product5.jpg" alt="小米笔记本"></a>
+					<a href="/product/5"><img src="./image/Product5.jpg" alt="小米笔记本"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/products/5">小米笔记本</a>
+					<a href="/product/5">小米笔记本</a>
 				</div>
 				<div class="youhui">更轻更薄，像杂志一样随身携带</div>
 				<div class="jiage">3599元起</div>
@@ -1462,8 +1462,46 @@
 			<div class="clear"></div>
 		</div>
 	</div>
-	<!-- 引入购物车事件监听 -->
-	<script src="/js/cartUtils.js"></script>
+	<!-- 引入商品列表和购物车功能 -->
+	<script src="/scripts.js"></script>
+	<script>
+		// 为静态商品按钮添加事件监听器
+		document.addEventListener('DOMContentLoaded', function() {
+			const addToCartButtons = document.querySelectorAll('.add-to-cart');
+			addToCartButtons.forEach(button => {
+				button.addEventListener('click', async function() {
+					const productId = this.getAttribute('data-product-id');
+					if (productId) {
+						try {
+							const response = await fetch('/cart/add', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify({
+									productId: productId,
+									quantity: 1
+								})
+							});
+
+							if (response.ok) {
+								alert('商品已成功添加到购物车！');
+							} else if (response.status === 401) {
+								alert('请先登录后再添加商品到购物车');
+								window.location.href = '/login.html';
+							} else {
+								const error = await response.text();
+								alert('添加到购物车失败：' + error);
+							}
+						} catch (error) {
+							console.error('添加到购物车时发生错误:', error);
+							alert('网络错误，请稍后重试');
+						}
+					}
+				});
+			});
+		});
+	</script>
 
 
 

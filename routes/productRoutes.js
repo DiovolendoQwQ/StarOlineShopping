@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 
-// 获取商品列表（支持分页与搜索）
+// 获取商品列表（支持分页与搜索）- 返回HTML页面
 router.get('/all', async (req, res) => {
   const { page = 1, keyword = '' } = req.query;
   const limit = 10;
@@ -23,6 +23,11 @@ router.get('/all', async (req, res) => {
       [`%${keyword}%`, limit, offset]
     );
 
+    // 检查是否是API请求（通过Accept头或查询参数）
+    if (req.headers.accept && req.headers.accept.includes('application/json') || req.query.format === 'json') {
+      return res.json(products);
+    }
+
     res.render('productList', {
       products,
       page: parseInt(page),
@@ -32,6 +37,17 @@ router.get('/all', async (req, res) => {
   } catch (err) {
     console.error("获取商品失败:", err);
     res.status(500).send("获取商品失败");
+  }
+});
+
+// API路由：获取所有商品（JSON格式）
+router.get('/api/all', async (req, res) => {
+  try {
+    const products = await db.allAsync("SELECT * FROM products ORDER BY created_at DESC");
+    res.json(products);
+  } catch (err) {
+    console.error("获取商品失败:", err);
+    res.status(500).json({ error: "获取商品失败" });
   }
 });
 

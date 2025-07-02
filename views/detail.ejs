@@ -233,8 +233,8 @@
         <%= product.price %> 元
       </div>
       <div class="actions">
-        <input type="button" value="打开购物车">
-        <input type="button" value="加入购物车">
+        <input type="button" value="打开购物车" onclick="window.location.href='/cart'">
+        <input type="button" value="加入购物车" data-product-id="<%= product.id %>" class="add-to-cart-btn">
       </div>
     </div>
   </div>
@@ -253,6 +253,49 @@
     <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号</div>
     <div>违法和不良信息举报电话：185-0130-1238 所有数据均出自我司实验室测试</div>
   </footer>
+  <script>
+    // 添加商品到购物车的函数
+    async function addToCart(productId, quantity = 1) {
+      try {
+        const response = await fetch('/cart/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId: productId,
+            quantity: quantity
+          })
+        });
+
+        if (response.ok) {
+          alert('商品已成功添加到购物车！');
+        } else if (response.status === 401) {
+          alert('请先登录后再添加商品到购物车');
+          window.location.href = '/login.html';
+        } else {
+          const error = await response.text();
+          alert('添加到购物车失败：' + error);
+        }
+      } catch (error) {
+        console.error('添加到购物车时发生错误:', error);
+        alert('网络错误，请稍后重试');
+      }
+    }
+
+    // 页面加载完成后添加事件监听器
+    document.addEventListener('DOMContentLoaded', function() {
+      const addToCartButton = document.querySelector('.add-to-cart-btn');
+      if (addToCartButton) {
+        addToCartButton.addEventListener('click', function() {
+          const productId = this.getAttribute('data-product-id');
+          if (productId) {
+            addToCart(productId, 1);
+          }
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
