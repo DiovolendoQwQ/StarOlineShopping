@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>
-    <%= product.name %> - 小米商城
+    <%= product.name %> - StarShopping
   </title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <style>
@@ -242,7 +242,7 @@
   <!-- footer -->
   <footer>
     <div>
-      <a href="#">小米商城</a>|
+      <a href="#">StarShopping</a>|
       <a href="#">MIUI</a> |
       <a href="#">米聊</a> |
       <a href="#">多看书城</a> |
@@ -284,10 +284,10 @@
     }
 
     // 页面加载完成后添加事件监听器
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const addToCartButton = document.querySelector('.add-to-cart-btn');
       if (addToCartButton) {
-        addToCartButton.addEventListener('click', function() {
+        addToCartButton.addEventListener('click', function () {
           const productId = this.getAttribute('data-product-id');
           if (productId) {
             addToCart(productId, 1);

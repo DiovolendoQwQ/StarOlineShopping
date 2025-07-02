@@ -10,67 +10,58 @@
 
 <body>
 	<!-- start header -->
-	<header>
-		<div class="top center">
-			<div class="left fl">
-				<ul>
-					<div class="clear"></div>
-				</ul>
-			</div>
-			<div class="right fr">
-				<div class="gouwuche fr"><a href="/cart">购物车</a></div>
-				<div class="fr"></div>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="clear"></div>
-		</div>
+	<header style="display: none;">
+		<!-- 顶部购物车已移除，改善页面美观度 -->
 	</header>
 	<!--end header -->
 
 	<!-- start banner_x -->
-	<div class="banner_x center">
-		<a href="./index.html" target="_blank">
-			<div class="logo fl"></div>
-		</a>
-		<a href="">
-			<div class="ad_top fl"></div>
-		</a>
-		<div class="nav fl">
-			<ul>
-				<li><a href="./liebiao.html" target="_blank">手机</a></li>
-				<li><a href="">电脑</a></li>
-				<li><a href="">平板</a></li>
-				<li><a href="">电视</a></li>
-				<li><a href="">游戏</a></li>
-				<li><a href="">路由器</a></li>
-				<li><a href="">家具</a></li>
-				<li><a href="">零食</a></li>
-				<li><a href="">运动</a></li>
-			</ul>
+	<div class="banner_x">
+		<div class="center-content">
+			<a href="./index.html" target="_blank">
+				<div class="logo fl"></div>
+			</a>
+			<a href="">
+				<div class="ad_top fl"></div>
+			</a>
 		</div>
-		<div class="search fr">
-			<form action="" method="post">
-				<div class="text fl">
-					<input type="text" class="shuru" placeholder="华为mate70pro现货开抢">
-				</div>
-				<div class="submit fl">
-					<input type="submit" class="sousuo" value="搜索" />
-				</div>
-				<div class="clear"></div>
-			</form>
-			<div class="clear"></div>
+
+		<div class="search-cart-container">
+			<div class="cart-button">
+				<a href="/cart" class="cart-link">
+					<svg class="cart-icon" viewBox="0 0 24 24" width="20" height="20">
+						<path fill="currentColor" d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+					</svg>
+					<span class="cart-text">购物车</span>
+				</a>
+			</div>
+			<div class="search">
+				<form action="" method="post">
+					<div class="text fl">
+						<input type="text" class="shuru" placeholder="华为mate70pro现货开抢">
+					</div>
+					<div class="submit fl">
+						<input type="submit" class="sousuo" value="搜索" />
+					</div>
+					<div class="clear"></div>
+				</form>
+			</div>
 		</div>
 	</div>
 	<!-- end banner_x -->
 
 	<!-- start banner_y -->
 	<div class="banner_y center">
+		<video autoplay muted loop>
+			<source src="./Picture/login.mp4" type="video/mp4">
+			您的浏览器不支持视频播放。
+		</video>
 		<div class="nav">
 			<ul>
 				<li>
-					<a href="">手机</a>
-					<a href="">电话卡</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">手机 电话卡</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -238,8 +229,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">笔记本</a>
-					<a href="">平板</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">笔记本 平板</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -382,8 +374,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">电视</a>
-					<a href="">游戏卡带</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">电视 游戏卡带</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -551,8 +544,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">路由器</a>
-					<a href="">智能硬件</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">路由器 智能硬件</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -720,9 +714,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">充电宝</a>
-					<a href="">水杯</a>
-					<a href="">插线板</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">充电宝 水杯 插线板</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -890,8 +884,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">耳机</a>
-					<a href="">音箱</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">耳机 音箱</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -1059,8 +1054,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">手机壳</a>
-					<a href="">手机膜</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">手机壳 手机膜</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -1134,9 +1130,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">化妆品</a>
-					<a href="">支架</a>
-					<a href="">储存卡</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">化妆品 支架 储存卡</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -1210,10 +1206,9 @@
 					</div>
 				</li>
 				<li>
-					<a href="">箱包</a>
-					<a href="">服饰</a>
-					<a href="">鞋</a>
-					<a href="">眼镜</a>
+					<div class="nav-categories">
+						<a href="" class="nav-category">箱包 服饰 鞋 眼镜</a>
+					</div>
 					<div class="pop">
 						<div class="left fl">
 							<div>
@@ -1349,7 +1344,7 @@
 							<div>
 								<div class="xuangou_left fl">
 									<a href="">
-										<div class="img fl"><img src="./image/Product_Product106.png" alt=""></div>
+										<div class="img fl"><img src="./image/Product106.png" alt=""></div>
 										<span class="fl">奥特曼</span>
 										<div class="clear"></div>
 									</a>
@@ -1567,7 +1562,7 @@
 				</div>
 				<div class="remen fl">
 					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product120.jbg"></a></div>
+					<div class="tu"><a href=""><img src="./image/Product120.jpg"></a></div>
 					<div class="miaoshu"><a href="">指环支架</a></div>
 					<div class="jiage">19元</div>
 					<div class="pingjia">372人评价</div>
