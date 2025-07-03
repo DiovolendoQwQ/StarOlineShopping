@@ -345,9 +345,14 @@
             </form>
             <div class="search-info">
                 <% if (keyword) { %>
-                    搜索 "<%= keyword %>" 找到 <%= products.length %> 个结果
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span>搜索 "<%= keyword %>" 找到 <strong><%= typeof totalCount !== 'undefined' ? totalCount : products.length %></strong> 个结果</span>
+                        <% if (typeof totalCount !== 'undefined' && totalCount > products.length) { %>
+                            <span style="font-size: 12px; color: #666;">显示第 <%= (page-1)*10 + 1 %>-<%= Math.min(page*10, totalCount) %> 个结果</span>
+                        <% } %>
+                    </div>
                 <% } else { %>
-                    显示所有商品
+                    <span>显示所有商品 (<%= typeof totalCount !== 'undefined' ? totalCount : products.length %> 个)</span>
                 <% } %>
             </div>
         </div>
@@ -356,10 +361,23 @@
             <div class="products-grid">
                 <% products.forEach(product => { %>
                     <div class="product-card">
+                        <% if (product.relevanceScore && keyword) { %>
+                            <div style="position: absolute; top: 8px; right: 8px; background: rgba(255,103,0,0.9); color: white; padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: bold;">
+                                匹配度: <%= Math.round(product.relevanceScore * 100) %>%
+                            </div>
+                        <% } %>
                         <img src="<%= product.image ? product.image.replace('./image/', '/image/') : '/image/default.png' %>" alt="<%= product.name %>" class="product-image">
                         <div class="product-info">
                             <h3 class="product-name"><%= product.name %></h3>
+                            <% if (product.description) { %>
+                                <p style="font-size: 12px; color: #666; margin: 5px 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><%= product.description %></p>
+                            <% } %>
                             <div class="product-price">¥<%= product.price %></div>
+                            <% if (product.stock !== undefined) { %>
+                                <div style="font-size: 11px; color: <%= product.stock > 0 ? '#28a745' : '#dc3545' %>; margin: 3px 0;">
+                                    <%= product.stock > 0 ? `库存: ${product.stock}` : '暂无库存' %>
+                                </div>
+                            <% } %>
                             <a href="/product/<%= product.id %>" class="product-link">查看详情</a>
                         </div>
                     </div>
