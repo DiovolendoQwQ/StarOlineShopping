@@ -97,6 +97,10 @@ exports.updateCartItem = async (req, res) => {
     const productId = req.params.id;
     const userId = req.session.userId;
 
+    if (!userId) {
+      return res.status(401).json({ success: false, error: '未登录' });
+    }
+
     if (quantity === 0) {
       return exports.removeFromCart(req, res);
     }
@@ -104,7 +108,14 @@ exports.updateCartItem = async (req, res) => {
     const cart = await db.getAsync(`SELECT id FROM carts WHERE user_id = ?`, [userId]);
 
     if (!cart) {
-      return res.status(404).send('购物车不存在');
+      return res.status(404).json({ success: false, error: '购物车不存在' });
+    }
+
+    // 获取商品价格
+    const product = await db.getAsync(`SELECT price FROM products WHERE id = ?`, [productId]);
+    
+    if (!product) {
+      return res.status(404).json({ success: false, error: '商品不存在' });
     }
 
     await db.runAsync(
@@ -113,10 +124,17 @@ exports.updateCartItem = async (req, res) => {
     );
 
     await updateCartTotal(userId);
-    res.redirect('/cart');
+    
+    // 返回JSON响应而不是重定向
+    res.json({ 
+      success: true, 
+      price: product.price,
+      quantity: quantity,
+      message: '更新成功' 
+    });
   } catch (error) {
     console.error('更新购物车商品数量失败:', error);
-    res.status(500).send('服务器错误');
+    res.status(500).json({ success: false, error: '服务器错误' });
   }
 };
 

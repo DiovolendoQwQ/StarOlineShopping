@@ -1,0 +1,171 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: 🧪 测试
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 🟢 设置 Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: 📦 安装依赖
+      run: npm ci
+    
+    - name: 🔍 代码检查
+      run: |
+        echo "运行代码风格检查..."
+        # npm run lint (如果有配置)
+    
+    - name: 🧪 运行测试
+      run: |
+        echo "运行单元测试..."
+        # npm test (如果有配置)
+    
+    - name: 🏗️ 构建项目
+      run: |
+        echo "构建项目..."
+        npm run build --if-present
+    
+    - name: 🔄 数据库迁移测试
+      run: |
+        echo "测试数据库迁移..."
+        npm run migrate --if-present
+
+  security:
+    name: 🔒 安全检查
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 🟢 设置 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: 📦 安装依赖
+      run: npm ci
+    
+    - name: 🛡️ 安全审计
+      run: npm audit --audit-level=moderate
+    
+    - name: 🔍 依赖检查
+      run: |
+        echo "检查过时的依赖..."
+        npm outdated || true
+
+  deploy:
+    name: 🚀 部署
+    needs: [test, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 🟢 设置 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: 📦 安装依赖
+      run: npm ci
+    
+    - name: 🏗️ 构建生产版本
+      run: |
+        echo "构建生产版本..."
+        npm run build --if-present
+    
+    - name: 📋 生成部署报告
+      run: |
+        echo "## 🚀 部署报告" >> $GITHUB_STEP_SUMMARY
+        echo "- **分支**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **提交**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **时间**: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- **状态**: ✅ 成功" >> $GITHUB_STEP_SUMMARY
+    
+    # 这里可以添加实际的部署步骤
+    # - name: 🌐 部署到服务器
+    #   run: |
+    #     echo "部署到生产服务器..."
+    #     # 添加你的部署命令
+
+  release:
+    name: 📦 发布
+    needs: [test, security]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🟢 设置 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: 📦 安装依赖
+      run: npm ci
+    
+    - name: 🏗️ 构建发布版本
+      run: |
+        echo "构建发布版本..."
+        npm run build --if-present
+    
+    - name: 📝 生成发布说明
+      id: release_notes
+      run: |
+        echo "生成发布说明..."
+        # 这里可以添加自动生成发布说明的逻辑
+    
+    - name: 🚀 创建GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: STAR 在线购物平台 ${{ github.ref }}
+        body: |
+          ## 🎉 新版本发布！
+          
+          查看完整的更新内容请参考 [CHANGELOG.md](./CHANGELOG.md)
+          
+          ### 📥 安装方式
+          ```bash
+          git clone https://github.com/${{ github.repository }}.git
+          cd STAR_Online_Shopping
+          npm install
+          npm start
+          ```
+          
+          ### 📚 相关文档
+          - [使用指南](./README.md)
+          - [发布说明](./RELEASE_NOTES.md)
+          - [迁移指南](./MIGRATION_GUIDE.md)
+        draft: false
+        prerelease: false

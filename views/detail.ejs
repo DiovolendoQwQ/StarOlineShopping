@@ -8,20 +8,26 @@
   </title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       font-size: 14px;
       color: #333;
       line-height: 1.6;
+      background: #f8f9fa;
     }
 
     header,
     footer {
       padding: 10px 0;
-      background: #f5f5f5;
+      background: #fff;
       font-size: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .w {
@@ -50,141 +56,412 @@
     .top ul li a {
       text-decoration: none;
       color: #333;
+      transition: color 0.3s ease;
     }
 
-    .banner_x {
-      display: flex;
-      align-items: center;
-      padding: 10px 0;
+    .top ul li a:hover {
+      color: #f60;
     }
 
-    .banner_x .logo {
-      width: 60px;
-      height: 30px;
-      background: #ccc;
-      /* Placeholder */
-    }
 
-    .nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-    }
 
-    .nav ul li {
-      margin: 0 15px;
-    }
-
-    .nav ul li a {
-      text-decoration: none;
-      color: #333;
-      font-size: 14px;
-    }
-
-    .search {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-    }
-
-    .search .shuru {
-      height: 30px;
-      padding: 0 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px 0 0 4px;
-    }
-
-    .search .sousuo {
-      height: 30px;
-      border: 1px solid #ddd;
-      border-left: 0;
-      border-radius: 0 4px 4px 0;
+    /* 返回按钮 */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
       background: #f60;
       color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
       cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .back-button:hover {
+      background: #e65c00;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.4);
+    }
+
+    /* 购物车动画和弹窗 */
+    .cart-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      text-align: center;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .cart-notification.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .cart-notification .icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #fff;
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      53%,
+      80%,
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      40%,
+      43% {
+        transform: translate3d(0, -20px, 0);
+      }
+
+      70% {
+        transform: translate3d(0, -10px, 0);
+      }
+
+      90% {
+        transform: translate3d(0, -4px, 0);
+      }
+    }
+
+    .cart-notification h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .cart-notification p {
+      margin: 0 0 30px;
+      color: #666;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .cart-notification .buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .cart-notification button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      min-width: 120px;
+    }
+
+    .cart-notification .btn-primary {
+      background: #f60;
+      color: #fff;
+    }
+
+    .cart-notification .btn-primary:hover {
+      background: #e65c00;
+      transform: translateY(-2px);
+    }
+
+    .cart-notification .btn-secondary {
+      background: #f8f9fa;
+      color: #666;
+      border: 1px solid #ddd;
+    }
+
+    .cart-notification .btn-secondary:hover {
+      background: #e9ecef;
+      color: #333;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* 加入购物车按钮动画 */
+    .add-to-cart-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .add-to-cart-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .add-to-cart-btn.clicked::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .add-to-cart-btn.loading::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 8px;
+    }
+
+    .add-to-cart-btn.loading {
+      pointer-events: none;
     }
 
     /* 产品详情区 */
     .product-container {
       width: 1200px;
-      margin: 40px auto;
+      margin: 80px auto 30px;
       display: flex;
-      box-sizing: border-box;
-      padding: 20px 0;
-      border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
-    }
-
-    .picture-container,
-    .detail-container {
-      flex: 1;
-      box-sizing: border-box;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      min-height: 600px;
     }
 
     .picture-container {
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 40px;
+      background: #fafafa;
     }
 
     .picture-container img {
+      max-width: 100%;
       max-height: 500px;
-      display: block;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s ease;
+    }
+
+    .picture-container img:hover {
+      transform: scale(1.05);
     }
 
     .detail-container {
-      padding: 0 40px;
+      flex: 1;
+      padding: 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
     .detail-container h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      font-weight: bold;
+      font-size: 28px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      color: #222;
+      line-height: 1.3;
     }
 
     .detail-container .description {
-      margin-bottom: 20px;
-      font-size: 14px;
+      margin-bottom: 24px;
+      font-size: 15px;
       color: #666;
+      line-height: 1.6;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #f60;
     }
 
     .detail-container .price {
-      font-size: 20px;
+      font-size: 32px;
       color: #f60;
-      margin-bottom: 30px;
-      font-weight: bold;
+      margin-bottom: 32px;
+      font-weight: 700;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .detail-container .price::before {
+      content: '¥';
+      font-size: 20px;
+      margin-right: 4px;
+    }
+
+    .detail-container .actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
     }
 
     .detail-container .actions input {
-      padding: 10px 20px;
+      padding: 14px 28px;
       border: none;
-      background: #f60;
-      color: #fff;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 4px;
-      margin-right: 10px;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      min-width: 140px;
     }
 
-    .detail-container .actions input:hover {
+    .detail-container .actions input:first-child {
+      background: #fff;
+      color: #f60;
+      border: 2px solid #f60;
+    }
+
+    .detail-container .actions input:first-child:hover {
+      background: #f60;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.3);
+    }
+
+    .detail-container .actions input:last-child {
+      background: #f60;
+      color: #fff;
+      border: 2px solid #f60;
+    }
+
+    .detail-container .actions input:last-child:hover {
       background: #e65c00;
+      border-color: #e65c00;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(230, 92, 0, 0.4);
     }
 
     footer {
+      margin-top: 40px;
+      padding: 30px 0;
       font-size: 12px;
       color: #999;
       text-align: center;
       line-height: 1.8;
+      background: #fff;
+      border-top: 1px solid #eee;
     }
 
     footer a {
       color: #999;
       text-decoration: none;
       margin: 0 5px;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #f60;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1240px) {
+
+      .w,
+      .product-container {
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .product-container {
+        flex-direction: column;
+        margin: 20px auto;
+      }
+
+      .picture-container,
+      .detail-container {
+        padding: 20px;
+      }
+
+      .detail-container h1 {
+        font-size: 24px;
+      }
+
+      .detail-container .price {
+        font-size: 28px;
+      }
+
+      .detail-container .actions {
+        flex-direction: column;
+      }
+
+      .nav ul {
+        flex-wrap: wrap;
+      }
+
+      .nav ul li {
+        margin: 5px 10px;
+      }
     }
   </style>
 </head>
@@ -192,28 +469,20 @@
 <body>
 
 
-  <!-- 导航 -->
-  <div class="banner_x w">
-    <a href="/">
-      <div class="logo fl"></div>
-    </a>
-    <div class="nav fl">
-      <ul>
-        <li><a href="#">小米手机</a></li>
-        <li><a href="#">红米</a></li>
-        <li><a href="#">平板笔记本</a></li>
-        <li><a href="#">电视</a></li>
-        <li><a href="#">路由器</a></li>
-        <li><a href="#">智能硬件</a></li>
-        <li><a href="#">服务</a></li>
-        <li><a href="#">社区</a></li>
-      </ul>
-    </div>
-    <div class="search fr">
-      <form action="#" method="post">
-        <input type="text" class="shuru" placeholder="搜索商品...">
-        <input type="submit" class="sousuo" value="搜索">
-      </form>
+
+
+  <!-- 返回按钮 -->
+  <button class="back-button" onclick="history.back()">← 返回</button>
+
+  <!-- 购物车通知弹窗 -->
+  <div class="overlay" id="overlay"></div>
+  <div class="cart-notification" id="cartNotification">
+    <div class="icon">✓</div>
+    <h3>添加成功！</h3>
+    <p>商品已成功添加到购物车</p>
+    <div class="buttons">
+      <button class="btn-secondary" onclick="closeNotification()">继续购物</button>
+      <button class="btn-primary" onclick="window.location.href='/cart'">查看购物车</button>
     </div>
   </div>
 
@@ -240,23 +509,70 @@
   </div>
 
   <!-- footer -->
-  <footer>
-    <div>
-      <a href="#">StarShopping</a>|
-      <a href="#">MIUI</a> |
-      <a href="#">米聊</a> |
-      <a href="#">多看书城</a> |
-      <a href="#">小米路由器</a> |
-      <a href="#">隐私政策</a> |
-      <a href="#">Select Region</a>
-    </div>
-    <div>©mi.com 京ICP证110507号 京ICP备10046444号 京公网安备11010802020134号</div>
-    <div>违法和不良信息举报电话：185-0130-1238 所有数据均出自我司实验室测试</div>
-  </footer>
+
   <script>
+    // 显示购物车通知弹窗
+    function showCartNotification() {
+      const overlay = document.getElementById('overlay');
+      const notification = document.getElementById('cartNotification');
+
+      overlay.classList.add('show');
+      notification.classList.add('show');
+
+      // 3秒后自动关闭
+      setTimeout(() => {
+        closeNotification();
+      }, 3000);
+    }
+
+    // 关闭通知弹窗
+    function closeNotification() {
+      const overlay = document.getElementById('overlay');
+      const notification = document.getElementById('cartNotification');
+
+      overlay.classList.remove('show');
+      notification.classList.remove('show');
+    }
+
+    // 显示错误通知
+    function showErrorNotification(message) {
+      const notification = document.getElementById('cartNotification');
+      const icon = notification.querySelector('.icon');
+      const title = notification.querySelector('h3');
+      const text = notification.querySelector('p');
+
+      // 修改为错误样式
+      icon.innerHTML = '✕';
+      icon.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+      title.textContent = '添加失败';
+      text.textContent = message;
+
+      showCartNotification();
+
+      // 恢复原样式
+      setTimeout(() => {
+        icon.innerHTML = '✓';
+        icon.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+        title.textContent = '添加成功！';
+        text.textContent = '商品已成功添加到购物车';
+      }, 3000);
+    }
+
     // 添加商品到购物车的函数
     async function addToCart(productId, quantity = 1) {
+      const button = document.querySelector('.add-to-cart-btn');
+      const spinner = document.querySelector('.loading-spinner');
+
       try {
+        // 添加点击动画效果
+        button.classList.add('clicked');
+        button.classList.add('loading');
+
+        // 移除点击动画
+        setTimeout(() => {
+          button.classList.remove('clicked');
+        }, 600);
+
         const response = await fetch('/cart/add', {
           method: 'POST',
           headers: {
@@ -268,24 +584,31 @@
           })
         });
 
+        button.classList.remove('loading');
+
         if (response.ok) {
-          alert('商品已成功添加到购物车！');
+          showCartNotification();
         } else if (response.status === 401) {
-          alert('请先登录后再添加商品到购物车');
-          window.location.href = '/login.html';
+          showErrorNotification('请先登录后再添加商品到购物车');
+          setTimeout(() => {
+            window.location.href = '/login.html';
+          }, 2000);
         } else {
           const error = await response.text();
-          alert('添加到购物车失败：' + error);
+          showErrorNotification('添加到购物车失败：' + error);
         }
       } catch (error) {
+        button.classList.remove('loading');
         console.error('添加到购物车时发生错误:', error);
-        alert('网络错误，请稍后重试');
+        showErrorNotification('网络错误，请稍后重试');
       }
     }
 
     // 页面加载完成后添加事件监听器
     document.addEventListener('DOMContentLoaded', function () {
       const addToCartButton = document.querySelector('.add-to-cart-btn');
+      const overlay = document.getElementById('overlay');
+
       if (addToCartButton) {
         addToCartButton.addEventListener('click', function () {
           const productId = this.getAttribute('data-product-id');
@@ -294,6 +617,18 @@
           }
         });
       }
+
+      // 点击遮罩层关闭弹窗
+      if (overlay) {
+        overlay.addEventListener('click', closeNotification);
+      }
+
+      // ESC键关闭弹窗
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeNotification();
+        }
+      });
     });
   </script>
 </body>

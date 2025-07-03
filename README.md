@@ -258,6 +258,53 @@ npm start
 - `PUT /cart/update/:id` - 更新购物车商品数量
 - `DELETE /cart/remove/:id` - 删除购物车商品
 
+## 📋 版本信息
+
+### 当前版本
+- **最新版本**: v2.1.0
+- **发布日期**: 2024-12-19
+- **主要更新**: 购物车功能全面优化
+
+### 版本历史
+- 📄 [完整更新日志](./CHANGELOG.md) - 查看详细的版本历史和技术变更
+- 🚀 [发布说明](./RELEASE_NOTES.md) - 查看最新版本的主要功能和改进
+- 🔄 [迁移指南](./MIGRATION_GUIDE.md) - 数据库升级和迁移说明
+
+## 🤝 贡献与支持
+
+### 贡献代码
+我们欢迎任何形式的贡献！请查看以下指南：
+
+1. **Fork** 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的修改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 **Pull Request**
+
+### 问题反馈
+- 🐛 [报告Bug](../../issues/new?template=bug_report.md)
+- 💡 [功能建议](../../issues/new?template=feature_request.md)
+- 💬 [讨论交流](../../discussions)
+
+### 获取帮助
+- 📚 查看本文档的各个章节
+- 🔍 搜索 [已有Issues](../../issues)
+- 📧 联系维护者
+
+## 📜 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](./LICENSE) 文件了解详情。
+
+## 🙏 致谢
+
+感谢所有为这个项目做出贡献的开发者和用户！
+
+### 技术栈致谢
+- [Node.js](https://nodejs.org/) - JavaScript 运行时
+- [Express.js](https://expressjs.com/) - Web 应用框架
+- [SQLite](https://www.sqlite.org/) - 轻量级数据库
+- [EJS](https://ejs.co/) - 模板引擎
+
 ## 未来规划
 
 - [ ] 添加订单管理功能
@@ -271,4 +318,13 @@ npm start
 
 ---
 
-**STAR 在线购物平台** - 让购物变得更简单、更愉快！
+<div align="center">
+
+**STAR 在线购物平台** - 让购物变得更简单、更愉快！ 🌟
+
+[![GitHub stars](https://img.shields.io/github/stars/DiovolendoQwQ/STAR_Online_Shopping?style=social)](../../stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/DiovolendoQwQ/STAR_Online_Shopping?style=social)](../../network/members)
+[![GitHub issues](https://img.shields.io/github/issues/DiovolendoQwQ/STAR_Online_Shopping)](../../issues)
+[![GitHub license](https://img.shields.io/github/license/DiovolendoQwQ/STAR_Online_Shopping)](./LICENSE)
+
+</div>

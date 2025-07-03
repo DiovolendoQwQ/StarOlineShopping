@@ -62,10 +62,16 @@ class SearchManager {
     }
 
     bindEvents() {
-        // 阻止表单默认提交
+        // 表单提交时跳转到搜索结果页面
         this.searchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.performSearch();
+            const query = this.searchInput.value.trim();
+            if (query) {
+                // 允许表单正常提交，跳转到搜索结果页面
+                return true;
+            } else {
+                e.preventDefault();
+                return false;
+            }
         });
 
         // 输入时实时搜索（防抖）
@@ -85,8 +91,12 @@ class SearchManager {
 
         // 点击搜索按钮
         this.searchButton.addEventListener('click', (e) => {
+            const query = this.searchInput.value.trim();
+            if (query) {
+                // 跳转到搜索结果页面
+                window.location.href = `/products/all?keyword=${encodeURIComponent(query)}`;
+            }
             e.preventDefault();
-            this.performSearch();
         });
 
         // 点击外部隐藏结果
