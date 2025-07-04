@@ -362,12 +362,12 @@ npm start
 - **主要更新**: 数据分析系统全面上线
 
 ### 版本历史
-- 📄 [完整更新日志](./CHANGELOG.md) - 查看详细的版本历史和技术变更
-- 🔍 [智能搜索功能说明](./FUZZY_SEARCH_README.md) - 详细的搜索功能使用指南
-- 🚀 [发布说明](./RELEASE_NOTES.md) - 查看最新版本的主要功能和改进
-- 🔄 [迁移指南](./MIGRATION_GUIDE.md) - 数据库升级和迁移说明
-- 📋 [代码质量建议](./CODE_QUALITY_RECOMMENDATIONS.md) - 代码质量改进建议
-- 🔒 [安全检查清单](./SECURITY_CHECKLIST.md) - 安全性检查和建议
+- 📄 [完整更新日志](./docs/CHANGELOG.md) - 查看详细的版本历史和技术变更
+- 🔍 [智能搜索功能说明](./docs/FUZZY_SEARCH_README.md) - 详细的搜索功能使用指南
+- 🚀 [发布说明](./docs/RELEASE_NOTES.md) - 查看最新版本的主要功能和改进
+- 🔄 [迁移指南](./docs/MIGRATION_GUIDE.md) - 数据库升级和迁移说明
+- 📋 [代码质量建议](./docs/CODE_QUALITY_RECOMMENDATIONS.md) - 代码质量改进建议
+- 🔒 [安全检查清单](./docs/SECURITY_CHECKLIST.md) - 安全性检查和建议
 
 ## 🤝 贡献与支持
 
