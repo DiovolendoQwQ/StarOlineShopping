@@ -45,12 +45,24 @@ db.serialize(() => {
       id TEXT PRIMARY KEY, 
       username TEXT NOT NULL, 
       email TEXT UNIQUE NOT NULL, 
-      password TEXT NOT NULL
+      password TEXT NOT NULL,
+      role TEXT DEFAULT NULL
     );
   `, (err) => {
     if (err) console.error('❌ 创建 users 表失败:', err.message);
-    else console.log('✅ users 表已创建或已存在');
-  });
+    else {
+      console.log('✅ users 表已创建或已存在');
+      
+      // 检查并添加 role 字段（如果不存在）
+       db.run(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT NULL`, (alterErr) => {
+         if (alterErr && !alterErr.message.includes('duplicate column name')) {
+           console.error('❌ 添加 role 字段失败:', alterErr.message);
+         } else if (!alterErr) {
+           console.log('✅ users 表已添加 role 字段');
+         }
+       });
+     }
+   });
 
   // 商品表
   db.run(`
@@ -69,21 +81,38 @@ db.serialize(() => {
     else console.log('✅ products 表已创建或已存在');
   });
 
-  // 订单表
+  // 订单表（新版本）
   db.run(`
     CREATE TABLE IF NOT EXISTS orders (
-      id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      user_email TEXT NOT NULL, 
-      product_id INTEGER NOT NULL, 
-      quantity INTEGER NOT NULL, 
-      status TEXT NOT NULL, 
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP, 
-      FOREIGN KEY (user_email) REFERENCES users(email), 
-      FOREIGN KEY (product_id) REFERENCES products(id)
+      id TEXT PRIMARY KEY, 
+      user_id TEXT NOT NULL, 
+      total_amount REAL NOT NULL,
+      shipping_address TEXT,
+      status TEXT NOT NULL DEFAULT 'pending', 
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `, (err) => {
     if (err) console.error('❌ 创建 orders 表失败:', err.message);
     else console.log('✅ orders 表已创建或已存在');
+  });
+
+  // 订单项表
+  db.run(`
+    CREATE TABLE IF NOT EXISTS order_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id TEXT NOT NULL,
+      product_id INTEGER NOT NULL,
+      quantity INTEGER NOT NULL,
+      price REAL NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (order_id) REFERENCES orders(id),
+      FOREIGN KEY (product_id) REFERENCES products(id)
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 order_items 表失败:', err.message);
+    else console.log('✅ order_items 表已创建或已存在');
   });
 
   // 购物车表
@@ -112,6 +141,63 @@ db.serialize(() => {
   `, (err) => {
     if (err) console.error('❌ 创建 cart_items 表失败:', err.message);
     else console.log('✅ cart_items 表已创建或已存在');
+  });
+
+  // 用户行为数据表
+  db.run(`
+    CREATE TABLE IF NOT EXISTS user_behaviors (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      action_type TEXT NOT NULL,
+      target_type TEXT NOT NULL,
+      target_id INTEGER,
+      metadata TEXT,
+      ip_address TEXT,
+      user_agent TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 user_behaviors 表失败:', err.message);
+    else console.log('✅ user_behaviors 表已创建或已存在');
+  });
+
+  // 用户偏好数据表（新版本）
+  db.run(`DROP TABLE IF EXISTS user_preferences;`, (dropErr) => {
+    if (dropErr) console.error('❌ 删除旧 user_preferences 表失败:', dropErr.message);
+    
+    db.run(`
+      CREATE TABLE IF NOT EXISTS user_preferences (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        preference_type TEXT NOT NULL,
+        preference_value TEXT NOT NULL,
+        weight REAL DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        UNIQUE(user_id, preference_type, preference_value)
+      );
+    `, (err) => {
+      if (err) console.error('❌ 创建 user_preferences 表失败:', err.message);
+      else console.log('✅ user_preferences 表已创建或已存在');
+    });
+  });
+
+  // 数据统计汇总表
+  db.run(`
+    CREATE TABLE IF NOT EXISTS analytics_summary (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date TEXT NOT NULL,
+      metric_type TEXT NOT NULL,
+      metric_value REAL NOT NULL,
+      metadata TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(date, metric_type)
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 analytics_summary 表失败:', err.message);
+    else console.log('✅ analytics_summary 表已创建或已存在');
   });
 });
 

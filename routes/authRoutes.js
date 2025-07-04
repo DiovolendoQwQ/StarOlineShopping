@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const db = require('../config/database');
+const behaviorTracker = require('../middleware/behaviorTracker');
 
 // 随机生成用户 ID 的函数（生成随机数字）
 function generateUserId() {
@@ -55,6 +56,12 @@ router.post('/register', async (req, res) => {
 
     // 设置用户会话
     req.session.userId = userId;
+    req.session.user = {
+      user_id: userId.toString(),
+      username: register_username,
+      email: register_email,
+      role: null // 新注册用户默认没有角色
+    };
 
     res.send(`
             <script>
@@ -81,7 +88,7 @@ router.post('/login', async (req, res) => {
     console.log('收到登录请求:', req.body);
 
     // 查找用户并获取完整信息
-    const user = await db.getAsync("SELECT id, password FROM users WHERE email = ?", [email]);
+    const user = await db.getAsync("SELECT id, username, email, password, role FROM users WHERE email = ?", [email]);
 
     if (!user) {
       console.error(`登录失败: 用户不存在 - ${email}`);
@@ -99,9 +106,34 @@ router.post('/login', async (req, res) => {
     if (isMatch) {
       console.log('登录成功:', email);
 
-      // 保存用户ID到会话
+      // 保存完整用户信息到会话
       req.session.userId = user.id;
+      req.session.user = {
+        user_id: user.id.toString(),
+        username: user.username,
+        email: user.email,
+        role: user.role
+      };
 
+      // 记录登录行为
+      const loginTracker = behaviorTracker.trackLogin();
+      await new Promise((resolve) => {
+        loginTracker(req, res, resolve);
+      });
+
+      // 检查是否为管理员，如果是则跳转到数据分析后台
+      const { isAdmin } = require('../middleware/adminAuth');
+      if (isAdmin(req.session.user)) {
+        console.log('管理员登录，跳转到数据分析后台');
+        return res.send(`
+                  <script>
+                      alert("管理员登录成功，正在跳转到数据分析后台");
+                      window.location.href = "/analytics/dashboard";
+                  </script>
+              `);
+      }
+
+      // 普通用户跳转到主页
       return res.redirect('/homepage');
     } else {
       console.error('登录失败: 密码错误');

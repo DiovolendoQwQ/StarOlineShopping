@@ -13,6 +13,10 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - 密码加密存储（bcrypt）
 - 会话管理（express-session）
 - 身份验证中间件
+- **管理员权限系统** ⭐
+  - 多重身份验证机制
+  - 基于用户ID/角色/邮箱的权限控制
+  - 预设管理员账户支持
 
 ### 商品管理
 - 商品列表展示
@@ -33,6 +37,14 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - 购物车总价计算
 - 删除购物车商品
 
+### 数据分析系统 ⭐
+- **智能数据面板**: 实时数据概览和可视化图表
+- **用户行为分析**: 深度用户行为洞察和转化分析
+- **产品性能分析**: 全面的产品数据统计和排行
+- **趋势分析**: 多维度数据趋势展示
+- **用户行为追踪**: 完整的用户行为数据收集
+- **管理员后台**: 专业的数据分析管理界面
+
 ### 响应式界面
 - 现代化的用户界面设计
 - 支持多种设备访问
@@ -51,12 +63,17 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - **Morgan** - HTTP 请求日志
 - **Multer** - 文件上传处理
 - **Method-override** - HTTP 方法重写
+- **node-cron** - 定时任务调度
+- **uuid** - 唯一标识符生成
 
 ### 前端技术
 - **HTML5** - 页面结构
 - **CSS3** - 样式设计
 - **JavaScript** - 交互逻辑
 - **响应式设计** - 多设备适配
+- **Chart.js** - 数据可视化图表库
+- **Bootstrap** - UI组件框架
+- **Font Awesome** - 图标库
 
 ### 开发工具
 - **dotenv** - 环境变量管理
@@ -73,17 +90,26 @@ STAR_Online_Shopping/
 │   ├── database.js        # 数据库配置
 │   └── server.js          # 服务器配置
 ├── controllers/
-│   └── cartController.js  # 购物车控制器
+│   ├── cartController.js      # 购物车控制器
+│   ├── analyticsController.js # 数据分析控制器
+│   └── orderController.js     # 订单控制器
 ├── middleware/
-│   └── authMiddleware.js  # 认证中间件
+│   ├── authMiddleware.js      # 认证中间件
+│   ├── adminAuth.js           # 管理员权限中间件
+│   └── behaviorTracker.js     # 行为追踪中间件
 ├── models/
-│   ├── Product.js         # 商品模型
-│   └── cart.js            # 购物车模型
+│   ├── Product.js             # 商品模型
+│   ├── cart.js                # 购物车模型
+│   ├── UserBehavior.js        # 用户行为模型
+│   ├── UserPreference.js      # 用户偏好模型
+│   └── AnalyticsSummary.js    # 分析汇总模型
 ├── routes/
 │   ├── authRoutes.js      # 认证路由
 │   ├── cartRoutes.js      # 购物车路由
 │   ├── productRoutes.js   # 商品路由
 │   └── userRoutes.js      # 用户路由
+├── services/
+│   └── analyticsService.js # 数据分析服务
 ├── public/
 │   ├── css/               # 样式文件
 │   ├── js/                # 前端脚本
@@ -97,6 +123,8 @@ STAR_Online_Shopping/
 ├── database/
 │   └── db.sqlite          # SQLite 数据库文件
 ├── views/                 # EJS 模板文件
+│   └── analytics/         # 数据分析视图
+│       └── dashboard.ejs  # 数据分析面板
 └── uploads/               # 文件上传目录
 ```
 
@@ -137,6 +165,32 @@ STAR_Online_Shopping/
 - `product_id` - 商品ID
 - `quantity` - 购买数量
 - `status` - 订单状态
+- `created_at` - 创建时间
+
+### user_behaviors 表（用户行为）
+- `id` - 行为记录唯一标识
+- `user_id` - 用户ID
+- `action_type` - 行为类型（view、add_to_cart、purchase等）
+- `target_type` - 目标类型（product、page等）
+- `target_id` - 目标ID
+- `metadata` - 元数据（JSON格式）
+- `ip_address` - IP地址
+- `user_agent` - 用户代理
+- `created_at` - 创建时间
+
+### user_preferences 表（用户偏好）
+- `id` - 偏好记录唯一标识
+- `user_id` - 用户ID
+- `product_id` - 商品ID
+- `weight` - 偏好权重
+- `created_at` - 创建时间
+- `updated_at` - 更新时间
+
+### analytics_summary 表（分析汇总）
+- `id` - 汇总记录唯一标识
+- `date` - 日期
+- `metric_type` - 指标类型
+- `metric_value` - 指标值
 - `created_at` - 创建时间
 
 ## 安装与运行
@@ -222,6 +276,22 @@ STAR_Online_Shopping/
 3. 调整商品数量或删除商品
 4. 查看购物车总价
 
+### 数据分析系统使用
+#### 管理员登录
+1. **使用预设管理员账户**：
+   - 邮箱：`admin@star.com`
+   - 密码：`admin123456`
+2. **创建新管理员账户**：
+   - 用户名以 `admin_` 开头
+   - 邮箱以 `@admin.star.com` 结尾
+   - 或使用用户ID：`admin`、`administrator`、`root`
+
+#### 访问数据分析面板
+1. 管理员登录后访问：`http://localhost:3000/analytics/dashboard`
+2. 查看实时数据概览、用户行为分析、产品性能等
+3. 支持7天/30天/90天时间范围选择
+4. 可导出数据报告和图表
+
 ## 开发说明
 
 ### 启动开发服务器
@@ -276,12 +346,20 @@ npm start
 - `PUT /cart/update/:id` - 更新购物车商品数量
 - `DELETE /cart/remove/:id` - 删除购物车商品
 
+### 数据分析相关
+- `GET /analytics/dashboard` - 数据分析面板页面
+- `GET /analytics/api/overview` - 实时数据概览API
+- `GET /analytics/api/user-behavior` - 用户行为分析API
+- `GET /analytics/api/product-performance` - 产品性能分析API
+- `GET /analytics/api/trends` - 趋势分析API
+- `GET /analytics/api/advanced-user-behavior` - 高级用户行为分析API
+
 ## 📋 版本信息
 
 ### 当前版本
-- **最新版本**: v2.2.0
-- **发布日期**: 2025-7-3
-- **主要更新**: 智能搜索系统全面升级
+- **最新版本**: v2.3.0
+- **发布日期**: 2025-7-4
+- **主要更新**: 数据分析系统全面上线
 
 ### 版本历史
 - 📄 [完整更新日志](./CHANGELOG.md) - 查看详细的版本历史和技术变更
@@ -329,10 +407,11 @@ npm start
 ## 未来规划
 
 - [x] ~~智能搜索功能~~ ✅ 已完成 (v2.2.0)
+- [x] ~~数据分析系统~~ ✅ 已完成 (v2.3.0)
+- [x] ~~管理员后台~~ ✅ 已完成 (v2.3.0)
 - [ ] 添加订单管理功能
 - [ ] 实现支付系统集成
 - [ ] 添加商品评价系统
-- [ ] 实现管理员后台
 - [ ] 添加商品推荐算法
 - [ ] 搜索历史记录功能
 - [ ] 语音搜索功能
@@ -340,6 +419,10 @@ npm start
 - [ ] 支持多语言国际化
 - [ ] 移动端 APP 开发
 - [ ] 添加实时聊天客服
+- [ ] 数据分析报告导出功能
+- [ ] 用户画像分析
+- [ ] A/B测试系统
+- [ ] 实时预警系统
 
 ---
 

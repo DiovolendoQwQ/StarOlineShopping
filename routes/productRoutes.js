@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const searchService = require('../services/searchService');
+const behaviorTracker = require('../middleware/behaviorTracker');
 
 // 获取商品列表（支持分页与模糊搜索）- 返回HTML页面
 router.get('/all', async (req, res) => {
@@ -90,7 +91,7 @@ router.get('/api/hot-searches', async (req, res) => {
 });
 
 // API路由：模糊搜索
-router.get('/api/search', async (req, res) => {
+router.get('/api/search', behaviorTracker.trackSearch(), async (req, res) => {
   const { q: keyword, limit = 20, offset = 0 } = req.query;
   
   try {
@@ -111,7 +112,7 @@ router.get('/api/search', async (req, res) => {
 });
 
 // 获取商品详情
-router.get('/:id', async (req, res) => {
+router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
   const productId = req.params.id;
 
   try {

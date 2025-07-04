@@ -32,12 +32,27 @@ app.set('views', path.join(__dirname, 'views'));
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes'); // 引入购物车路由
 const productRoutes = require('./routes/productRoutes'); // 引入商品路由
+const orderRoutes = require('./routes/orderRoutes'); // 引入订单路由
+const analyticsRoutes = require('./routes/analyticsRoutes'); // 引入数据分析路由
+
+// 引入中间件
+const behaviorTracker = require('./middleware/behaviorTracker'); // 引入行为追踪中间件
+
+// 引入服务
+const schedulerService = require('./services/schedulerService'); // 引入定时任务服务
+
+// 注册行为追踪中间件（在路由之前）
+// 这里可以添加全局的行为追踪，比如页面访问统计
+// app.use(behaviorTracker.trackPageView('general'));
 
 // 注册路由
 app.use('/auth', authRoutes);
 app.use('/cart', cartRoutes); // 注册购物车路由
 app.use('/product', productRoutes); // 注册商品路由
 app.use('/products', productRoutes); // 注册商品路由（复数形式，用于搜索）
+app.use('/order', orderRoutes); // 注册订单路由
+app.use('/orders', orderRoutes); // 注册订单路由（复数形式）
+app.use('/analytics', analyticsRoutes); // 注册数据分析路由
 
 // 支持直接 POST /login 和 POST /register
 app.post('/register', (req, res) => res.redirect(307, '/auth/register'));
@@ -67,6 +82,14 @@ app.use((err, req, res, next) => {
   res.status(500).send("500 服务器内部错误");
 });
 
+// 启动定时任务服务
+schedulerService.init();
+
 // 启动服务器
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`服务器正在运行：http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log(`服务器正在运行：http://localhost:${PORT}`);
+    console.log('后台数据分析系统已启动');
+    console.log('- 数据面板: http://localhost:' + PORT + '/analytics/dashboard');
+    console.log('- API文档: http://localhost:' + PORT + '/analytics/api/');
+});

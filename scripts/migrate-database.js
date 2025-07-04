@@ -121,16 +121,30 @@ async function createNewTables(db) {
     )
   `);
   
-  // 订单表
+  // 订单表（新版本）
   await runQuery(db, `
     CREATE TABLE IF NOT EXISTS orders (
+      id TEXT PRIMARY KEY, 
+      user_id TEXT NOT NULL, 
+      total_amount REAL NOT NULL,
+      shipping_address TEXT,
+      status TEXT NOT NULL DEFAULT 'pending', 
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+  `);
+  
+  // 订单项表
+  await runQuery(db, `
+    CREATE TABLE IF NOT EXISTS order_items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_email TEXT NOT NULL,
+      order_id TEXT NOT NULL,
       product_id INTEGER NOT NULL,
       quantity INTEGER NOT NULL,
-      status TEXT NOT NULL,
+      price REAL NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_email) REFERENCES users(email),
+      FOREIGN KEY (order_id) REFERENCES orders(id),
       FOREIGN KEY (product_id) REFERENCES products(id)
     )
   `);
