@@ -89,6 +89,7 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .banner_y .nav ul li{display: block;width: 174px;height: auto;min-height: 40px;line-height:20px;font-size: 14px;padding: 10px 30px;}
 .banner_y .nav ul li .pop{width: 800px;height: 460px;background: #fff;position:absolute;left:234px;top:0px;display: none;}
 .banner_y .nav ul li:hover .pop{display: block;box-shadow: 2px 3px 5px #ccc; border-top: 1px solid #ccc;}
+.banner_y .nav ul li.open .pop{display: block;box-shadow: 2px 3px 5px #ccc; border-top: 1px solid #ccc;}
 .banner_y .nav ul li .pop .left{width: 265px;height: 460px;background: #fff;}
 .banner_y .nav ul li .pop .left div{margin-bottom: 3px;}
 .banner_y .nav ul li .pop .left .xuangou_left{height: 40px;line-height:40px; font-size: 14px;margin-left: 10px;margin-top: 20px;}
@@ -135,6 +136,7 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .banner_y .nav ul li .pop .right .xuangou_right a:hover{display: block;background:#ff6700;color:#fff; }
 
 .banner_y .nav ul li:hover{background: #ff6700; }
+.banner_y .nav ul li.open{background: #ff6700; }
 /* 导航分类容器样式 */
 .banner_y .nav ul li .nav-categories {
     display: flex;

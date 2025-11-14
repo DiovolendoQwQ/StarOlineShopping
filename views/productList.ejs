@@ -366,7 +366,7 @@
                                 匹配度: <%= Math.round(product.relevanceScore * 100) %>%
                             </div>
                         <% } %>
-                        <img src="<%= product.image ? product.image.replace('./image/', '/image/') : '/image/default.png' %>" alt="<%= product.name %>" class="product-image">
+                        <img src="<%= product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default.png' %>" alt="<%= product.name %>" class="product-image">
                         <div class="product-info">
                             <h3 class="product-name"><%= product.name %></h3>
                             <% if (product.description) { %>

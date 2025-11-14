@@ -234,7 +234,7 @@ class SearchManager {
                     transition: background-color 0.2s;
                 " onmouseover="this.style.backgroundColor='#f8f8f8'" onmouseout="this.style.backgroundColor='white'" onclick="window.location.href='/product/${product.id}'">
                     <div style="display: flex; align-items: center;">
-                        <img src="${product.image || '/image/default.png'}" alt="${this.escapeHtml(product.name)}" style="
+                        <img src="${this.normalizeImage(product.image)}" alt="${this.escapeHtml(product.name)}" style="
                             width: 40px;
                             height: 40px;
                             object-fit: cover;
@@ -515,6 +515,14 @@ class SearchManager {
 
     escapeRegex(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    normalizeImage(image) {
+        if (!image) return 'image/default.png';
+        const str = String(image).trim();
+        if (/^https?:\/\//i.test(str)) return str;
+        const cleaned = str.replace(/^\.?\/?image\/?/i, '').replace(/^\/+/, '');
+        return `image/${cleaned || 'default.png'}`;
     }
 }
 

@@ -435,18 +435,8 @@
       });
       
       if (confirm('确认删除该商品吗？')) {
-        // 使用更简单的方法：通过所有购物车项查找包含该产品ID的项
-        const cartItems = document.querySelectorAll('.cart-item');
-        let cartItem = null;
-        
-        // 遍历所有购物车项，找到包含该产品ID的项
-        cartItems.forEach(item => {
-          const deleteBtn = item.querySelector('.remove-btn');
-          if (deleteBtn && deleteBtn.getAttribute('onclick').includes(productId)) {
-            cartItem = item;
-          }
-        });
-        
+        const deleteBtn = document.querySelector(`.remove-btn[data-product-id="${productId}"]`);
+        const cartItem = deleteBtn ? deleteBtn.closest('.cart-item') : null;
         console.log('找到的购物车项:', cartItem);
         
         if (!cartItem) {
@@ -504,7 +494,7 @@
     // 更新商品数量
     function updateQuantity(productId, change, isAbsolute = false) {
       // 通过按钮找到对应的购物车项，然后找到输入框
-      const cartItem = document.querySelector(`button[onclick*="${productId}"]`).closest('.cart-item');
+      const cartItem = document.querySelector(`.remove-btn[data-product-id="${productId}"]`)?.closest('.cart-item') || document.querySelector(`button[onclick*="${productId}"]`)?.closest('.cart-item');
       const input = cartItem.querySelector('.quantity-input');
       let newQuantity;
       
@@ -551,7 +541,7 @@
 
     // 更新小计显示
     function updateSubtotal(productId, price, quantity) {
-      const cartItem = document.querySelector(`button[onclick*="${productId}"]`).closest('.cart-item');
+      const cartItem = document.querySelector(`.remove-btn[data-product-id="${productId}"]`)?.closest('.cart-item') || document.querySelector(`button[onclick*="${productId}"]`)?.closest('.cart-item');
       const subtotalElement = cartItem.querySelector('.subtotal');
       const newSubtotal = (price * quantity).toFixed(2);
       subtotalElement.textContent = `¥${newSubtotal}`;
@@ -662,13 +652,15 @@
       // 为每个删除按钮添加额外的事件监听器作为备用
        deleteButtons.forEach((btn, index) => {
          console.log(`删除按钮 ${index} onclick属性:`, btn.getAttribute('onclick'));
+         const dataId = btn.dataset.productId;
+         let productId = dataId;
+         if (!productId) {
+           const onclickAttr = btn.getAttribute('onclick') || '';
+           const productIdMatch = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
+           if (productIdMatch) productId = productIdMatch[1];
+         }
          
-         // 提取产品ID
-         const onclickAttr = btn.getAttribute('onclick');
-         const productIdMatch = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
-         
-         if (productIdMatch) {
-           const productId = productIdMatch[1];
+         if (productId) {
            console.log(`按钮 ${index} 对应的产品ID:`, productId);
            
            // 移除原有的onclick属性，使用事件监听器代替
@@ -731,7 +723,7 @@
                 <div class="subtotal">¥<%= (item.price * item.quantity).toFixed(2) %></div>
                 <div>
                   <% if (item.product_id) { %>
-                    <button class="remove-btn" onclick="removeFromCart('<%= item.product_id %>')">删除</button>
+                    <button class="remove-btn" data-product-id="<%= item.product_id %>" onclick="removeFromCart('<%= item.product_id %>')">删除</button>
                   <% } else { %>
                     <span>商品 ID 不存在</span>
                   <% } %>

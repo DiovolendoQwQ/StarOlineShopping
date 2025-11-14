@@ -1473,7 +1473,7 @@
 	<script src="/scripts.js"></script>
 	<script>
 		// 为静态商品按钮添加事件监听器
-        document.addEventListener('DOMContentLoaded', function() {
+			document.addEventListener('DOMContentLoaded', function() {
             window.showCartNotification = function(){
               const overlay=document.getElementById('overlay');
               const notification=document.getElementById('cartNotification');
@@ -1516,10 +1516,35 @@
                     alert('网络错误，请稍后重试');
                 }
             });
-            // 保证每个“选购”仅绑定一次事件（避免重复弹窗）
-            // 依赖上方针对 .add-to-cart 的统一监听即可
-        });
-	</script>
+				// 保证每个“选购”仅绑定一次事件（避免重复弹窗）
+				// 依赖上方针对 .add-to-cart 的统一监听即可
+
+				(function(){
+					var nav = document.querySelector('.banner_y .nav');
+					if (!nav) return;
+					var activeItem = null;
+					nav.addEventListener('click', function(e){
+						var link = e.target.closest('.nav-category');
+						if (!link) return;
+						e.preventDefault();
+						var li = link.closest('li');
+						if (!li) return;
+						if (activeItem && activeItem !== li) {
+							activeItem.classList.remove('open');
+						}
+						li.classList.add('open');
+						activeItem = li;
+					});
+
+					document.addEventListener('click', function(e){
+						if (!activeItem) return;
+						if (activeItem.contains(e.target)) return;
+						activeItem.classList.remove('open');
+						activeItem = null;
+					});
+				})();
+			});
+		</script>
 
 	<div class="clear"></div>
 	<div class="peijian w">
