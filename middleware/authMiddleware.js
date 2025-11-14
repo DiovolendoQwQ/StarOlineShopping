@@ -7,5 +7,5 @@ module.exports = function isAuthenticated(req, res, next) {
   }
 
   console.log('未登录用户尝试访问受限页面');
-  res.redirect('/auth/login'); // 重定向到登录页面
+  res.redirect('/login.html');
 };

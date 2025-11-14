@@ -261,7 +261,7 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .liulangengduo{margin-top: 12px;}
 .liulangengduo:hover{margin-top: 10px;box-shadow: 0px 0px 30px #ccc;}
 /*xiangqing*/
-.xiangqing{width: 100%;height: 58px;background: rgb(240,240,240);}
+.xiangqing{width: 100%;height: 58px;background: rgb(240,240,240);} 
 .xiangqing .neirong{height: 58px;width: 1226px;}
 .xiangqing .neirong .xiaomi6{width:300px;height: 58px;line-height: 58px;font-size: 
 22px;font-weight: bold;}
@@ -298,6 +298,8 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .xiantiao{width: 100%;height: 2px;background:#ff6700; }
 /*购物车详单*/
 .gwcxqbj{width: 100%;height:400px;background: rgb(245,245,245);padding-bottom: 20px;}
+
+.peijian .main .content .remen .tu a img.featured-center{display:block;margin:10px auto 20px auto;width:150px;height:auto;}
 .gwcxqbj .gwcxd{background: #fff;width: 1226px;height: auto;padding-top: 30px;}
 .gwcxqbj .gwcxd .top2{width:1226px;height: 70px;}
 .gwcxqbj .gwcxd .top2 .sub_top{width: 100px;height: 70px;line-height:36px;margin-right: 0px;margin-top:0px;margin-left: 30px;}

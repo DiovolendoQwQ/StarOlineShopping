@@ -19,7 +19,7 @@ exports.getCartPage = async (req, res) => {
     const userId = req.session.userId;
 
     if (!userId) {
-      return res.redirect('/auth/login');
+      return res.redirect('/login.html');
     }
 
     const cartItems = await db.allAsync(

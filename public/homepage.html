@@ -6,6 +6,21 @@
 	<meta name="author" content="order by dede58.com" />
 	<title>Star Online Shopping Center</title>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
+    <style>
+      .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:9999;opacity:0;visibility:hidden;transition:all .3s ease}
+      .overlay.show{opacity:1;visibility:visible}
+      .cart-notification{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.15);padding:40px;text-align:center;z-index:10000;opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);max-width:400px;width:90%}
+      .cart-notification.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+      .cart-notification .icon{width:80px;height:80px;background:linear-gradient(135deg,#4CAF50,#45a049);border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff}
+      .cart-notification h3{margin:0 0 10px;font-size:24px;color:#333;font-weight:600}
+      .cart-notification p{margin:0 0 30px;color:#666;font-size:16px}
+      .cart-notification .buttons{display:flex;gap:15px;justify-content:center}
+      .cart-notification button{padding:12px 24px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;transition:all .3s ease;min-width:120px}
+      .btn-primary{background:#f60;color:#fff}
+      .btn-primary:hover{background:#e65c00}
+      .btn-secondary{background:#f8f9fa;color:#666;border:1px solid #ddd}
+      .btn-secondary:hover{background:#e9ecef;color:#333}
+    </style>
 </head>
 
 <body>
@@ -59,161 +74,161 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product1.jpg" alt=""></div>
-										<span class="fl">iPhone16 pro</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="./xiangqing.html" target="_blank">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/287">
+                                        <div class="img fl"><img src="./image/Product1.jpg" alt=""></div>
+                                        <span class="fl">iPhone16 pro</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="287">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product2.png" alt=""></div>
-										<span class="fl">小米15pro</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/288">
+                                        <div class="img fl"><img src="./image/Product2.png" alt=""></div>
+                                        <span class="fl">小米15pro</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="288">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product3.jpg" alt=""></div>
-										<span class="fl">荣耀x60</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/289">
+                                        <div class="img fl"><img src="./image/Product3.jpg" alt=""></div>
+                                        <span class="fl">荣耀x60</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="289">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product4.jpg" alt=""></div>
-										<span class="fl">ROG5</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/290">
+                                        <div class="img fl"><img src="./image/Product4.jpg" alt=""></div>
+                                        <span class="fl">ROG5</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="290">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product5.jpg" alt=""></div>
-										<span class="fl">红魔</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/291">
+                                        <div class="img fl"><img src="./image/Product5.jpg" alt=""></div>
+                                        <span class="fl">红魔</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="291">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product6.jpg" alt=""></div>
-										<span class="fl">三星</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/292">
+                                        <div class="img fl"><img src="./image/Product6.jpg" alt=""></div>
+                                        <span class="fl">三星</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="292">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product7.jpg" alt=""></div>
-										<span class="fl">vivo</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/293">
+                                        <div class="img fl"><img src="./image/Product7.jpg" alt=""></div>
+                                        <span class="fl">vivo</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="293">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product8.png" alt=""></div>
-										<span class="fl">红米Note 4X</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/294">
+                                        <div class="img fl"><img src="./image/Product8.png" alt=""></div>
+                                        <span class="fl">红米Note 4X</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="294">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product9.jpg" alt=""></div>
-										<span class="fl">一加</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/295">
+                                        <div class="img fl"><img src="./image/Product9.jpg" alt=""></div>
+                                        <span class="fl">一加</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="295">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product10.png" alt=""></div>
-										<span class="fl">真我</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/296">
+                                        <div class="img fl"><img src="./image/Product10.png" alt=""></div>
+                                        <span class="fl">真我</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="296">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product11.png" alt=""></div>
-										<span class="fl">oppo</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/297">
+                                        <div class="img fl"><img src="./image/Product11.png" alt=""></div>
+                                        <span class="fl">oppo</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="297">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product12.jpg" alt=""></div>
-										<span class="fl">魅族</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/298">
+                                        <div class="img fl"><img src="./image/Product12.jpg" alt=""></div>
+                                        <span class="fl">魅族</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="298">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="right fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product13.png" alt=""></div>
-										<span class="fl">努比亚</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/299">
+                                        <div class="img fl"><img src="./image/Product13.png" alt=""></div>
+                                        <span class="fl">努比亚</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="299">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product14.jpg" alt=""></div>
-										<span class="fl">移动电话卡</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/300">
+                                        <div class="img fl"><img src="./image/Product14.jpg" alt=""></div>
+                                        <span class="fl">移动电话卡</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="300">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -227,137 +242,137 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product15.jpg" alt=""></div>
-										<span class="fl">ipad pro2024</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/275">
+                                        <div class="img fl"><img src="./image/Product15.jpg" alt=""></div>
+                                        <span class="fl">ipad pro2024</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="275">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product16.jpg" alt=""></div>
-										<span class="fl">小米平板</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/276">
+                                        <div class="img fl"><img src="./image/Product16.jpg" alt=""></div>
+                                        <span class="fl">小米平板</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="276">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product17.jpg" alt=""></div>
-										<span class="fl">华为平板</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/277">
+                                        <div class="img fl"><img src="./image/Product17.jpg" alt=""></div>
+                                        <span class="fl">华为平板</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="277">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product18.png" alt=""></div>
-										<span class="fl">外星人电脑</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/278">
+                                        <div class="img fl"><img src="./image/Product18.png" alt=""></div>
+                                        <span class="fl">外星人电脑</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="278">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product19.jpg" alt=""></div>
-										<span class="fl">ROG电脑</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/279">
+                                        <div class="img fl"><img src="./image/Product19.jpg" alt=""></div>
+                                        <span class="fl">ROG电脑</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="279">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product20.png" alt=""></div>
-										<span class="fl">雷蛇</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/280">
+                                        <div class="img fl"><img src="./image/Product20.png" alt=""></div>
+                                        <span class="fl">雷蛇</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="280">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product21.png" alt=""></div>
-										<span class="fl">拯救者</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/281">
+                                        <div class="img fl"><img src="./image/Product21.png" alt=""></div>
+                                        <span class="fl">拯救者</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="281">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product22.png" alt=""></div>
-										<span class="fl">华硕天选</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/282">
+                                        <div class="img fl"><img src="./image/Product22.png" alt=""></div>
+                                        <span class="fl">华硕天选</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="282">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product23.png" alt=""></div>
-										<span class="fl">戴尔</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/283">
+                                        <div class="img fl"><img src="./image/Product23.png" alt=""></div>
+                                        <span class="fl">戴尔</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="283">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product24.png" alt=""></div>
-										<span class="fl">微星</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/284">
+                                        <div class="img fl"><img src="./image/Product24.png" alt=""></div>
+                                        <span class="fl">微星</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="284">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product25.png" alt=""></div>
-										<span class="fl">技嘉</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/285">
+                                        <div class="img fl"><img src="./image/Product25.png" alt=""></div>
+                                        <span class="fl">技嘉</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="285">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product26.png" alt=""></div>
-										<span class="fl">雷神</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/286">
+                                        <div class="img fl"><img src="./image/Product26.png" alt=""></div>
+                                        <span class="fl">雷神</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="286">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -372,161 +387,161 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product27.png" alt=""></div>
-										<span class="fl">SONY电视</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/261">
+                                        <div class="img fl"><img src="./image/Product27.png" alt=""></div>
+                                        <span class="fl">SONY电视</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="261">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product28.png" alt=""></div>
-										<span class="fl">小米电视</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/262">
+                                        <div class="img fl"><img src="./image/Product28.png" alt=""></div>
+                                        <span class="fl">小米电视</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="262">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product29.png" alt=""></div>
-										<span class="fl">三星电视</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/263">
+                                        <div class="img fl"><img src="./image/Product29.png" alt=""></div>
+                                        <span class="fl">三星电视</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="263">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product30.png" alt=""></div>
-										<span class="fl">长虹电视</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/264">
+                                        <div class="img fl"><img src="./image/Product30.png" alt=""></div>
+                                        <span class="fl">长虹电视</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="264">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product31.png" alt=""></div>
-										<span class="fl">马里奥系列</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/265">
+                                        <div class="img fl"><img src="./image/Product31.png" alt=""></div>
+                                        <span class="fl">马里奥系列</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="265">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product32.png" alt=""></div>
-										<span class="fl">塞尔达传说</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/266">
+                                        <div class="img fl"><img src="./image/Product32.png" alt=""></div>
+                                        <span class="fl">塞尔达传说</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="266">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product33.png" alt=""></div>
-										<span class="fl">宝可梦系列</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/267">
+                                        <div class="img fl"><img src="./image/Product33.png" alt=""></div>
+                                        <span class="fl">宝可梦系列</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="267">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product34.png" alt=""></div>
-										<span class="fl">星之卡比</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/268">
+                                        <div class="img fl"><img src="./image/Product34.png" alt=""></div>
+                                        <span class="fl">星之卡比</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="268">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product35.png" alt=""></div>
-										<span class="fl">喷射战士</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/269">
+                                        <div class="img fl"><img src="./image/Product35.png" alt=""></div>
+                                        <span class="fl">喷射战士</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="269">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product36.png" alt=""></div>
-										<span class="fl">奥日系列</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/270">
+                                        <div class="img fl"><img src="./image/Product36.png" alt=""></div>
+                                        <span class="fl">奥日系列</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="270">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product37.png" alt=""></div>
-										<span class="fl">双人成行</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/271">
+                                        <div class="img fl"><img src="./image/Product37.png" alt=""></div>
+                                        <span class="fl">双人成行</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="271">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product38.png" alt=""></div>
-										<span class="fl">小小梦魇</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/272">
+                                        <div class="img fl"><img src="./image/Product38.png" alt=""></div>
+                                        <span class="fl">小小梦魇</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="272">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="right fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product39.png" alt=""></div>
-										<span class="fl">胡闹厨房</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/273">
+                                        <div class="img fl"><img src="./image/Product39.png" alt=""></div>
+                                        <span class="fl">胡闹厨房</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="273">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product40.png" alt=""></div>
-										<span class="fl">我的世界</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/274">
+                                        <div class="img fl"><img src="./image/Product40.png" alt=""></div>
+                                        <span class="fl">我的世界</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="274">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -541,160 +556,160 @@
 						<div class="left fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product41.png" alt=""></div>
-										<span class="fl">小米路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/247">
+                                        <div class="img fl"><img src="./image/Product41.png" alt=""></div>
+                                        <span class="fl">小米路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="247">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product42.png" alt=""></div>
-										<span class="fl">华为路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/248">
+                                        <div class="img fl"><img src="./image/Product42.png" alt=""></div>
+                                        <span class="fl">华为路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="248">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product43.png" alt=""></div>
-										<span class="fl">锐捷路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/249">
+                                        <div class="img fl"><img src="./image/Product43.png" alt=""></div>
+                                        <span class="fl">锐捷路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="249">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product44.png" alt=""></div>
-										<span class="fl">新华三路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/250">
+                                        <div class="img fl"><img src="./image/Product44.png" alt=""></div>
+                                        <span class="fl">新华三路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="250">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product45.png" alt=""></div>
-										<span class="fl">华硕路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/251">
+                                        <div class="img fl"><img src="./image/Product45.png" alt=""></div>
+                                        <span class="fl">华硕路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="251">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product46.png" alt=""></div>
-										<span class="fl">红米路由器</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/252">
+                                        <div class="img fl"><img src="./image/Product46.png" alt=""></div>
+                                        <span class="fl">红米路由器</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="252">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product47.png" alt=""></div>
-										<span class="fl">小爱同学</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/253">
+                                        <div class="img fl"><img src="./image/Product47.png" alt=""></div>
+                                        <span class="fl">小爱同学</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="253">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product48.png" alt=""></div>
-										<span class="fl">天猫精灵</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/254">
+                                        <div class="img fl"><img src="./image/Product48.png" alt=""></div>
+                                        <span class="fl">天猫精灵</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="254">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product49.png" alt=""></div>
-										<span class="fl">西部数据硬盘</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/255">
+                                        <div class="img fl"><img src="./image/Product49.png" alt=""></div>
+                                        <span class="fl">西部数据硬盘</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="255">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product50.png" alt=""></div>
-										<span class="fl">希捷硬盘</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/256">
+                                        <div class="img fl"><img src="./image/Product50.png" alt=""></div>
+                                        <span class="fl">希捷硬盘</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="256">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product51.png" alt=""></div>
-										<span class="fl">VR眼镜</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/257">
+                                        <div class="img fl"><img src="./image/Product51.png" alt=""></div>
+                                        <span class="fl">VR眼镜</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="257">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product52.png" alt=""></div>
-										<span class="fl">监控</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/258">
+                                        <div class="img fl"><img src="./image/Product52.png" alt=""></div>
+                                        <span class="fl">监控</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="258">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="right fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product53.png" alt=""></div>
-										<span class="fl">智能门锁</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/259">
+                                        <div class="img fl"><img src="./image/Product53.png" alt=""></div>
+                                        <span class="fl">智能门锁</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="259">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product54.png" alt=""></div>
-										<span class="fl">投影仪</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/260">
+                                        <div class="img fl"><img src="./image/Product54.png" alt=""></div>
+                                        <span class="fl">投影仪</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="260">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -708,161 +723,161 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product55.png" alt=""></div>
-										<span class="fl">充电宝10000毫安</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/233">
+                                        <div class="img fl"><img src="./image/Product55.png" alt=""></div>
+                                        <span class="fl">充电宝10000毫安</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="233">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product56.png" alt=""></div>
-										<span class="fl">充电宝20000毫安</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/234">
+                                        <div class="img fl"><img src="./image/Product56.png" alt=""></div>
+                                        <span class="fl">充电宝20000毫安</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="234">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product57.png" alt=""></div>
-										<span class="fl">充电宝30000毫安</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/235">
+                                        <div class="img fl"><img src="./image/Product57.png" alt=""></div>
+                                        <span class="fl">充电宝30000毫安</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="235">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product58.png" alt=""></div>
-										<span class="fl">儿童水杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/236">
+                                        <div class="img fl"><img src="./image/Product58.png" alt=""></div>
+                                        <span class="fl">儿童水杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="236">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product59.png" alt=""></div>
-										<span class="fl">运动水杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/237">
+                                        <div class="img fl"><img src="./image/Product59.png" alt=""></div>
+                                        <span class="fl">运动水杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="237">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product60.png" alt=""></div>
-										<span class="fl">保温杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/238">
+                                        <div class="img fl"><img src="./image/Product60.png" alt=""></div>
+                                        <span class="fl">保温杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="238">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product61.png" alt=""></div>
-										<span class="fl">ins风水杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/239">
+                                        <div class="img fl"><img src="./image/Product61.png" alt=""></div>
+                                        <span class="fl">ins风水杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="239">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product62.png" alt=""></div>
-										<span class="fl">茶杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/240">
+                                        <div class="img fl"><img src="./image/Product62.png" alt=""></div>
+                                        <span class="fl">茶杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="240">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product63.png" alt=""></div>
-										<span class="fl">星巴克咖啡杯</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/241">
+                                        <div class="img fl"><img src="./image/Product63.png" alt=""></div>
+                                        <span class="fl">星巴克咖啡杯</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="241">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product64.png" alt=""></div>
-										<span class="fl">公牛插座</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/242">
+                                        <div class="img fl"><img src="./image/Product64.png" alt=""></div>
+                                        <span class="fl">公牛插座</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="242">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product65.png" alt=""></div>
-										<span class="fl">德力西排插</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/243">
+                                        <div class="img fl"><img src="./image/Product65.png" alt=""></div>
+                                        <span class="fl">德力西排插</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="243">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product66.png" alt=""></div>
-										<span class="fl">小米排插</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/244">
+                                        <div class="img fl"><img src="./image/Product66.png" alt=""></div>
+                                        <span class="fl">小米排插</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="244">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="right fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product67.png" alt=""></div>
-										<span class="fl">华为插线板</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/245">
+                                        <div class="img fl"><img src="./image/Product67.png" alt=""></div>
+                                        <span class="fl">华为插线板</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="245">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product68.png" alt=""></div>
-										<span class="fl">绿联插线板</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/246">
+                                        <div class="img fl"><img src="./image/Product68.png" alt=""></div>
+                                        <span class="fl">绿联插线板</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="246">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -877,160 +892,160 @@
 						<div class="left fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product69.png" alt=""></div>
-										<span class="fl">华为耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/219">
+                                        <div class="img fl"><img src="./image/Product69.png" alt=""></div>
+                                        <span class="fl">华为耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="219">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product70.png" alt=""></div>
-										<span class="fl">苹果耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/220">
+                                        <div class="img fl"><img src="./image/Product70.png" alt=""></div>
+                                        <span class="fl">苹果耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="220">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product71.png" alt=""></div>
-										<span class="fl">小米耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/221">
+                                        <div class="img fl"><img src="./image/Product71.png" alt=""></div>
+                                        <span class="fl">小米耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="221">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product72.png" alt=""></div>
-										<span class="fl">飞利浦耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/222">
+                                        <div class="img fl"><img src="./image/Product72.png" alt=""></div>
+                                        <span class="fl">飞利浦耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="222">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product73.png" alt=""></div>
-										<span class="fl">惠普耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/223">
+                                        <div class="img fl"><img src="./image/Product73.png" alt=""></div>
+                                        <span class="fl">惠普耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="223">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product74.png" alt=""></div>
-										<span class="fl">红米耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/224">
+                                        <div class="img fl"><img src="./image/Product74.png" alt=""></div>
+                                        <span class="fl">红米耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="224">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="ctn fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product75.png" alt=""></div>
-										<span class="fl">Beats</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/225">
+                                        <div class="img fl"><img src="./image/Product75.png" alt=""></div>
+                                        <span class="fl">Beats</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="225">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product76.png" alt=""></div>
-										<span class="fl">Sony耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/226">
+                                        <div class="img fl"><img src="./image/Product76.png" alt=""></div>
+                                        <span class="fl">Sony耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="226">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product77.png" alt=""></div>
-										<span class="fl">罗技耳机</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/227">
+                                        <div class="img fl"><img src="./image/Product77.png" alt=""></div>
+                                        <span class="fl">罗技耳机</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="227">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product78.png" alt=""></div>
-										<span class="fl">马歇尔音响</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/228">
+                                        <div class="img fl"><img src="./image/Product78.png" alt=""></div>
+                                        <span class="fl">马歇尔音响</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="228">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product79.png" alt=""></div>
-										<span class="fl">Boss音响</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/229">
+                                        <div class="img fl"><img src="./image/Product79.png" alt=""></div>
+                                        <span class="fl">Boss音响</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="229">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product80.png" alt=""></div>
-										<span class="fl">哈曼卡顿音响</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/230">
+                                        <div class="img fl"><img src="./image/Product80.png" alt=""></div>
+                                        <span class="fl">哈曼卡顿音响</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="230">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
 						<div class="right fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product81.png" alt=""></div>
-										<span class="fl">JBL音响</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/231">
+                                        <div class="img fl"><img src="./image/Product81.png" alt=""></div>
+                                        <span class="fl">JBL音响</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="231">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product82.png" alt=""></div>
-										<span class="fl">MORROR ART音响</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                    <a href="/product/232">
+                                        <div class="img fl"><img src="./image/Product82.png" alt=""></div>
+                                        <span class="fl">MORROR ART音响</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="232">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -1045,68 +1060,68 @@
 						<div class="left fl">
 							<div>
 								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product83.png" alt=""></div>
-										<span class="fl">小米手机壳</span>
-										<div class="clear"></div>
-									</a>
+                                    <a href="/product/201">
+                                        <div class="img fl"><img src="./image/Product83.png" alt=""></div>
+                                        <span class="fl">小米手机壳</span>
+                                        <div class="clear"></div>
+                                    </a>
 								</div>
 								<div class="xuangou_right fr"><a href="">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product84.png" alt=""></div>
-										<span class="fl">苹果手机壳</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/202">
+                                        <div class="img fl"><img src="./image/Product84.png" alt=""></div>
+                                        <span class="fl">苹果手机壳</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="202">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product85.png" alt=""></div>
-										<span class="fl">华为手机壳</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/203">
+                                        <div class="img fl"><img src="./image/Product85.png" alt=""></div>
+                                        <span class="fl">华为手机壳</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="203">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product86.png" alt=""></div>
-										<span class="fl">vivo手机壳</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/204">
+                                        <div class="img fl"><img src="./image/Product86.png" alt=""></div>
+                                        <span class="fl">vivo手机壳</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="204">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product87.png" alt=""></div>
-										<span class="fl">oppo手机壳</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/205">
+                                        <div class="img fl"><img src="./image/Product87.png" alt=""></div>
+                                        <span class="fl">oppo手机壳</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="205">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product88.png" alt=""></div>
-										<span class="fl">钢化膜</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/206">
+                                        <div class="img fl"><img src="./image/Product88.png" alt=""></div>
+                                        <span class="fl">钢化膜</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="206">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -1120,71 +1135,71 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product89.png" alt=""></div>
-										<span class="fl">Dior真我香水</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/207">
+                                        <div class="img fl"><img src="./image/Product89.png" alt=""></div>
+                                        <span class="fl">Dior真我香水</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="207">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product90.png" alt=""></div>
-										<span class="fl">Channel香水</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/208">
+                                        <div class="img fl"><img src="./image/Product90.png" alt=""></div>
+                                        <span class="fl">Channel香水</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="208">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product91.png" alt=""></div>
-										<span class="fl">爱马仕香水</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/209">
+                                        <div class="img fl"><img src="./image/Product91.png" alt=""></div>
+                                        <span class="fl">爱马仕香水</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="209">选购</a></div>
 								<div class="clear"></div>
 							</div>
-							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product92.png" alt=""></div>
-										<span class="fl">相机支架</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
-								<div class="clear"></div>
-							</div>
-							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product93.png" alt=""></div>
-										<span class="fl">闪迪</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
-								<div class="clear"></div>
-							</div>
-							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product94.png" alt=""></div>
-										<span class="fl">金士顿</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
-								<div class="clear"></div>
-							</div>
+                            <div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/210">
+                                        <div class="img fl"><img src="./image/Product92.png" alt=""></div>
+                                        <span class="fl">相机支架</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="210">选购</a></div>
+                                <div class="clear"></div>
+                            </div>
+                            <div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/211">
+                                        <div class="img fl"><img src="./image/Product93.png" alt=""></div>
+                                        <span class="fl">闪迪</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="211">选购</a></div>
+                                <div class="clear"></div>
+                            </div>
+                            <div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/212">
+                                        <div class="img fl"><img src="./image/Product94.png" alt=""></div>
+                                        <span class="fl">金士顿</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="212">选购</a></div>
+                                <div class="clear"></div>
+                            </div>
 						</div>
 						<div class="clear"></div>
 					</div>
@@ -1196,69 +1211,69 @@
 					<div class="pop">
 						<div class="left fl">
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product95.png" alt=""></div>
-										<span class="fl">Dior 戴妃</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/213">
+                                        <div class="img fl"><img src="./image/Product95.png" alt=""></div>
+                                        <span class="fl">Dior 戴妃</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="213">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product96.png" alt=""></div>
-										<span class="fl">LV小方格</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/214">
+                                        <div class="img fl"><img src="./image/Product96.png" alt=""></div>
+                                        <span class="fl">LV小方格</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="214">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product97.png" alt=""></div>
-										<span class="fl">羽绒服</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/215">
+                                        <div class="img fl"><img src="./image/Product97.png" alt=""></div>
+                                        <span class="fl">羽绒服</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="215">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product98.png" alt=""></div>
-										<span class="fl">卫衣</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/216">
+                                        <div class="img fl"><img src="./image/Product98.png" alt=""></div>
+                                        <span class="fl">卫衣</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="216">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product99.png" alt=""></div>
-										<span class="fl">鞋子</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/217">
+                                        <div class="img fl"><img src="./image/Product99.png" alt=""></div>
+                                        <span class="fl">鞋子</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="217">选购</a></div>
 								<div class="clear"></div>
 							</div>
 							<div>
-								<div class="xuangou_left fl">
-									<a href="">
-										<div class="img fl"><img src="./image/Product100.png" alt=""></div>
-										<span class="fl">巴黎世家眼镜框</span>
-										<div class="clear"></div>
-									</a>
-								</div>
-								<div class="xuangou_right fr"><a href="">选购</a></div>
+                                <div class="xuangou_left fl">
+                                    <a href="/product/218">
+                                        <div class="img fl"><img src="./image/Product100.png" alt=""></div>
+                                        <span class="fl">巴黎世家眼镜框</span>
+                                        <div class="clear"></div>
+                                    </a>
+                                </div>
+                                <div class="xuangou_right fr"><a href="javascript:void(0)" class="add-to-cart" data-product-id="218">选购</a></div>
 								<div class="clear"></div>
 							</div>
 						</div>
@@ -1346,19 +1361,31 @@
 
 	</div>
 
+    <!-- 购物车通知弹窗 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="cart-notification" id="cartNotification">
+      <div class="icon">✓</div>
+      <h3>添加成功！</h3>
+      <p>商品已成功添加到购物车</p>
+      <div class="buttons">
+        <button class="btn-secondary" onclick="closeNotification()">继续购物</button>
+        <button class="btn-primary" onclick="window.location.href='/cart'">查看购物车</button>
+      </div>
+    </div>
+
 	<div class="sub_banner center">
 		<div class="sidebar fl">
-			<div class="fl"><a href=""><img src="./image/hjh_01.gif"></a></div>
-			<div class="fl"><a href=""><img src="./image/hjh_02.gif"></a></div>
-			<div class="fl"><a href=""><img src="./image/hjh_03.gif"></a></div>
-			<div class="fl"><a href=""><img src="./image/hjh_04.gif"></a></div>
-			<div class="fl"><a href=""><img src="./image/hjh_05.gif"></a></div>
-			<div class="fl"><a href=""><img src="./image/hjh_06.gif"></a></div>
+			<div class="fl"><a href="https://consumer.huawei.com/cn/phones/pocket-2/" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_01.gif"></a></div>
+			<div class="fl"><a href="https://em.meituan.com/solution/scene-chailv?keywordcode=1681493223119675490&msclkid=af21cb9686f511d40476a282edcc5322&jumpFrom=channelType&channeltype=03,10,02&gdChannel=03,10,02" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_02.gif"></a></div>
+			<div class="fl"><a href="https://www.pinduoduo.com/" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_03.gif"></a></div>
+			<div class="fl"><a href="https://www.mi.com/mimobile" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_04.gif"></a></div>
+			<div class="fl"><a href="https://www.goofish.com/" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_05.gif"></a></div>
+			<div class="fl"><a href="https://www.10086.cn/index/ha/index_371_371.html" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_06.gif"></a></div>
 			<div class="clear"></div>
 		</div>
-		<div class="datu fl"><a href=""><img src="./image/Product107.png" alt=""></a></div>
-		<div class="datu fl"><a href=""><img src="./image/Product108.png" alt=""></a></div>
-		<div class="datu fr"><a href=""><img src="./image/Product109.jpg" alt=""></a></div>
+		<div class="datu fl"><a href="https://www.fujifilm-x.com/zh-cn/products/cameras/x-t50/" target="_blank" rel="noopener noreferrer"><img src="./image/Product107.png" alt=""></a></div>
+		<div class="datu fl"><a href="https://www.dji.com/hk/osmo-action-4" target="_blank" rel="noopener noreferrer"><img src="./image/Product108.png" alt=""></a></div>
+		<div class="datu fr"><a href="https://ninebot.com/self-balancing/products.html" target="_blank" rel="noopener noreferrer"><img src="./image/Product109.jpg" alt=""></a></div>
 		<div class="clear"></div>
 
 
@@ -1375,7 +1402,7 @@
 					<a href="/product/1"><img src="./image/Product1.jpg" alt="小米MIX"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/product/1">小米MIX</a>
+					<a href="/product/1">iPhone 16 Pro</a>
 				</div>
 				<div class="youhui">5月9日-21日享花呗12期分期免息</div>
 				<div class="jiage">3499元起</div>
@@ -1403,7 +1430,7 @@
 					<a href="/product/3"><img src="./image/Product3.jpg" alt="小米手机5"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/product/3">小米手机5 64GB</a>
+					<a href="/product/3">HONOR/荣耀X60 5G手机</a>
 				</div>
 				<div class="youhui">5月9日-10日，下单立减100元</div>
 				<div class="jiage">1799元</div>
@@ -1417,7 +1444,7 @@
 					<a href="/product/4"><img src="./image/Product4.jpg" alt="小米电视3s"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/product/4">小米电视3s 55英寸</a>
+					<a href="/product/4">华硕 ROG 游戏手机</a>
 				</div>
 				<div class="youhui">5月9日，下单立减200元</div>
 				<div class="jiage">3999元</div>
@@ -1431,7 +1458,7 @@
 					<a href="/product/5"><img src="./image/Product5.jpg" alt="小米笔记本"></a>
 				</div>
 				<div class="pinpai">
-					<a href="/product/5">小米笔记本</a>
+					<a href="/product/5">努比亚红魔10Pro/Pro+</a>
 				</div>
 				<div class="youhui">更轻更薄，像杂志一样随身携带</div>
 				<div class="jiage">3599元起</div>
@@ -1446,41 +1473,52 @@
 	<script src="/scripts.js"></script>
 	<script>
 		// 为静态商品按钮添加事件监听器
-		document.addEventListener('DOMContentLoaded', function() {
-			const addToCartButtons = document.querySelectorAll('.add-to-cart');
-			addToCartButtons.forEach(button => {
-				button.addEventListener('click', async function() {
-					const productId = this.getAttribute('data-product-id');
-					if (productId) {
-						try {
-							const response = await fetch('/cart/add', {
-								method: 'POST',
-								headers: {
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({
-									productId: productId,
-									quantity: 1
-								})
-							});
-
-							if (response.ok) {
-								alert('商品已成功添加到购物车！');
-							} else if (response.status === 401) {
-								alert('请先登录后再添加商品到购物车');
-								window.location.href = '/login.html';
-							} else {
-								const error = await response.text();
-								alert('添加到购物车失败：' + error);
-							}
-						} catch (error) {
-							console.error('添加到购物车时发生错误:', error);
-							alert('网络错误，请稍后重试');
-						}
-					}
-				});
-			});
-		});
+        document.addEventListener('DOMContentLoaded', function() {
+            window.showCartNotification = function(){
+              const overlay=document.getElementById('overlay');
+              const notification=document.getElementById('cartNotification');
+              overlay.classList.add('show');
+              notification.classList.add('show');
+              setTimeout(()=>{window.closeNotification();},3000);
+            };
+            window.closeNotification = function(){
+              const overlay=document.getElementById('overlay');
+              const notification=document.getElementById('cartNotification');
+              overlay.classList.remove('show');
+              notification.classList.remove('show');
+            };
+            document.body.addEventListener('click', async function(e) {
+                const target = e.target.closest('.add-to-cart');
+                if (!target) return;
+                e.preventDefault();
+                const productId = target.getAttribute('data-product-id');
+                if (!productId) return;
+                try {
+                    const response = await fetch('/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ productId, quantity: 1 })
+                    });
+                    if (response.redirected && response.url.includes('/login')) {
+                        alert('请先登录后再添加商品到购物车');
+                        window.location.href = '/login.html';
+                    } else if (response.ok || response.redirected) {
+                        window.showCartNotification();
+                    } else if (response.status === 401) {
+                        alert('请先登录后再添加商品到购物车');
+                        window.location.href = '/login.html';
+                    } else {
+                        const error = await response.text();
+                        alert('添加到购物车失败：' + error);
+                    }
+                } catch (error) {
+                    console.error('添加到购物车时发生错误:', error);
+                    alert('网络错误，请稍后重试');
+                }
+            });
+            // 保证每个“选购”仅绑定一次事件（避免重复弹窗）
+            // 依赖上方针对 .add-to-cart 的统一监听即可
+        });
 	</script>
 
 	<div class="clear"></div>
@@ -1492,7 +1530,7 @@
 				</div>
 				<div class="remen fl">
 					<div class="xinpin"><span>新品</span></div>
-					<div class="tu"><a href=""><img src="./image/Product115.png"></a></div>
+                    <div class="tu"><a href=""><img src="./image/Product115.jpg"></a></div>
 					<div class="miaoshu"><a href=""> 手机壳</a></div>
 					<div class="jiage">49元</div>
 					<div class="pingjia">372人评价</div>
@@ -1536,7 +1574,7 @@
 				<div class="clear"></div>
 			</div>
 			<div class="content">
-				<div class="remen fl"><a href=""><img src="./image/Product119.jpg"></a>
+                <div class="remen fl"><a href="/product/200"><img src="./image/Product119.png"></a>
 				</div>
 				<div class="remen fl">
 					<div class="xinpin"><span style="background:#fff"></span></div>
@@ -1566,7 +1604,7 @@
 				</div>
 				<div class="remen fl">
 					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product123.jpg"></a></div>
+                    <div class="tu"><a href=""><img class="featured-center" src="./image/Product123.jpg"></a></div>
 					<div class="miaoshu"><a href="">充电宝</a></div>
 					<div class="jiage">60元</div>
 					<div class="pingjia">775人评价</div>

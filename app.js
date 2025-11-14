@@ -82,8 +82,8 @@ app.use((err, req, res, next) => {
   res.status(500).send("500 服务器内部错误");
 });
 
-// 启动定时任务服务
-schedulerService.init();
+
+
 
 // 启动服务器
 const PORT = process.env.PORT || 3000;

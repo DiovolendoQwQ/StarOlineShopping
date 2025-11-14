@@ -21,12 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       
       // 为新创建的按钮添加事件监听器
-      addButtonEventListeners();
-    }
-  } catch (err) {
-    console.error("无法获取商品数据:", err);
+  addButtonEventListeners();
   }
-});
+  } catch (err) {
+  console.error("无法获取商品数据:", err);
+  }
+  });
 
 // 添加按钮事件监听器的函数
 function addButtonEventListeners() {
@@ -78,7 +78,7 @@ async function addToCart(productId, quantity = 1) {
     }
   } catch (error) {
     console.error('添加到购物车时发生错误:', error);
-    alert('网络错误，请稍后重试');
+  alert('网络错误，请稍后重试');
   }
 }
 
@@ -87,3 +87,30 @@ function buyNow(productId) {
   // 跳转到商品详情页
   window.location.href = `/product/${productId}`;
 }
+
+function generateOrderId() {
+  const prefix = 'ORD-';
+  const randomNumber = Math.floor(Math.random() * 1000000000);
+  return prefix + randomNumber;
+}
+
+async function getProductDetails(orderId) {
+  try {
+    const response = await fetch(`/product/${orderId}`);
+    if (!response.ok) {
+      throw new Error('商品未找到');
+    }
+    const product = await response.json();
+    const nameEl = document.getElementById('product-name');
+    const priceEl = document.getElementById('price');
+    if (nameEl) nameEl.innerText = product.name;
+    if (priceEl) priceEl.innerText = `¥${product.price}`;
+  } catch (error) {
+    const nameEl = document.getElementById('product-name');
+    const priceEl = document.getElementById('price');
+    if (nameEl) nameEl.innerText = '加载失败';
+    if (priceEl) priceEl.innerText = '加载失败';
+  }
+}
+
+window.ShopUtils = { generateOrderId, getProductDetails };
