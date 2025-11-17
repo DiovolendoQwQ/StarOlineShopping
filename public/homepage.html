@@ -27,10 +27,10 @@
 	<!-- start banner_x -->
 	<div class="banner_x">
 		<div class="center-content">
-			<a href="./index.html" target="_blank">
+			<a href="/homepage">
 				<div class="logo fl"></div>
 			</a>
-			<a href="">
+			<a href="/products/all">
 				<div class="ad_top fl"></div>
 			</a>
 		</div>
@@ -1490,9 +1490,15 @@
             document.body.addEventListener('click', async function(e) {
                 const target = e.target.closest('.add-to-cart');
                 if (!target) return;
-                e.preventDefault();
                 const productId = target.getAttribute('data-product-id');
                 if (!productId) return;
+                if (target.tagName === 'A') {
+                    const href = target.getAttribute('href') || '';
+                    if (href.startsWith('/product/')) {
+                        return;
+                    }
+                }
+                e.preventDefault();
                 try {
                     const response = await fetch('/cart/add', {
                         method: 'POST',
@@ -1512,39 +1518,59 @@
                         alert('添加到购物车失败：' + error);
                     }
                 } catch (error) {
-                    console.error('添加到购物车时发生错误:', error);
                     alert('网络错误，请稍后重试');
                 }
             });
-				// 保证每个“选购”仅绑定一次事件（避免重复弹窗）
-				// 依赖上方针对 .add-to-cart 的统一监听即可
+            // 保证每个“选购”仅绑定一次事件（避免重复弹窗）
+            // 依赖上方针对 .add-to-cart 的统一监听即可
 
-				(function(){
-					var nav = document.querySelector('.banner_y .nav');
-					if (!nav) return;
-					var activeItem = null;
-					nav.addEventListener('click', function(e){
-						var link = e.target.closest('.nav-category');
-						if (!link) return;
-						e.preventDefault();
-						var li = link.closest('li');
-						if (!li) return;
-						if (activeItem && activeItem !== li) {
-							activeItem.classList.remove('open');
-						}
-						li.classList.add('open');
-						activeItem = li;
-					});
+            (function(){
+                var nav = document.querySelector('.banner_y .nav');
+                if (!nav) return;
+                var activeItem = null;
+                nav.addEventListener('click', function(e){
+                    var link = e.target.closest('.nav-category');
+                    if (!link) return;
+                    e.preventDefault();
+                    var li = link.closest('li');
+                    if (!li) return;
+                    if (activeItem && activeItem !== li) {
+                        activeItem.classList.remove('open');
+                    }
+                    li.classList.add('open');
+                    activeItem = li;
+                });
 
-					document.addEventListener('click', function(e){
-						if (!activeItem) return;
-						if (activeItem.contains(e.target)) return;
-						activeItem.classList.remove('open');
-						activeItem = null;
-					});
-				})();
-			});
-		</script>
+                document.addEventListener('click', function(e){
+                    if (!activeItem) return;
+                    if (activeItem.contains(e.target)) return;
+                    activeItem.classList.remove('open');
+                    activeItem = null;
+                });
+            })();
+
+            (function(){
+                var blocks = document.querySelectorAll('.peijian .main .content .remen');
+                blocks.forEach(function(block){
+                    var nameEl = block.querySelector('.miaoshu a');
+                    var keyword = nameEl && nameEl.textContent.trim();
+                    if (!keyword) return;
+                    var url = '/products/all?keyword=' + encodeURIComponent(keyword);
+                    ['.tu a','.miaoshu a','.piao a'].forEach(function(sel){
+                        var a = block.querySelector(sel);
+                        if (a && (!a.getAttribute('href') || a.getAttribute('href') === '')) {
+                            a.setAttribute('href', url);
+                        }
+                    });
+                });
+                // 为导航选购按钮设置直接跳转商品详情
+                document.querySelectorAll('.banner_y .nav .xuangou_right a.add-to-cart').forEach(function(a){
+                    var pid = a.getAttribute('data-product-id');
+                    if (pid) a.setAttribute('href', '/product/' + pid);
+                });
+            })();
+        });
+        </script>
 
 	<div class="clear"></div>
 	<div class="peijian w">

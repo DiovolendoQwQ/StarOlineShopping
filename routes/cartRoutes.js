@@ -16,4 +16,9 @@ router.put('/update/:id', isAuthenticated, behaviorTracker.trackCartAction('upda
 // 删除购物车商品
 router.delete('/remove/:id', isAuthenticated, behaviorTracker.trackCartAction('remove_from_cart'), cartController.removeFromCart);
 
+// 跳转到结账页面（兼容从购物车发起的结算）
+router.get('/checkout', isAuthenticated, (req, res) => {
+  res.redirect('/order/checkout');
+});
+
 module.exports = router;

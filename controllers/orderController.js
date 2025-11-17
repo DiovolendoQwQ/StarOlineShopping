@@ -81,7 +81,7 @@ const orderController = {
       
       // 获取订单项
       const orderItems = await db.allAsync(
-        `SELECT oi.*, p.name, p.image_url 
+        `SELECT oi.*, p.name, p.image 
          FROM order_items oi
          JOIN products p ON oi.product_id = p.id
          WHERE oi.order_id = ?`,
@@ -242,7 +242,7 @@ const orderController = {
       
       // 获取购物车商品
       const cartItems = await db.allAsync(
-        `SELECT ci.*, p.name, p.price, p.image_url 
+        `SELECT ci.*, p.name, p.price, p.image 
          FROM cart_items ci
          JOIN products p ON ci.product_id = p.id
          WHERE ci.cart_id = ?`,

@@ -5,19 +5,21 @@ const db = require('../config/database');
 const searchService = require('../services/searchService');
 const behaviorTracker = require('../middleware/behaviorTracker');
 
-function relativeImagePath(file, requestPath) {
-  const pathOnly = String(requestPath || '/').split('?')[0];
-  const depth = pathOnly.split('/').filter(Boolean).length;
-  const prefix = depth > 0 ? '../'.repeat(depth) : '';
-  return `${prefix}image/${file}`;
-}
+const DEFAULT_IMAGE_MAP = {
+  201: 'Product83.png',
+  202: 'Product84.png',
+  203: 'Product85.png',
+  204: 'Product86.png',
+  205: 'Product87.png',
+  206: 'Product88.png'
+};
 
-function normalizeImagePath(image, requestPath) {
-  if (!image) return relativeImagePath('default.png', requestPath);
+function toRootImagePath(image) {
+  if (!image) return '/image/default.png';
   const str = String(image).trim();
   if (/^https?:\/\/|^data:/i.test(str)) return str;
   const cleaned = str.replace(/^\.?\/?image\/?/i, '').replace(/^\/+/, '');
-  return relativeImagePath(cleaned || 'default.png', requestPath);
+  return `/image/${cleaned || 'default.png'}`;
 }
 
 // 获取商品列表（支持分页与模糊搜索）- 返回HTML页面
@@ -48,17 +50,16 @@ router.get('/all', async (req, res) => {
 
     // 检查是否是API请求（通过Accept头或查询参数）
     if (req.headers.accept && req.headers.accept.includes('application/json') || req.query.format === 'json') {
-      return res.json(products);
+      const jsonProducts = products.map(p => ({
+        ...p,
+        image: toRootImagePath(p.image || DEFAULT_IMAGE_MAP[p.id] || 'default.png')
+      }));
+      return res.json(jsonProducts);
     }
 
     // 统一图片路径，页面渲染使用 imageUrl 字段
-    const viewProducts = products.map(p => ({
-      ...p,
-      imageUrl: normalizeImagePath(p.image, req.baseUrl + req.path)
-    }));
-
     res.render('productList', {
-      products: viewProducts,
+      products,
       page: parseInt(page),
       keyword,
       totalPages,

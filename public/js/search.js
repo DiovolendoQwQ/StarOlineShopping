@@ -518,11 +518,11 @@ class SearchManager {
     }
 
     normalizeImage(image) {
-        if (!image) return 'image/default.png';
+        if (!image) return '/image/default.png';
         const str = String(image).trim();
         if (/^https?:\/\//i.test(str)) return str;
         const cleaned = str.replace(/^\.?\/?image\/?/i, '').replace(/^\/+/, '');
-        return `image/${cleaned || 'default.png'}`;
+        return `/image/${cleaned || 'default.png'}`;
     }
 }
 
