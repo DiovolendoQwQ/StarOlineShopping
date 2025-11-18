@@ -34,6 +34,7 @@ const cartRoutes = require('./routes/cartRoutes'); // 引入购物车路由
 const productRoutes = require('./routes/productRoutes'); // 引入商品路由
 const orderRoutes = require('./routes/orderRoutes'); // 引入订单路由
 const analyticsRoutes = require('./routes/analyticsRoutes'); // 引入数据分析路由
+const tagRoutes = require('./routes/tagRoutes');
 
 // 引入中间件
 const behaviorTracker = require('./middleware/behaviorTracker'); // 引入行为追踪中间件
@@ -53,6 +54,7 @@ app.use('/products', productRoutes); // 注册商品路由（复数形式，用�
 app.use('/order', orderRoutes); // 注册订单路由
 app.use('/orders', orderRoutes); // 注册订单路由（复数形式）
 app.use('/analytics', analyticsRoutes); // 注册数据分析路由
+app.use('/tags', tagRoutes);
 
 // 支持直接 POST /login 和 POST /register
 app.post('/register', (req, res) => res.redirect(307, '/auth/register'));

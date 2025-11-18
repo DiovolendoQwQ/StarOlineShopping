@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= tagName %> 标签 - Star Online Shopping</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <style>
+    .page{max-width:1226px;margin:0 auto;padding:20px}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .title{font-size:24px;font-weight:700;color:#2c3e50}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+    .card{background:#fff;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);overflow:hidden;border:1px solid #eee}
+    .image{width:100%;height:200px;object-fit:cover}
+    .info{padding:16px}
+    .name{font-size:16px;font-weight:600;color:#333;margin:0 0 8px}
+    .price{font-size:18px;font-weight:700;color:#ff6700}
+    .link{display:inline-block;margin-top:12px;padding:8px 14px;background:#ff6700;color:#fff;border-radius:10px;text-decoration:none}
+    .pagination{display:flex;justify-content:center;gap:8px;margin-top:24px}
+    .pagination a{padding:10px 14px;background:#fff;border:1px solid #eee;border-radius:10px;text-decoration:none;color:#333}
+    .pagination .current{background:#ff6700;color:#fff;border-color:#ff6700}
+  </style>
+  </head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="title">标签：<%= tagName %></div>
+      <a href="/homepage" class="link">返回首页</a>
+    </div>
+
+    <% if (products && products.length) { %>
+      <div class="grid">
+        <% products.forEach(function(p){ %>
+          <div class="card">
+            <img class="image" src="<%= (p.image && p.image.startsWith('/')) ? p.image : ('/' + (p.image || 'image/default.png')) %>" alt="<%= p.name %>">
+            <div class="info">
+              <h3 class="name"><%= p.name %></h3>
+              <% if (p.description) { %>
+                <div style="font-size:13px;color:#666;margin:6px 0;line-height:1.5"><%= p.description %></div>
+              <% } %>
+              <% if (typeof p.price !== 'undefined') { %>
+                <div class="price">¥<%= p.price %></div>
+              <% } %>
+              <a class="link" href="/product/<%= p.id %>">查看详情</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="pagination">
+        <% if (page > 1) { %>
+          <a href="/tags/<%= tag %>?page=<%= page - 1 %>">上一页</a>
+        <% } %>
+        <span class="current">第 <%= page %> 页</span>
+        <% if (page < totalPages) { %>
+          <a href="/tags/<%= tag %>?page=<%= page + 1 %>">下一页</a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div style="background:#fff;border-radius:16px;padding:40px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:center">
+        <h3 style="margin:0 0 12px;color:#2c3e50">没有找到 <%= tagName %> 商品</h3>
+        <p style="color:#666">可以尝试返回首页或更换筛选条件。</p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

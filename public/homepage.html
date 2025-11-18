@@ -1605,10 +1605,11 @@
             (function(){
                 var blocks = document.querySelectorAll('.peijian .main .content .remen');
                 blocks.forEach(function(block){
+                    block.setAttribute('data-tag','accessory');
                     var nameEl = block.querySelector('.miaoshu a');
                     var keyword = nameEl && nameEl.textContent.trim();
                     if (!keyword) return;
-                    var url = '/products/all?keyword=' + encodeURIComponent(keyword);
+                    var url = '/products/all?keyword=' + encodeURIComponent(keyword) + '&tag=accessory';
                     ['.tu a','.miaoshu a','.piao a'].forEach(function(sel){
                         var a = block.querySelector(sel);
                         if (a && (!a.getAttribute('href') || a.getAttribute('href') === '')) {
@@ -1630,43 +1631,43 @@
 		<div class="biaoti center">配件</div>
 		<div class="main center">
 			<div class="content">
-				<div class="remen fl"><a href=""><img src="./image/peijian1.jpg"></a>
-				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span>新品</span></div>
+                <div class="remen fl" data-tag="accessory"><a href="/tags/accessory"><img src="./image/peijian1.jpg"></a>
+                </div>
+                <div class="remen fl">
+                    <div class="xinpin"><span>新品</span></div>
                     <div class="tu"><a href=""><img src="./image/Product115.jpg"></a></div>
-					<div class="miaoshu"><a href=""> 手机壳</a></div>
+                    <div class="miaoshu"><a href=""> 手机壳</a></div>
 					<div class="jiage">49元</div>
 					<div class="pingjia">372人评价</div>
 					<div class="piao">
-						<a href="">
-							<span>发货速度很快！</span>
-						</a>
-					</div>
-				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product116.jpg"></a></div>
-					<div class="miaoshu"><a href="">硬盘</a></div>
+                        <a href="">
+                            <span>发货速度很快！</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
+                    <div class="tu"><a href=""><img src="./image/Product116.jpg"></a></div>
+                    <div class="miaoshu"><a href="">硬盘</a></div>
 					<div class="jiage">29元</div>
 					<div class="pingjia">372人评价</div>
 				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:red">享6折</span></div>
-					<div class="tu"><a href=""><img src="./image/Product117.jpg"></a></div>
-					<div class="miaoshu"><a href="">手机膜</a></div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:red">享6折</span></div>
+                    <div class="tu"><a href=""><img src="./image/Product117.jpg"></a></div>
+                    <div class="miaoshu"><a href="">手机膜</a></div>
 					<div class="jiage">19元</div>
 					<div class="pingjia">372人评价</div>
 					<div class="piao">
-						<a href="">
-							<span>发货速度很快！</span>
-						</a>
-					</div>
-				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product118.jpg"></a></div>
-					<div class="miaoshu"><a href="">支架式自拍杆</a></div>
+                        <a href="">
+                            <span>发货速度很快！</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
+                    <div class="tu"><a href=""><img src="./image/Product118.jpg"></a></div>
+                    <div class="miaoshu"><a href="">支架式自拍杆</a></div>
 					<div class="jiage">89元</div>
 					<div class="pingjia">372人评价</div>
 					<div class="piao">
@@ -1677,13 +1678,13 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-			<div class="content">
-                <div class="remen fl"><a href="/product/200"><img src="./image/Product119.png"></a>
-				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product120.jpg"></a></div>
-					<div class="miaoshu"><a href="">指环支架</a></div>
+            <div class="content">
+                <div class="remen fl" data-tag="accessory"><a href="/product/200"><img src="./image/Product119.png"></a>
+                </div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
+                    <div class="tu"><a href=""><img src="./image/Product120.jpg"></a></div>
+                    <div class="miaoshu"><a href="">指环支架</a></div>
 					<div class="jiage">19元</div>
 					<div class="pingjia">372人评价</div>
 					<div class="piao">
@@ -1692,24 +1693,24 @@
 						</a>
 					</div>
 				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product121.jpg"></a></div>
-					<div class="miaoshu"><a href="">随身风扇</a></div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
+                    <div class="tu"><a href=""><img src="./image/Product121.jpg"></a></div>
+                    <div class="miaoshu"><a href="">随身风扇</a></div>
 					<div class="jiage">19.9元</div>
 					<div class="pingjia">372人评价</div>
 				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
-					<div class="tu"><a href=""><img src="./image/Product122.jpg"></a></div>
-					<div class="miaoshu"><a href=""> 高透软胶保护套</a></div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
+                    <div class="tu"><a href=""><img src="./image/Product122.jpg"></a></div>
+                    <div class="miaoshu"><a href=""> 高透软胶保护套</a></div>
 					<div class="jiage">59元</div>
 					<div class="pingjia">775人评价</div>
 				</div>
-				<div class="remen fl">
-					<div class="xinpin"><span style="background:#fff"></span></div>
+                <div class="remen fl">
+                    <div class="xinpin"><span style="background:#fff"></span></div>
                     <div class="tu"><a href=""><img class="featured-center" src="./image/Product123.jpg"></a></div>
-					<div class="miaoshu"><a href="">充电宝</a></div>
+                    <div class="miaoshu"><a href="">充电宝</a></div>
 					<div class="jiage">60元</div>
 					<div class="pingjia">775人评价</div>
 				</div>
