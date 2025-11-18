@@ -36,6 +36,16 @@
 		</div>
 
 		<div class="search-cart-container">
+			<div class="user-buttons">
+				<a href="/login.html" class="icon-button" title="登录">
+					<svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+					<span class="label">登录</span>
+				</a>
+				<a href="/profile.html" class="icon-button" title="个人中心">
+					<svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z"/></svg>
+					<span class="label">个人中心</span>
+				</a>
+			</div>
 			<div class="cart-button">
 				<a href="/cart" class="cart-link">
 					<svg class="cart-icon" viewBox="0 0 24 24" width="20" height="20">
@@ -1487,6 +1497,23 @@
               overlay.classList.remove('show');
               notification.classList.remove('show');
             };
+            window.showErrorNotification = function(message){
+              const notification=document.getElementById('cartNotification');
+              const icon=notification.querySelector('.icon');
+              const title=notification.querySelector('h3');
+              const text=notification.querySelector('p');
+              icon.innerHTML='✕';
+              icon.style.background='linear-gradient(135deg,#f44336,#d32f2f)';
+              title.textContent='添加失败';
+              text.textContent=message||'操作失败';
+              window.showCartNotification();
+              setTimeout(()=>{
+                icon.innerHTML='✓';
+                icon.style.background='linear-gradient(135deg,#4CAF50,#45a049)';
+                title.textContent='添加成功！';
+                text.textContent='商品已成功添加到购物车';
+              },3000);
+            };
             document.body.addEventListener('click', async function(e) {
                 const target = e.target.closest('.add-to-cart');
                 if (!target) return;
@@ -1499,6 +1526,14 @@
                     }
                 }
                 e.preventDefault();
+                const isButton = target.tagName === 'BUTTON';
+                let spinner;
+                if (isButton) {
+                    target.classList.add('loading');
+                    spinner = document.createElement('span');
+                    spinner.className = 'loading-spinner';
+                    target.prepend(spinner);
+                }
                 try {
                     const response = await fetch('/cart/add', {
                         method: 'POST',
@@ -1506,19 +1541,24 @@
                         body: JSON.stringify({ productId, quantity: 1 })
                     });
                     if (response.redirected && response.url.includes('/login')) {
-                        alert('请先登录后再添加商品到购物车');
+                        window.showErrorNotification('请先登录后再添加商品到购物车');
                         window.location.href = '/login.html';
                     } else if (response.ok || response.redirected) {
                         window.showCartNotification();
                     } else if (response.status === 401) {
-                        alert('请先登录后再添加商品到购物车');
+                        window.showErrorNotification('请先登录后再添加商品到购物车');
                         window.location.href = '/login.html';
                     } else {
                         const error = await response.text();
-                        alert('添加到购物车失败：' + error);
+                        window.showErrorNotification('添加到购物车失败：' + error);
                     }
                 } catch (error) {
-                    alert('网络错误，请稍后重试');
+                    window.showErrorNotification('网络错误，请稍后重试');
+                } finally {
+                    if (isButton) {
+                        target.classList.remove('loading');
+                        if (spinner) spinner.remove();
+                    }
                 }
             });
             // 保证每个“选购”仅绑定一次事件（避免重复弹窗）

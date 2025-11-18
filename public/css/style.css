@@ -65,7 +65,7 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 
 
 /* 搜索和购物车容器 */
-.banner_x .search-cart-container{position: absolute;right: calc((100% - 1226px) / 2);top: 0;width: 400px;height: 100px;display: flex;align-items: center;gap: 10px;justify-content: flex-end;flex-shrink: 0;flex-direction: row-reverse;}
+.banner_x .search-cart-container{position: absolute;right: calc((100% - 1226px) / 2);top: 0;width: 540px;height: 100px;display: flex;align-items: center;gap: 10px;justify-content: flex-end;flex-shrink: 0;flex-direction: row-reverse;}
 .banner_x .search{width: 280px;height: 50px;margin-top: 25px;}
 .banner_x .search form{display: flex;height: 50px;}
 .banner_x .search .text{width: 230px;height:50px;line-height: 50px;font-size: 12px;border:1px solid #ccc;border-radius: 4px 0 0 4px;transition: all 0.3s ease;box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
@@ -80,7 +80,14 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .banner_x .cart-button .cart-link{display: flex;align-items: center;justify-content: center;width: 100%;height: 50px;background: #ff6700;color: #fff;border-radius: 4px;transition: all 0.3s ease;text-decoration: none;box-shadow: 0 2px 4px rgba(255,103,0,0.2);overflow: hidden;}
 .banner_x .cart-button .cart-link:hover{background: #e55a00;transform: translateY(-2px);box-shadow: 0 4px 12px rgba(255,103,0,0.4);color: #fff;}
 .banner_x .cart-button .cart-icon{margin-right: 4px;flex-shrink: 0;width: 16px;height: 16px;}
-.banner_x .cart-button .cart-text{font-size: 13px;line-height: 1;white-space: nowrap;flex-shrink: 0;} 
+.banner_x .cart-button .cart-text{font-size: 13px;line-height: 1;white-space: nowrap;flex-shrink: 0;}
+
+/* 用户与个人中心按钮 */
+.banner_x .user-buttons{display:flex;gap:10px;margin-top:25px}
+.banner_x .icon-button{width:60px;height:50px;background:#fff;border:1px solid #ddd;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:#333;transition:all .3s ease;box-shadow:0 2px 4px rgba(0,0,0,0.08)}
+.banner_x .icon-button:hover{border-color:#ff6700;transform:translateY(-2px);box-shadow:0 4px 10px rgba(255,103,0,0.25);color:#ff6700}
+.banner_x .icon-button .icon{width:18px;height:18px;margin-bottom:4px;color:currentColor}
+.banner_x .icon-button .label{font-size:12px;line-height:1}
 /*banner_y*/
 .banner_y{width:1226px;height:460px;position:relative;overflow:hidden;margin: 0 auto;}
 .banner_y video{position:absolute;top:50%;left:50%;width:100%;height:100%;object-fit:cover;z-index:-1;transform:translate(-43%,-50%);}
@@ -182,6 +189,8 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 /*danpin*/
 .biaoti{width: 1226px;height: 58px;line-height: 58px;font-size: 22px;font-weight: bold;margin-top: 20px;margin-left: auto;margin-right: auto;}
 .danpin .main{width: 1226px;height: 340px;margin: 0 auto;}
+.danpin .main{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.danpin .main .mingxing{float:none;margin-right:0 !important}
 .danpin .main .mingxing{width: 234px;height: 339px;background: rgb(250,250,250);border-radius: 8px;transition: all 0.3s ease;box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
 .danpin .main .mingxing:hover{transform: translateY(-3px);box-shadow: 0 6px 20px rgba(0,0,0,0.15);}
 .danpin .main .mingxing:nth-of-type(1){border-top: 3px solid orange;margin-right:14px;}
@@ -195,7 +204,12 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .danpin .main .mingxing .pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: -10px;}
 .danpin .main .mingxing .pinpai a{font-size: 14px;color:#333;}
 .danpin .main .mingxing .youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
-.danpin .main .mingxing .jiage{font-size: 14px;text-align: center;color:#ff6700;font-weight: bold;margin-top: 10px;}
+.danpin .main .mingxing .jiage{font-size: 14px;text-align: center;color:#ff6700;font-weight: bold;margin: 10px 0 6px;}
+.danpin .main .mingxing button.add-to-cart{display:block;margin:8px auto 0;padding:8px 12px;background:linear-gradient(135deg,#ff6700,#e55a00);color:#fff;border:none;border-radius:6px;cursor:pointer;box-shadow:0 3px 8px rgba(255,103,0,0.3);transition:all .3s ease;font-size:12px;text-align:center}
+.danpin .main .mingxing button.add-to-cart:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(255,103,0,0.4)}
+.danpin .main .mingxing button.add-to-cart.loading{opacity:.85;pointer-events:none}
+.danpin .main .mingxing button.add-to-cart .loading-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.6);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .danpin .main .mingxing .jiage .qianjia{color: #b0b0b0;font-size: 12px;text-decoration: line-through;margin-left: 10px;}
 .danpin .main .mingxing .miaoshu{color: #666;font-size: 12px;margin-top: 10px;line-height: 1.4;text-align: center;}
 

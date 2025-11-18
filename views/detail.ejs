@@ -463,6 +463,37 @@
         margin: 5px 10px;
       }
     }
+
+    .tb-card{background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+    .product-container{gap:24px}
+    .gallery{width:460px;display:flex;gap:12px}
+    .gallery .thumbs{width:68px;display:flex;flex-direction:column;gap:8px}
+    .gallery .thumbs img{width:68px;height:68px;object-fit:cover;border:1px solid #eee;border-radius:6px;cursor:pointer}
+    .gallery .main-pic{flex:1;background:#fff;border:1px solid #eee;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:16px}
+    .gallery .main-pic img{max-width:100%;max-height:420px}
+
+    .detail-container{padding:20px 40px}
+    .tb-pricebox{background:#fffaf2;border:1px solid #ffe8cc;border-radius:8px;padding:16px;margin:12px 0}
+    .tb-price{font-size:28px;color:#ff5000;font-weight:700}
+    .tb-stock{font-size:12px;color:#666;margin-top:8px}
+
+    .tb-sku-row{display:flex;align-items:center;margin:12px 0}
+    .tb-sku-title{width:60px;color:#999}
+    .tb-sku-options{display:flex;gap:8px}
+    .tb-sku-option{padding:8px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer}
+    .tb-sku-option.selected{border-color:#ff6a00;color:#ff6a00;background:#fff2e8}
+
+    .tb-quantity{display:flex;align-items:center;gap:8px}
+    .qty-btn{width:28px;height:28px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer}
+    #buyQty{width:50px;height:28px;text-align:center;border:1px solid #ddd;border-radius:4px}
+
+    .tb-actions{display:flex;gap:12px;margin-top:16px}
+    .buy-btn{padding:12px 24px;background:#ff6a00;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(255,106,0,.3)}
+    .buy-btn:hover{background:#ff5000}
+    .cart-btn{padding:12px 24px;background:#ffecec;color:#ff6a00;border:1px solid #ffb199;border-radius:6px;font-size:14px;cursor:pointer}
+    .cart-btn:hover{background:#ffd7d7}
+
+    .tb-service{display:flex;gap:16px;font-size:12px;color:#666;margin-top:10px}
   </style>
 </head>
 
@@ -487,24 +518,52 @@
   </div>
 
   <!-- 产品详情 -->
-  <div class="product-container">
-    <div class="picture-container">
-      <img src="/<%= product.image %>" alt="<%= product.name %>">
+  <div class="product-container tb-card">
+    <div class="gallery">
+      <div class="thumbs">
+        <img src="/<%= product.image %>" alt="<%= product.name %>">
+      </div>
+      <div class="main-pic">
+        <img id="mainImage" src="/<%= product.image %>" alt="<%= product.name %>">
+      </div>
     </div>
     <div class="detail-container">
-      <h1>
-        <%= product.name %>
-      </h1>
-      <div class="description">
-        <%= product.description %>
+      <h1><%= product.name %></h1>
+      <div class="description"><%= product.description %></div>
+      <div class="tb-pricebox">
+        <div class="tb-price">¥<%= product.price %></div>
+        <% if (typeof product.stock !== 'undefined') { %>
+          <div class="tb-stock"><%= product.stock > 0 ? '现货' : '缺货' %> | 库存：<%= product.stock %></div>
+        <% } %>
       </div>
-      <div class="price">
-        <%= product.price %> 元
+      <div class="tb-sku">
+        <div class="tb-sku-row">
+          <div class="tb-sku-title">规格</div>
+          <div class="tb-sku-options">
+            <span class="tb-sku-option selected">默认</span>
+          </div>
+        </div>
+        <div class="tb-sku-row">
+          <div class="tb-sku-title">数量</div>
+          <div class="tb-quantity">
+            <button class="qty-btn minus" type="button">-</button>
+            <input type="number" id="buyQty" min="1" value="1">
+            <button class="qty-btn plus" type="button">+</button>
+            <% if (typeof product.stock !== 'undefined') { %>
+              <span class="tb-qty-stock">库存 <%= product.stock %> 件</span>
+            <% } %>
+          </div>
+        </div>
       </div>
-      <div class="actions">
-        <input type="button" value="打开购物车" onclick="window.location.href='/cart'">
-        <input type="button" value="加入购物车" data-product-id="<%= product.id %>" class="add-to-cart-btn">
+      <div class="tb-actions">
+        <button class="buy-btn" data-product-id="<%= product.id %>">立即购买</button>
+        <button class="cart-btn add-to-cart-btn" data-product-id="<%= product.id %>">加入购物车</button>
       </div>
+      <ul class="tb-service">
+        <li>正品保证</li>
+        <li>七天无理由</li>
+        <li>极速发货</li>
+      </ul>
     </div>
   </div>
 
@@ -612,10 +671,40 @@
       if (addToCartButton) {
         addToCartButton.addEventListener('click', function () {
           const productId = this.getAttribute('data-product-id');
+          const qtyInput = document.getElementById('buyQty');
+          const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value || '1', 10)) : 1;
           if (productId) {
-            addToCart(productId, 1);
+            addToCart(productId, qty);
           }
         });
+      }
+      const buyNowButton = document.querySelector('.buy-btn');
+      if (buyNowButton) {
+        buyNowButton.addEventListener('click', async function () {
+          const productId = this.getAttribute('data-product-id');
+          const qtyInput = document.getElementById('buyQty');
+          const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value || '1', 10)) : 1;
+          try {
+            await addToCart(productId, qty);
+            window.location.href = '/cart';
+          } catch (e) {}
+        });
+      }
+      const qtyInput = document.getElementById('buyQty');
+      const minusBtn = document.querySelector('.qty-btn.minus');
+      const plusBtn = document.querySelector('.qty-btn.plus');
+      if (qtyInput && minusBtn && plusBtn) {
+        minusBtn.addEventListener('click', function () {
+          qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) - 1);
+        });
+        plusBtn.addEventListener('click', function () {
+          qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) + 1);
+        });
+      }
+      const thumb = document.querySelector('.gallery .thumbs img');
+      const main = document.getElementById('mainImage');
+      if (thumb && main) {
+        thumb.addEventListener('click', function(){ main.src = this.src; });
       }
 
       // 点击遮罩层关闭弹窗
