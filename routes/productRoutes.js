@@ -142,6 +142,7 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     if (!product) {
       return res.status(404).send('商品未找到');
     }
+    product.image = toRootImagePath(product.image);
     res.render('detail', { product }); // 渲染详情页模板
   } catch (err) {
     console.error("获取商品详情失败:", err);

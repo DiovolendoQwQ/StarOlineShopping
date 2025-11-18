@@ -357,6 +357,15 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
     }
+    #delete-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;opacity:0;visibility:hidden;transition:all .2s ease}
+    #delete-overlay.show{opacity:1;visibility:visible}
+    #delete-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.15);padding:24px 28px;z-index:1001;opacity:0;visibility:hidden;transition:all .2s cubic-bezier(.34,1.56,.64,1);min-width:320px;max-width:90%}
+    #delete-modal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+    #delete-modal h3{margin:0 0 8px;font-size:18px;color:#333;font-weight:600}
+    #delete-modal p{margin:0 0 18px;color:#666;font-size:14px}
+    #delete-modal .buttons{display:flex;gap:12px;justify-content:flex-end}
+    #delete-cancel{background:#f8f9fa;color:#666;border:1px solid #ddd;padding:10px 18px;border-radius:10px;cursor:pointer}
+    #delete-confirm{background:#ff6b6b;color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer}
 
     /* 页脚 */
     footer {
@@ -419,76 +428,49 @@
 
   <script>
     // 删除商品
-    function removeFromCart(productId) {
-      console.log('=== 删除函数开始执行 ===');
-      console.log('删除函数被调用，商品ID:', productId);
-      console.log('productId类型:', typeof productId);
-      
-      // 添加全局调试信息
-      window.debugDeleteFunction = true;
-      
-      // 检查所有删除按钮
-      const allDeleteButtons = document.querySelectorAll('.remove-btn');
-      console.log('页面上所有删除按钮数量:', allDeleteButtons.length);
-      allDeleteButtons.forEach((btn, index) => {
-        console.log(`删除按钮 ${index}:`, btn.getAttribute('onclick'));
-      });
-      
-      if (confirm('确认删除该商品吗？')) {
-        const deleteBtn = document.querySelector(`.remove-btn[data-product-id="${productId}"]`);
-        const cartItem = deleteBtn ? deleteBtn.closest('.cart-item') : null;
-        console.log('找到的购物车项:', cartItem);
-        
-        if (!cartItem) {
-          console.error('未找到对应的购物车项');
-          showNotification('删除失败：未找到对应商品', 'error');
-          return;
-        }
-        
-        // 添加删除动画
-        cartItem.style.transition = 'all 0.5s ease';
-        cartItem.style.transform = 'translateX(-100%)';
-        cartItem.style.opacity = '0';
-        
-        // 发送删除请求
-        fetch(`/cart/remove/${productId}`, { method: 'DELETE' })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('删除请求失败');
-            }
-            return response.json();
-          })
-          .then(data => {
-            if (data.message) {
-              showNotification(data.message, 'success');
-              // 等待动画完成后移除元素
-              setTimeout(() => {
-                cartItem.remove();
-                // 更新总价
-                updateTotal();
-                // 检查是否还有商品，如果没有则刷新页面显示空购物车
-                const remainingItems = document.querySelectorAll('.cart-item');
-                if (remainingItems.length === 0) {
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 500);
-                }
-              }, 500);
-            } else {
-              // 如果删除失败，恢复动画
-              cartItem.style.transform = 'translateX(0)';
-              cartItem.style.opacity = '1';
-              showNotification(data.error || '删除失败，请重试', 'error');
-            }
-          })
-          .catch(error => {
-            console.error('删除失败:', error);
-            // 恢复动画
-            cartItem.style.transform = 'translateX(0)';
-            cartItem.style.opacity = '1';
-            showNotification('删除失败，请重试', 'error');
-          });
-      }
+    function removeFromCart(productId){
+      const overlay=document.getElementById('delete-overlay');
+      const modal=document.getElementById('delete-modal');
+      const confirmBtn=document.getElementById('delete-confirm');
+      const cancelBtn=document.getElementById('delete-cancel');
+      modal.dataset.pid=productId;
+      overlay.classList.add('show');
+      modal.classList.add('show');
+      cancelBtn.onclick=function(){overlay.classList.remove('show');modal.classList.remove('show');modal.dataset.pid='';};
+      confirmBtn.onclick=function(){
+        const pid=modal.dataset.pid;
+        overlay.classList.remove('show');
+        modal.classList.remove('show');
+        modal.dataset.pid='';
+        const deleteBtn=document.querySelector(`.remove-btn[data-product-id="${pid}"]`);
+        const cartItem=deleteBtn?deleteBtn.closest('.cart-item'):null;
+        if(!cartItem){showNotification('删除失败：未找到对应商品','error');return;}
+        cartItem.style.transition='all 0.5s ease';
+        cartItem.style.transform='translateX(-100%)';
+        cartItem.style.opacity='0';
+        fetch(`/cart/remove/${pid}`,{method:'DELETE'})
+        .then(r=>{if(!r.ok)throw new Error();return r.json();})
+        .then(d=>{
+          if(d.message){
+            showNotification(d.message,'success');
+            setTimeout(()=>{
+              cartItem.remove();
+              updateTotal();
+              const remaining=document.querySelectorAll('.cart-item');
+              if(remaining.length===0){setTimeout(()=>{window.location.reload();},500);} 
+            },500);
+          } else {
+            cartItem.style.transform='translateX(0)';
+            cartItem.style.opacity='1';
+            showNotification(d.error||'删除失败，请重试','error');
+          }
+        })
+        .catch(()=>{
+          cartItem.style.transform='translateX(0)';
+          cartItem.style.opacity='1';
+          showNotification('删除失败，请重试','error');
+        });
+      };
     }
 
     // 更新商品数量
@@ -649,27 +631,18 @@
         console.error('removeFromCart 函数未定义');
       }
       
-      // 为每个删除按钮添加额外的事件监听器作为备用
        deleteButtons.forEach((btn, index) => {
-         console.log(`删除按钮 ${index} onclick属性:`, btn.getAttribute('onclick'));
          const dataId = btn.dataset.productId;
          let productId = dataId;
          if (!productId) {
            const onclickAttr = btn.getAttribute('onclick') || '';
-           const productIdMatch = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
-           if (productIdMatch) productId = productIdMatch[1];
+           const m = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
+           if (m) productId = m[1];
          }
-         
+         btn.removeAttribute('onclick');
          if (productId) {
-           console.log(`按钮 ${index} 对应的产品ID:`, productId);
-           
-           // 移除原有的onclick属性，使用事件监听器代替
-           btn.removeAttribute('onclick');
-           
-           // 添加新的点击事件
            btn.addEventListener('click', function(e) {
              e.preventDefault();
-             console.log('删除按钮被点击（通过事件监听器），产品ID:', productId);
              removeFromCart(productId);
            });
          }
@@ -757,6 +730,15 @@
             </div>
           </div>
         <% } %>
+      </div>
+    </div>
+    <div id="delete-overlay"></div>
+    <div id="delete-modal" role="dialog" aria-hidden="true">
+      <h3>确认删除该商品？</h3>
+      <p>删除后无法恢复。</p>
+      <div class="buttons">
+        <button id="delete-cancel" type="button">取消</button>
+        <button id="delete-confirm" type="button">确认删除</button>
       </div>
     </div>
 
