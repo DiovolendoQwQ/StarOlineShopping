@@ -20,6 +20,7 @@
       .btn-primary:hover{background:#e65c00}
       .btn-secondary{background:#f8f9fa;color:#666;border:1px solid #ddd}
       .btn-secondary:hover{background:#e9ecef;color:#333}
+      #logout-modal .icon{background:linear-gradient(135deg,#ff9f43,#ff6f00)}
     </style>
 </head>
 
@@ -36,12 +37,12 @@
 		</div>
 
 		<div class="search-cart-container">
-			<div class="user-buttons">
-				<a href="/login.html" class="icon-button" title="登录">
-					<svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-					<span class="label">登录</span>
-				</a>
-				<a href="/profile.html" class="icon-button" title="个人中心">
+            <div class="user-buttons">
+                <a href="javascript:void(0)" id="logout-link" class="icon-button" title="登出">
+                    <svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z"/></svg>
+                    <span class="label">登出</span>
+                </a>
+                <a href="/profile.html" class="icon-button" title="个人中心">
 					<svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z"/></svg>
 					<span class="label">个人中心</span>
 				</a>
@@ -65,17 +66,17 @@
 					<div class="clear"></div>
 				</form>
 			</div>
-		</div>
-	</div>
-	<!-- end banner_x -->
+        </div>
+    </div>
+    <!-- end banner_x -->
 
 	<!-- start banner_y -->
 	<div class="banner_y center">
-		<video autoplay muted loop>
-			<source src="./Picture/login.mp4" type="video/mp4">
-			您的浏览器不支持视频播放。
-		</video>
-		<div class="nav">
+    <video autoplay muted loop>
+      <source src="./Picture/login.mp4" type="video/mp4">
+      您的浏览器不支持视频播放。
+    </video>
+    <div class="nav">
 			<ul>
 				<li>
 					<div class="nav-categories">
@@ -1383,6 +1384,18 @@
       </div>
     </div>
 
+    <!-- Logout Modal -->
+    <div id="logout-overlay" class="overlay"></div>
+    <div id="logout-modal" class="cart-notification" aria-hidden="true" role="dialog">
+      <div class="icon">🚪</div>
+      <h3>确定要登出吗？</h3>
+      <p>登出后需要重新登录才能继续购物。</p>
+      <div class="buttons">
+        <button id="cancel-logout" class="btn-secondary" type="button">取消</button>
+        <button id="confirm-logout" class="btn-primary" type="button">确认登出</button>
+      </div>
+    </div>
+
 	<div class="sub_banner center">
 		<div class="sidebar fl">
 			<div class="fl"><a href="https://consumer.huawei.com/cn/phones/pocket-2/" target="_blank" rel="noopener noreferrer"><img src="./image/hjh_01.gif"></a></div>
@@ -1713,3 +1726,46 @@
 </body>
 
 </html>
+    <script>
+      (function(){
+        const logoutLink = document.getElementById('logout-link');
+        const overlay = document.getElementById('logout-overlay');
+        const modal = document.getElementById('logout-modal');
+        const cancelBtn = document.getElementById('cancel-logout');
+        const confirmBtn = document.getElementById('confirm-logout');
+
+        function showModal(){
+          overlay.classList.add('show');
+          modal.classList.add('show');
+          modal.setAttribute('aria-hidden','false');
+        }
+        function hideModal(){
+          overlay.classList.remove('show');
+          modal.classList.remove('show');
+          modal.setAttribute('aria-hidden','true');
+        }
+        function bindEvents(){
+          if (logoutLink) logoutLink.addEventListener('click', showModal);
+          if (overlay) overlay.addEventListener('click', hideModal);
+          if (cancelBtn) cancelBtn.addEventListener('click', hideModal);
+          if (confirmBtn) confirmBtn.addEventListener('click', async function(){
+            try{
+              const resp = await fetch('/auth/logout', { method: 'POST', headers: { 'Accept': 'application/json' } });
+              if (resp.ok){
+                const data = await resp.json().catch(function(){ return {}; });
+                const redirect = (data && data.redirect) ? data.redirect : '/login.html';
+                window.location.href = redirect;
+              } else {
+                alert('登出失败，请稍后再试');
+                hideModal();
+              }
+            }catch(e){
+              alert('网络错误，请稍后再试');
+              hideModal();
+            }
+          });
+          document.addEventListener('keydown', function(e){ if(e.key==='Escape') hideModal(); });
+        }
+        bindEvents();
+      })();
+    </script>

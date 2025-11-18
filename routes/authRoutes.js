@@ -140,4 +140,21 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// 登出路由
+router.post('/logout', (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('登出失败:', err);
+        return res.status(500).json({ error: 'logout_failed' });
+      }
+      res.clearCookie('connect.sid');
+      return res.json({ ok: true, redirect: '/login.html' });
+    });
+  } catch (error) {
+    console.error('登出异常:', error);
+    return res.status(500).json({ error: 'logout_failed' });
+  }
+});
+
 module.exports = router;
