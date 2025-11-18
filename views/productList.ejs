@@ -343,6 +343,9 @@
                 <input type="text" name="keyword" class="search-input" placeholder="搜索商品..." value="<%= keyword %>">
                 <button type="submit" class="search-btn">搜索</button>
             </form>
+            <div style="display:flex;justify-content:flex-end;">
+                <a href="/homepage" class="back-home">返回首页</a>
+            </div>
             <div class="search-info">
                 <% if (keyword) { %>
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
