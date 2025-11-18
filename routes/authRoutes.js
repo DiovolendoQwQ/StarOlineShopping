@@ -86,18 +86,15 @@ router.post('/login', async (req, res) => {
 
   try {
     console.log('收到登录请求:', req.body);
+    const wantsJson = (req.headers.accept && req.headers.accept.includes('application/json')) || req.get('X-Requested-With') === 'XMLHttpRequest';
 
     // 查找用户并获取完整信息
     const user = await db.getAsync("SELECT id, username, email, password, role FROM users WHERE email = ?", [email]);
 
     if (!user) {
       console.error(`登录失败: 用户不存在 - ${email}`);
-      return res.send(`
-                <script>
-                    alert("用户不存在，请注册");
-                    window.location.href = "/login.html";
-                </script>
-            `);
+      if (wantsJson) return res.status(400).json({ error: 'invalid_user' });
+      return res.redirect('/login.html?error=invalid_user');
     }
 
     // 验证密码
@@ -125,33 +122,21 @@ router.post('/login', async (req, res) => {
       const { isAdmin } = require('../middleware/adminAuth');
       if (isAdmin(req.session.user)) {
         console.log('管理员登录，跳转到数据分析后台');
-        return res.send(`
-                  <script>
-                      alert("管理员登录成功，正在跳转到数据分析后台");
-                      window.location.href = "/analytics/dashboard";
-                  </script>
-              `);
+        if (wantsJson) return res.json({ ok: true, redirect: '/analytics/dashboard' });
+        return res.redirect('/analytics/dashboard');
       }
-
-      // 普通用户跳转到主页
+      if (wantsJson) return res.json({ ok: true, redirect: '/homepage' });
       return res.redirect('/homepage');
     } else {
       console.error('登录失败: 密码错误');
-      return res.send(`
-                <script>
-                    alert("密码错误");
-                    window.location.href = "/login.html";
-                </script>
-            `);
+      if (wantsJson) return res.status(401).json({ error: 'invalid_password' });
+      return res.redirect('/login.html?error=invalid_password');
     }
   } catch (error) {
     console.error('登录失败:', error);
-    return res.status(500).send(`
-            <script>
-                alert("服务器错误，请稍后再试");
-                window.location.href = "/login.html";
-            </script>
-        `);
+    const wantsJson = (req.headers.accept && req.headers.accept.includes('application/json')) || req.get('X-Requested-With') === 'XMLHttpRequest';
+    if (wantsJson) return res.status(500).json({ error: 'server_error' });
+    return res.redirect('/login.html?error=server_error');
   }
 });
 

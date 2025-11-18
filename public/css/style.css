@@ -257,7 +257,11 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .peijian .main .content .remen .piao{width: 204px;height: 60px;font-size:12px;padding:10px 0px 0px 30px;background:#ff6700; position: absolute;display: none;}
 .peijian .main .content .remen .piao a{color:#fff;}
 .peijian .main .content .remen .piao span{display: block;margin-top:5px;}
-.peijian .main .content .remen:hover .piao{display: block;margin-top: -40px;}
+.peijian .main .content .remen:hover .piao{display: none;margin-top: -40px;}
+
+/* 取消悬停时的橙色文案显示 */
+.peijian .main .content .remen .piao,
+.peijian .main .content .remen:hover .piao{display: none !important;}
 .peijian .main .content .remenlast{width:234px;height: 300px;}
 .hongmi:hover{margin-top: -2px;box-shadow: 0px 0px 15px #ccc;}
 .liulangengduo{margin-top: 12px;}

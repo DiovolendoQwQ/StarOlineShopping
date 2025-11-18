@@ -38,6 +38,7 @@
         <div class="form-group">
           <p>还没有账户吗？ <a href="javascript:void(0);" onclick="showRegisterForm()">立即注册</a></p>
         </div>
+        <div class="error-message" id="login-error" style="display:none"></div>
       </form>
     </section>
 
@@ -98,7 +99,81 @@
           alert('密码不一致，请重新输入');
         }
       });
+
+      (function () {
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailLabel = document.querySelector('label[for="email"]');
+        const passwordLabel = document.querySelector('label[for="password"]');
+        const errorBox = document.getElementById('login-error');
+
+        function clearErrors() {
+          emailInput.classList.remove('input-error');
+          passwordInput.classList.remove('input-error');
+          emailLabel.classList.remove('label-error');
+          passwordLabel.classList.remove('label-error');
+          errorBox.style.display = 'none';
+          errorBox.textContent = '';
+        }
+
+        document.querySelector('.login-form').addEventListener('submit', async function (event) {
+          event.preventDefault();
+          clearErrors();
+          const form = event.target;
+          const body = new URLSearchParams({
+            email: emailInput.value.trim(),
+            password: passwordInput.value
+          });
+
+          try {
+            const resp = await fetch(form.action, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body
+            });
+
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data && data.redirect) {
+                window.location.href = data.redirect;
+              } else {
+                window.location.href = '/homepage';
+              }
+              return;
+            }
+
+            const data = await resp.json().catch(function () { return {}; });
+            const code = data.error || '';
+            let message = '电子邮件地址或密码不正确';
+            if (code === 'invalid_user') {
+              message = '用户不存在，请注册或检查电子邮件地址';
+              emailInput.classList.add('input-error');
+              emailLabel.classList.add('label-error');
+            } else if (code === 'invalid_password') {
+              message = '电子邮件地址或密码不正确';
+              emailInput.classList.add('input-error');
+              passwordInput.classList.add('input-error');
+              emailLabel.classList.add('label-error');
+              passwordLabel.classList.add('label-error');
+            } else {
+              message = '服务器错误，请稍后再试';
+            }
+            errorBox.textContent = message;
+            errorBox.style.display = 'block';
+          } catch (e) {
+            errorBox.textContent = '网络错误，请稍后再试';
+            errorBox.style.display = 'block';
+          }
+        });
+
+        emailInput.addEventListener('input', clearErrors);
+        passwordInput.addEventListener('input', clearErrors);
+      })();
     </script>
-</body>
+  </body>
 
 </html>

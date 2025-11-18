@@ -272,6 +272,15 @@ body {
   margin-top: 10px;
 }
 
+.input-error {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.label-error {
+  color: #e74c3c !important;
+}
+
 /* Category Styles */
 .categories {
   padding: 20px;
