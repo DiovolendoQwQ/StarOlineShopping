@@ -72,7 +72,6 @@ db.serialize(() => {
       subtitle TEXT,
       description TEXT,
       price REAL NOT NULL,
-      original_price REAL,
       image TEXT,
       stock INTEGER DEFAULT 0,
       brand TEXT,
@@ -264,7 +263,8 @@ module.exports = db;
     const hasShipOrigin = cols.some(c => c.name === 'shipping_origin');
     const hasShipPromise = cols.some(c => c.name === 'shipping_promise');
     const hasServiceTags = cols.some(c => c.name === 'service_tags');
-    if (hasShipOrigin || hasShipPromise || hasServiceTags) {
+    const hasOriginalPrice = cols.some(c => c.name === 'original_price');
+    if (hasShipOrigin || hasShipPromise || hasServiceTags || hasOriginalPrice) {
       console.log('⚙️ 正在移除 products 中不需要的列: shipping_origin/shipping_promise/service_tags');
       await db.runAsync('PRAGMA foreign_keys = OFF');
       await db.runAsync('BEGIN TRANSACTION');
@@ -275,7 +275,6 @@ module.exports = db;
           subtitle TEXT,
           description TEXT,
           price REAL NOT NULL,
-          original_price REAL,
           image TEXT,
           stock INTEGER DEFAULT 0,
           brand TEXT,
@@ -286,7 +285,7 @@ module.exports = db;
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
       `);
-      const wantCols = ['id','name','subtitle','description','price','original_price','image','stock','brand','category','specs_json','detail_html','created_at','updated_at'];
+      const wantCols = ['id','name','subtitle','description','price','image','stock','brand','category','specs_json','detail_html','created_at','updated_at'];
       const has = new Set(cols.map(c => c.name));
       const selectParts = wantCols.map(col => has.has(col) ? col : `NULL AS ${col}`);
       const insertCols = wantCols.join(',');

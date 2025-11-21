@@ -167,7 +167,13 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
       return res.status(404).send('商品未找到');
     }
     product.image = toRootImagePath(product.image);
-    res.render('detail', { product }); // 渲染详情页模板
+    const reviews = await db.allAsync(
+      `SELECT user_name AS author, content AS content, avatar_url AS avatar, rating, sku_info, created_at
+       FROM reviews WHERE product_id = ? ORDER BY created_at DESC LIMIT 50`,
+      [productId]
+    );
+    product.reviews = reviews || [];
+    res.render('detail', { product });
   } catch (err) {
     console.error("获取商品详情失败:", err);
     res.status(500).send("服务器错误");
