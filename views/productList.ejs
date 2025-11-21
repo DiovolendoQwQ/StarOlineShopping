@@ -369,7 +369,9 @@
                                 匹配度: <%= Math.round(product.relevanceScore * 100) %>%
                             </div>
                         <% } %>
-                        <img src="<%= product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default.png' %>" alt="<%= product.name %>" class="product-image">
+                        <a href="/product/<%= product.id %>" class="image-link" style="display:block">
+                            <img src="<%= (product.name && (product.name.includes('云海昼夜适用oppoa1手机壳') || product.name.includes('oppoA1pro'))) ? '/image/tp122.png' : (product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default.png') %>" alt="<%= product.name %>" class="product-image">
+                        </a>
                         <div class="product-info">
                             <h3 class="product-name"><%= product.name %></h3>
                             <% if (product.description) { %>
@@ -381,7 +383,7 @@
                                     <%= product.stock > 0 ? `库存: ${product.stock}` : '暂无库存' %>
                                 </div>
                             <% } %>
-                            <a href="/product/<%= product.id %>" class="product-link">查看详情</a>
+                            
                         </div>
                     </div>
                 <% }); %>

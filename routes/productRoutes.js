@@ -6,11 +6,11 @@ const searchService = require('../services/searchService');
 const behaviorTracker = require('../middleware/behaviorTracker');
 
 const DEFAULT_IMAGE_MAP = {
-  201: 'Product83.png',
+  201: 'tp107.png',
   202: 'Product84.png',
   203: 'Product85.png',
-  204: 'Product86.png',
-  205: 'Product87.png',
+  204: 'tp117.png',
+  205: 'tp112.png',
   206: 'Product88.png'
 };
 
@@ -22,6 +22,19 @@ function toRootImagePath(image) {
   return `/image/${cleaned || 'default.png'}`;
 }
 
+function dedupeProducts(list) {
+  const seen = new Set();
+  const out = [];
+  for (const p of list) {
+    const key = `${String(p.name || '').trim().toLowerCase()}|${String(p.image || '').trim().toLowerCase()}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      out.push(p);
+    }
+  }
+  return out;
+}
+
 // 获取商品列表（支持分页与模糊搜索）- 返回HTML页面
 router.get('/all', async (req, res) => {
   const { page = 1, keyword = '' } = req.query;
@@ -30,12 +43,21 @@ router.get('/all', async (req, res) => {
 
   try {
     let products, totalCount;
+    const tag = (req.query.tag || '').toLowerCase();
     
     if (keyword.trim()) {
-      // 使用模糊搜索服务
       const allResults = await searchService.fuzzySearch(keyword, { limit: 1000 });
-      totalCount = allResults.length;
-      products = allResults.slice(offset, offset + limit);
+      let filteredResults = allResults;
+      if (tag === 'accessory' || /手机壳|保护壳|保护套|外壳|手机膜|钢化膜/.test(keyword)) {
+        const allowTokens = ['壳', '手机壳', '保护壳', '保护套', '外壳', '膜', '钢化膜'];
+        filteredResults = allResults.filter(p => {
+          const text = `${p.name || ''} ${p.description || ''}`;
+          return allowTokens.some(t => text.includes(t));
+        });
+      }
+      filteredResults = dedupeProducts(filteredResults);
+      totalCount = filteredResults.length;
+      products = filteredResults.slice(offset, offset + limit);
     } else {
       // 获取所有商品
       const total = await db.getAsync("SELECT COUNT(*) AS count FROM products");
@@ -44,13 +66,15 @@ router.get('/all', async (req, res) => {
         "SELECT * FROM products ORDER BY created_at DESC LIMIT ? OFFSET ?",
         [limit, offset]
       );
+      products = dedupeProducts(products);
+      totalCount = products.length;
     }
     
     const totalPages = Math.ceil(totalCount / limit);
 
     // 检查是否是API请求（通过Accept头或查询参数）
     if (req.headers.accept && req.headers.accept.includes('application/json') || req.query.format === 'json') {
-      const jsonProducts = products.map(p => ({
+      const jsonProducts = dedupeProducts(products).map(p => ({
         ...p,
         image: toRootImagePath(p.image || DEFAULT_IMAGE_MAP[p.id] || 'default.png')
       }));

@@ -65,11 +65,9 @@
 
 
 
-    /* 返回按钮 */
+    /* 返回按钮（置于 logo 下方） */
     .back-button {
-      position: fixed;
-      top: 20px;
-      left: 20px;
+      position: static;
       background: #f60;
       color: #fff;
       border: none;
@@ -80,7 +78,8 @@
       font-weight: 500;
       box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
       transition: all 0.3s ease;
-      z-index: 1000;
+      margin-top: 8px;
+      display: inline-block;
     }
 
     .back-button:hover {
@@ -466,7 +465,10 @@
 
     .tb-card{background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
     .product-container{gap:24px}
-    .gallery{width:460px;display:flex;gap:12px}
+    .gallery{width:460px;display:flex;gap:12px;flex-direction:column}
+    .ship-info{background:#fff;border:1px solid #eee;border-radius:8px;padding:12px;color:#4a4a4a;font-size:13px;line-height:1.8}
+    .ship-info .row{display:flex;flex-wrap:wrap;gap:8px}
+    .ship-info .row span{white-space:nowrap}
     .gallery .thumbs{width:68px;display:flex;flex-direction:column;gap:8px}
     .gallery .thumbs img{width:68px;height:68px;object-fit:cover;border:1px solid #eee;border-radius:6px;cursor:pointer}
     .gallery .main-pic{background:#fff;border:1px solid #eee;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:16px;width:420px}
@@ -500,17 +502,40 @@
     .cart-btn:hover{background:#ffd7d7}
 
     .tb-service{display:flex;gap:16px;font-size:12px;color:#666;margin-top:10px}
+    .extra-info{margin-top:16px;background:#fff;border:1px solid #eee;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px}
+    .extra-info .info-row{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:#444}
+    .extra-info .info-title{min-width:48px;color:#999}
+    .extra-info .info-content{flex:1}
+    .image-tabs{width:1200px;margin:20px auto;background:#fff;border:1px solid #eee;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+    .image-tabs .tabs-nav{display:flex;gap:24px;padding:0 16px}
+    .image-tabs .tab{padding:16px 0;cursor:pointer;color:#333;position:relative;font-size:16px}
+    .image-tabs .tab.active{color:#ff6700;font-weight:700}
+    .image-tabs .tab.active::after{content:'';position:absolute;left:0;bottom:-1px;width:100%;height:2px;background:#ff6700;border-radius:2px}
+    .image-tabs .tab-content{border-top:1px solid #eee;padding:16px}
+    .image-tabs .tab-panel{display:none}
+    .image-tabs .tab-panel.active{display:block}
+    .spec-table{width:100%;border:1px solid #eee;border-radius:8px;overflow:hidden;border-spacing:0;border-collapse:separate;background:#fff}
+    .spec-table td{padding:12px 16px;border-top:1px solid #eee;font-size:14px;color:#333}
+    .spec-table tr:first-child td{border-top:none}
+    .spec-table td.title{width:120px;color:#666;background:#f7f9fc}
+    .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:#f7f9fc;border-radius:8px;padding:16px;margin-bottom:12px}
+    .spec-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:12px;text-align:center}
+    .spec-card .t{font-size:16px;font-weight:700;color:#333;margin-bottom:6px}
+    .spec-card .s{font-size:12px;color:#666}
   </style>
 </head>
 
 <body>
   <div class="banner_x">
     <div class="center-content">
-      <a href="/homepage">
-        <div class="logo fl"></div>
-      </a>
+      <div class="logo-stack" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-right:12px;">
+        <a href="/homepage">
+          <div class="logo"></div>
+        </a>
+        <button class="back-button" onclick="history.back()">← 返回</button>
+      </div>
       <a href="/products/all">
-        <div class="ad_top fl"></div>
+        <div class="ad_top"></div>
       </a>
     </div>
 
@@ -550,11 +575,11 @@
     </div>
   </div>
 
+  
+  
 
 
 
-  <!-- 返回按钮 -->
-  <button class="back-button" onclick="history.back()">← 返回</button>
 
   <!-- 购物车通知弹窗 -->
   <div class="overlay" id="overlay"></div>
@@ -572,12 +597,12 @@
   <div class="product-container tb-card">
     <div class="gallery">
       <div class="main-pic">
-        <img id="mainImage" src="<%= product.image || '/image/default.png' %>" alt="<%= product.name %>">
+        <img id="mainImage" src="<%= (product && product.name && (product.name.includes('云海昼夜适用oppoa1手机壳') || product.name.includes('oppoA1pro手机壳'))) ? '/image/tp122.png' : (product.image || '/image/default.png') %>" alt="<%= product.name %>">
       </div>
       
     </div>
     <div class="detail-container">
-      <h1><%= product.name %></h1>
+      <h1><%= (product && product.name && product.name.includes('云海昼夜适用oppoa1手机壳')) ? '适用oppoA1pro手机壳A1x活力版A58新款A97全包A96外壳A95/A93硅胶防摔A72系列A11保护套A55/A56男A57女oppo5g' : product.name %></h1>
       <div class="tb-pricebox">
         <div class="tb-price">¥<%= product.price %></div>
         <% if (typeof product.stock !== 'undefined') { %>
@@ -591,6 +616,34 @@
             <span class="tb-sku-option selected">默认</span>
           </div>
         </div>
+        <% if (product.id == 205) { %>
+        <div class="ship-info">
+          <div class="row"><span>预计3小时内发货</span><span>|</span><span>承诺48小时内发货</span><span>|</span><span>快递: 免运费</span><span>|</span><span>广东深圳 至 上海市 黄浦区</span></div>
+          <div class="row"><span>7天无理由退换</span><span>|</span><span>假一赔四</span><span>|</span><span>极速退款</span></div>
+          <div class="row"><span>信用卡支付</span></div>
+        </div>
+        <% } %>
+        <% if (product.id == 204) { %>
+        <div class="ship-info">
+          <div class="row"><span>48小时内发货</span><span>|</span><span>卖家直送: 免运费</span><span>|</span><span>广东深圳 至 香港岛 中西区</span></div>
+          <div class="row"><span>7天无理由退换</span><span>|</span><span>7天价保</span><span>|</span><span>假一赔四</span><span>|</span><span>极速退款</span></div>
+          <div class="row"><span>信用卡支付</span></div>
+        </div>
+        <% } %>
+        <% if (product.id == 201) { %>
+        <div class="extra-info">
+          <div class="info-row"><span class="info-title">配送</span><span class="info-content">上海 至 香港岛 中西 · 卖家直送：免运费 现货，付款后48小时内发货</span></div>
+          <div class="info-row"><span class="info-title">保障</span><span class="info-content">7天无理由退货 破损包退</span></div>
+          <div class="info-row"><span class="info-title">参数</span><span class="info-content">颜色分类：小米note3-白色</span></div>
+        </div>
+        <% } %>
+        <% if (product && product.name && (product.name.includes('oppoA1pro') || product.name.includes('云海昼夜适用oppoa1手机壳'))) { %>
+        <div class="ship-info">
+          <div class="row"><span>48小时内发货，预计后天送达</span><span>|</span><span>快递: 免运费</span><span>|</span><span>广东深圳 至 上海市 黄浦区</span></div>
+          <div class="row"><span>7天无理由退换</span><span>|</span><span>假一赔四</span><span>|</span><span>极速退款</span></div>
+          <div class="row"><span>信用卡支付</span></div>
+        </div>
+        <% } %>
         <div class="tb-sku-row">
           <div class="tb-sku-title">数量</div>
           <div class="tb-quantity">
@@ -612,6 +665,141 @@
         <li>七天无理由</li>
         <li>极速发货</li>
       </ul>
+    </div>
+  </div>
+
+  <div class="image-tabs">
+    <div class="tabs-nav">
+      <div class="tab active">用户评价</div>
+      <div class="tab">参数信息</div>
+      <div class="tab">图文详情</div>
+      <div class="tab">本店推荐</div>
+    </div>
+    <div class="tab-content">
+      <div class="tab-panel active">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;align-items:flex-start"><img src="<%= product.id == 205 ? '/image/tp115.png' : (product.id == 204 ? '/image/tp120.png' : '/image/tp110.png') %>" style="width:32px;height:32px;border-radius:50%"><div><div style="font-weight:600;color:#333"><%= product.id == 205 ? '匿名买家' : (product.id == 204 ? '若梦若初见_' : '用户A') %></div><div style="font-size:12px;color:#666"><%= product.id == 205 ? '材质手感：光滑，方方正正无毛刺 尺寸贴合：与原机符合贴合 外观设计：与原机符合贴合' : (product.id == 204 ? '手机壳很好看，图案生动立体，简约线条勾勒时尚轮廓，色彩清新如春日晨露，细节之处暗藏小心机，与手机适配度满分，爱了😍' : '质感不错，手感细腻，贴合度高。') %></div></div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><img src="<%= product.id == 205 ? '/image/tp116.png' : (product.id == 204 ? '/image/tp121.png' : '/image/tp111.png') %>" style="width:32px;height:32px;border-radius:50%"><div><div style="font-weight:600;color:#333"><%= product.id == 205 ? '小幽Orz' : (product.id == 204 ? 'Ashleygaog' : '用户B') %></div><div style="font-size:12px;color:#666"><%= product.id == 205 ? '手机壳已经收到，简单干净透亮，很喜欢。膜有点问题，客服积极解决补发了一个，赞好评。' : '价格实惠便宜，质量很好商家很靠谱，物流速度快' %></div></div></div>
+        </div>
+      </div>
+      <div class="tab-panel">
+        <% if (product.id == 201) { %>
+        <table class="spec-table">
+          <tbody>
+            <tr>
+              <td class="title">品牌</td><td>易购</td>
+              <td class="title">型号</td><td>米8</td>
+            </tr>
+            <tr>
+              <td class="title">功能</td><td>防摔</td>
+              <td class="title">保护套质地</td><td>液态硅胶</td>
+            </tr>
+            <tr>
+              <td class="title">风格</td><td>简约,ins风</td>
+              <td class="title">适用手机型号</td><td>小米</td>
+            </tr>
+            <tr>
+              <td class="title">型号</td><td>M8</td>
+              <td class="title">颜色分类</td><td>小米8红色,小米8粉色,小米8黑色,小米8白色,小米8屏幕指纹版</td>
+            </tr>
+            <tr>
+              <td class="title">款式</td><td>保护壳</td>
+              <td class="title">流行元素</td><td>纯色</td>
+            </tr>
+          </tbody>
+        </table>
+        <% } else if (product.id == 205) { %>
+        <div class="spec-grid">
+          <div class="spec-card"><div class="t">含环保材料</div><div class="s">是否使用环保材质</div></div>
+          <div class="spec-card"><div class="t">TPU</div><div class="s">保护套质地</div></div>
+          <div class="spec-card"><div class="t">简约</div><div class="s">流行元素</div></div>
+          <div class="spec-card"><div class="t">简约</div><div class="s">风格</div></div>
+          <div class="spec-card"><div class="t">深圳市捷凯德科技有限公司</div><div class="s">生产企业</div></div>
+        </div>
+        <table class="spec-table">
+          <tbody>
+            <tr>
+              <td class="title">是否可降解</td><td>否</td>
+              <td class="title">品牌</td><td>Jokod/卓酷</td>
+            </tr>
+            <tr>
+              <td class="title">型号</td><td>reno系列透明B2</td>
+              <td class="title">适用手机型号</td><td>OPPO</td>
+            </tr>
+            <tr>
+              <td class="title">适配机型</td><td colspan="3">OPPO Reno12 Pro、OPPO Reno7、OPPO Reno7 SE、OPPO Reno9 Pro+ 等</td>
+            </tr>
+            <tr>
+              <td class="title">颜色分类</td><td colspan="3">高透魔方【裸壳】 高透魔方【送钢化膜】 高透魔方【送水凝膜】</td>
+            </tr>
+          </tbody>
+        </table>
+        <% } else if (product.id == 204) { %>
+        <div class="spec-grid">
+          <div class="spec-card"><div class="t">含环保材料</div><div class="s">是否使用环保材质</div></div>
+          <div class="spec-card"><div class="t">卡通图案</div><div class="s">流行元素</div></div>
+          <div class="spec-card"><div class="t">保护壳</div><div class="s">款式</div></div>
+          <div class="spec-card"><div class="t">简约</div><div class="s">风格</div></div>
+          <div class="spec-card"><div class="t">中国制造</div><div class="s">生产企业</div></div>
+          <div class="spec-card"><div class="t">是</div><div class="s">是否可降解</div></div>
+        </div>
+        <table class="spec-table">
+          <tbody>
+            <tr>
+              <td class="title">品牌</td><td>匠轩</td>
+              <td class="title">型号</td><td>适用vivo S30-Martin Schumm DVM</td>
+            </tr>
+            <tr>
+              <td class="title">适用手机型号</td><td>vivo</td>
+              <td class="title">型号</td><td>vivo S30</td>
+            </tr>
+            <tr>
+              <td class="title">适配机型</td><td colspan="3">vivo S19 Pro、vivo S9e、vivo S16e、vivo S20、vivo S10、vivo S30 Pro mini、vivo S19、vivo S17 等</td>
+            </tr>
+            <tr>
+              <td class="title">颜色分类</td><td colspan="3">新品福利★全店第二件0元（NM16590渐变鲸鱼黄） 硅胶软壳★全包镜头★不顶膜（NM1658…</td>
+            </tr>
+          </tbody>
+        </table>
+        <% } else { %>
+        <div class="extra-info" style="margin-top:0">
+          <div class="info-row"><span class="info-title">配送</span><span class="info-content">上海 至 香港岛 中西 · 卖家直送：免运费 现货，付款后48小时内发货</span></div>
+          <div class="info-row"><span class="info-title">保障</span><span class="info-content">7天无理由退货 破损包退</span></div>
+          <div class="info-row"><span class="info-title">参数</span><span class="info-content">颜色分类：小米note3-白色</span></div>
+        </div>
+        <% } %>
+      </div>
+      <div class="tab-panel">
+        <% if (product.id == 205) { %>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><img src="/image/tp113.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"><img src="/image/tp114.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"></div>
+        <div class="buy-tip" style="margin-top:16px;border:2px solid #ff4d4f;border-radius:12px;padding:16px;background:#fff7f7;color:#d4380d;line-height:1.8;font-size:14px">
+          <div style="font-weight:700;font-size:18px;text-align:center;margin-bottom:8px">亲！看过来！</div>
+          <p>温馨提示：下单前请您先找到设置、关于本机核实好您的手机型号，然后按照您对应的型号下单。</p>
+          <p>所有图片只是按单一型号作为效果展示图仅供参考，以收到的实物为准。发货都是按您拍下的型号颜色孔位匹配发货，请您放心购买！</p>
+          <p>手机屏幕为直面屏的送钢化膜，曲面屏的送水凝膜。</p>
+        </div>
+        <% } else if (product.id == 204) { %>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><img src="/image/tp118.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"><img src="/image/tp119.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"></div>
+        <% } else { %>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><img src="/image/tp108.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"><img src="/image/tp109.png" style="width:200px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"></div>
+        <% } %>
+        <% if (product.id != 205) { %>
+        <div class="price-notice" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">
+          <div style="font-weight:700;color:#4a4a4a;margin-bottom:8px">价格说明：</div>
+          <div style="font-weight:700;color:#4a4a4a;margin-bottom:4px">被比较价格</div>
+          <p>商品的专柜价、吊牌价、厂家建议零售价、厂商指导价、品牌供应商提供的指导价、商家在后台设置的一口价、减价（折价）前的基准价或该商品曾经展示过的销售价等。该价格仅供您在购买时参考。</p>
+          <div style="font-weight:700;color:#4a4a4a;margin:10px 0 4px">标价/售价</div>
+          <p>商品的实时标价。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化，最终以订单结算页价格为准。</p>
+        </div>
+        <% } %>
+      </div>
+      <div class="tab-panel">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="/product/202" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333"><img src="/image/tp84.png" style="width:48px;height:48px;border-radius:6px"><span>苹果手机壳</span></a>
+          <a href="/product/203" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333"><img src="/image/tp85.png" style="width:48px;height:48px;border-radius:6px"><span>华为手机壳</span></a>
+          <a href="/products/all?keyword=%E6%89%8B%E6%9C%BA%E5%A3%B3&tag=accessory" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333"><img src="/image/tp86.png" style="width:48px;height:48px;border-radius:6px"><span>更多手机壳</span></a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -839,6 +1027,18 @@
         mainPic.addEventListener('touchend', hide);
         mainPic.addEventListener('mouseenter', () => { running = true; requestAnimationFrame(loop); });
         mainPic.addEventListener('touchstart', () => { running = true; requestAnimationFrame(loop); }, { passive: true });
+      }
+      const tabs = document.querySelectorAll('.image-tabs .tabs-nav .tab');
+      const panels = document.querySelectorAll('.image-tabs .tab-panel');
+      if (tabs.length && panels.length) {
+        tabs.forEach(function(tab, idx){
+          tab.addEventListener('click', function(){
+            tabs.forEach(function(t){ t.classList.remove('active'); });
+            panels.forEach(function(p){ p.classList.remove('active'); });
+            tab.classList.add('active');
+            panels[idx].classList.add('active');
+          });
+        });
       }
     });
   </script>
