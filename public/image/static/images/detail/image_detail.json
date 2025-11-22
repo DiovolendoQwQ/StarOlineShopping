@@ -1,0 +1,3136 @@
+[
+  {
+    "product_id": 1,
+    "detail_image1": null,
+    "detail_image2": null,
+    "detail_image3": null,
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": []
+  },
+  {
+    "product_id": 2,
+    "detail_image1": "static/images/detail/2_1.jpg",
+    "detail_image2": "static/images/detail/2_3.png",
+    "detail_image3": "static/images/detail/2_4.jpeg",
+    "detail_image4": "static/images/detail/2_5.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/2_1.jpg",
+      "static/images/detail/2_3.png",
+      "static/images/detail/2_4.jpeg",
+      "static/images/detail/2_5.jpg"
+    ]
+  },
+  {
+    "product_id": 3,
+    "detail_image1": "static/images/detail/3_4.png",
+    "detail_image2": null,
+    "detail_image3": null,
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/3_4.png"
+    ]
+  },
+  {
+    "product_id": 4,
+    "detail_image1": "static/images/detail/4_4.jpg",
+    "detail_image2": null,
+    "detail_image3": null,
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/4_4.jpg"
+    ]
+  },
+  {
+    "product_id": 5,
+    "detail_image1": null,
+    "detail_image2": null,
+    "detail_image3": null,
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": []
+  },
+  {
+    "product_id": 6,
+    "detail_image1": "static/images/detail/6_3.webp",
+    "detail_image2": "static/images/detail/6_4.jpg",
+    "detail_image3": null,
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/6_3.webp",
+      "static/images/detail/6_4.jpg"
+    ]
+  },
+  {
+    "product_id": 7,
+    "detail_image1": "static/images/detail/7_1.png",
+    "detail_image2": "static/images/detail/7_2.png",
+    "detail_image3": "static/images/detail/7_3.png",
+    "detail_image4": "static/images/detail/7_4.png",
+    "detail_image5": "static/images/detail/7_5.png",
+    "images": [
+      "static/images/detail/7_1.png",
+      "static/images/detail/7_2.png",
+      "static/images/detail/7_3.png",
+      "static/images/detail/7_4.png",
+      "static/images/detail/7_5.png"
+    ]
+  },
+  {
+    "product_id": 8,
+    "detail_image1": "static/images/detail/8_1.jpg",
+    "detail_image2": "static/images/detail/8_2.jpg",
+    "detail_image3": "static/images/detail/8_3.jpg",
+    "detail_image4": "static/images/detail/8_4.jpg",
+    "detail_image5": "static/images/detail/8_5.jpg",
+    "images": [
+      "static/images/detail/8_1.jpg",
+      "static/images/detail/8_2.jpg",
+      "static/images/detail/8_3.jpg",
+      "static/images/detail/8_4.jpg",
+      "static/images/detail/8_5.jpg"
+    ]
+  },
+  {
+    "product_id": 9,
+    "detail_image1": "static/images/detail/9_1.jpg",
+    "detail_image2": "static/images/detail/9_2.png",
+    "detail_image3": "static/images/detail/9_3.jpg",
+    "detail_image4": "static/images/detail/9_4.jpg",
+    "detail_image5": "static/images/detail/9_5.jpg",
+    "images": [
+      "static/images/detail/9_1.jpg",
+      "static/images/detail/9_2.png",
+      "static/images/detail/9_3.jpg",
+      "static/images/detail/9_4.jpg",
+      "static/images/detail/9_5.jpg"
+    ]
+  },
+  {
+    "product_id": 10,
+    "detail_image1": "static/images/detail/10_1.png",
+    "detail_image2": "static/images/detail/10_2.png",
+    "detail_image3": "static/images/detail/10_3.png",
+    "detail_image4": "static/images/detail/10_4.png",
+    "detail_image5": "static/images/detail/10_5.png",
+    "images": [
+      "static/images/detail/10_1.png",
+      "static/images/detail/10_2.png",
+      "static/images/detail/10_3.png",
+      "static/images/detail/10_4.png",
+      "static/images/detail/10_5.png"
+    ]
+  },
+  {
+    "product_id": 11,
+    "detail_image1": "static/images/detail/11_1.jpg",
+    "detail_image2": "static/images/detail/11_2.png",
+    "detail_image3": "static/images/detail/11_3.jpg",
+    "detail_image4": "static/images/detail/11_4.jpg",
+    "detail_image5": "static/images/detail/11_5.png",
+    "images": [
+      "static/images/detail/11_1.jpg",
+      "static/images/detail/11_2.png",
+      "static/images/detail/11_3.jpg",
+      "static/images/detail/11_4.jpg",
+      "static/images/detail/11_5.png"
+    ]
+  },
+  {
+    "product_id": 12,
+    "detail_image1": "static/images/detail/12_1.jpg",
+    "detail_image2": "static/images/detail/12_2.jpg",
+    "detail_image3": "static/images/detail/12_3.jpg",
+    "detail_image4": "static/images/detail/12_4.jpg",
+    "detail_image5": "static/images/detail/12_5.jpg",
+    "images": [
+      "static/images/detail/12_1.jpg",
+      "static/images/detail/12_2.jpg",
+      "static/images/detail/12_3.jpg",
+      "static/images/detail/12_4.jpg",
+      "static/images/detail/12_5.jpg"
+    ]
+  },
+  {
+    "product_id": 13,
+    "detail_image1": "static/images/detail/13_1.jpeg",
+    "detail_image2": "static/images/detail/13_2.jpeg",
+    "detail_image3": "static/images/detail/13_3.jpeg",
+    "detail_image4": "static/images/detail/13_4.jpg",
+    "detail_image5": "static/images/detail/13_5.jpeg",
+    "images": [
+      "static/images/detail/13_1.jpeg",
+      "static/images/detail/13_2.jpeg",
+      "static/images/detail/13_3.jpeg",
+      "static/images/detail/13_4.jpg",
+      "static/images/detail/13_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 14,
+    "detail_image1": "static/images/detail/14_1.png",
+    "detail_image2": "static/images/detail/14_2.jpg",
+    "detail_image3": "static/images/detail/14_3.jpg",
+    "detail_image4": "static/images/detail/14_4.jpg",
+    "detail_image5": "static/images/detail/14_5.jpg",
+    "images": [
+      "static/images/detail/14_1.png",
+      "static/images/detail/14_2.jpg",
+      "static/images/detail/14_3.jpg",
+      "static/images/detail/14_4.jpg",
+      "static/images/detail/14_5.jpg"
+    ]
+  },
+  {
+    "product_id": 15,
+    "detail_image1": "static/images/detail/15_1.jpg",
+    "detail_image2": "static/images/detail/15_2.jpg",
+    "detail_image3": "static/images/detail/15_3.jpg",
+    "detail_image4": "static/images/detail/15_4.jpg",
+    "detail_image5": "static/images/detail/15_5.jpg",
+    "images": [
+      "static/images/detail/15_1.jpg",
+      "static/images/detail/15_2.jpg",
+      "static/images/detail/15_3.jpg",
+      "static/images/detail/15_4.jpg",
+      "static/images/detail/15_5.jpg"
+    ]
+  },
+  {
+    "product_id": 16,
+    "detail_image1": "static/images/detail/16_1.jpg",
+    "detail_image2": "static/images/detail/16_2.jpg",
+    "detail_image3": "static/images/detail/16_3.jpg",
+    "detail_image4": "static/images/detail/16_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/16_1.jpg",
+      "static/images/detail/16_2.jpg",
+      "static/images/detail/16_3.jpg",
+      "static/images/detail/16_4.jpg"
+    ]
+  },
+  {
+    "product_id": 17,
+    "detail_image1": "static/images/detail/17_1.jpg",
+    "detail_image2": "static/images/detail/17_2.jpg",
+    "detail_image3": "static/images/detail/17_3.png",
+    "detail_image4": "static/images/detail/17_4.jpg",
+    "detail_image5": "static/images/detail/17_5.jpg",
+    "images": [
+      "static/images/detail/17_1.jpg",
+      "static/images/detail/17_2.jpg",
+      "static/images/detail/17_3.png",
+      "static/images/detail/17_4.jpg",
+      "static/images/detail/17_5.jpg"
+    ]
+  },
+  {
+    "product_id": 18,
+    "detail_image1": "static/images/detail/18_1.jpg",
+    "detail_image2": "static/images/detail/18_2.jpg",
+    "detail_image3": "static/images/detail/18_3.jpg",
+    "detail_image4": "static/images/detail/18_4.jpg",
+    "detail_image5": "static/images/detail/18_5.jpg",
+    "images": [
+      "static/images/detail/18_1.jpg",
+      "static/images/detail/18_2.jpg",
+      "static/images/detail/18_3.jpg",
+      "static/images/detail/18_4.jpg",
+      "static/images/detail/18_5.jpg"
+    ]
+  },
+  {
+    "product_id": 19,
+    "detail_image1": "static/images/detail/19_1.jpg",
+    "detail_image2": "static/images/detail/19_2.jpg",
+    "detail_image3": "static/images/detail/19_3.jpg",
+    "detail_image4": "static/images/detail/19_4.jpg",
+    "detail_image5": "static/images/detail/19_5.jpg",
+    "images": [
+      "static/images/detail/19_1.jpg",
+      "static/images/detail/19_2.jpg",
+      "static/images/detail/19_3.jpg",
+      "static/images/detail/19_4.jpg",
+      "static/images/detail/19_5.jpg"
+    ]
+  },
+  {
+    "product_id": 20,
+    "detail_image1": "static/images/detail/20_1.jpg",
+    "detail_image2": "static/images/detail/20_2.jpg",
+    "detail_image3": "static/images/detail/20_3.jpg",
+    "detail_image4": "static/images/detail/20_4.png",
+    "detail_image5": "static/images/detail/20_5.png",
+    "images": [
+      "static/images/detail/20_1.jpg",
+      "static/images/detail/20_2.jpg",
+      "static/images/detail/20_3.jpg",
+      "static/images/detail/20_4.png",
+      "static/images/detail/20_5.png"
+    ]
+  },
+  {
+    "product_id": 21,
+    "detail_image1": "static/images/detail/21_1.jpg",
+    "detail_image2": "static/images/detail/21_2.jpg",
+    "detail_image3": "static/images/detail/21_3.png",
+    "detail_image4": "static/images/detail/21_4.jpg",
+    "detail_image5": "static/images/detail/21_5.jpg",
+    "images": [
+      "static/images/detail/21_1.jpg",
+      "static/images/detail/21_2.jpg",
+      "static/images/detail/21_3.png",
+      "static/images/detail/21_4.jpg",
+      "static/images/detail/21_5.jpg"
+    ]
+  },
+  {
+    "product_id": 22,
+    "detail_image1": "static/images/detail/22_1.jpg",
+    "detail_image2": "static/images/detail/22_2.jpg",
+    "detail_image3": "static/images/detail/22_3.jpg",
+    "detail_image4": "static/images/detail/22_4.jpg",
+    "detail_image5": "static/images/detail/22_5.png",
+    "images": [
+      "static/images/detail/22_1.jpg",
+      "static/images/detail/22_2.jpg",
+      "static/images/detail/22_3.jpg",
+      "static/images/detail/22_4.jpg",
+      "static/images/detail/22_5.png"
+    ]
+  },
+  {
+    "product_id": 23,
+    "detail_image1": "static/images/detail/23_1.jpg",
+    "detail_image2": "static/images/detail/23_2.jpg",
+    "detail_image3": "static/images/detail/23_3.png",
+    "detail_image4": "static/images/detail/23_4.jpg",
+    "detail_image5": "static/images/detail/23_5.jpg",
+    "images": [
+      "static/images/detail/23_1.jpg",
+      "static/images/detail/23_2.jpg",
+      "static/images/detail/23_3.png",
+      "static/images/detail/23_4.jpg",
+      "static/images/detail/23_5.jpg"
+    ]
+  },
+  {
+    "product_id": 24,
+    "detail_image1": "static/images/detail/24_1.jpg",
+    "detail_image2": "static/images/detail/24_2.jpg",
+    "detail_image3": "static/images/detail/24_3.jpg",
+    "detail_image4": "static/images/detail/24_4.jpg",
+    "detail_image5": "static/images/detail/24_5.jpg",
+    "images": [
+      "static/images/detail/24_1.jpg",
+      "static/images/detail/24_2.jpg",
+      "static/images/detail/24_3.jpg",
+      "static/images/detail/24_4.jpg",
+      "static/images/detail/24_5.jpg"
+    ]
+  },
+  {
+    "product_id": 25,
+    "detail_image1": "static/images/detail/25_1.jpg",
+    "detail_image2": "static/images/detail/25_2.jpg",
+    "detail_image3": "static/images/detail/25_3.jpg",
+    "detail_image4": "static/images/detail/25_4.jpg",
+    "detail_image5": "static/images/detail/25_5.jpg",
+    "images": [
+      "static/images/detail/25_1.jpg",
+      "static/images/detail/25_2.jpg",
+      "static/images/detail/25_3.jpg",
+      "static/images/detail/25_4.jpg",
+      "static/images/detail/25_5.jpg"
+    ]
+  },
+  {
+    "product_id": 26,
+    "detail_image1": "static/images/detail/26_1.jpg",
+    "detail_image2": "static/images/detail/26_2.jpg",
+    "detail_image3": "static/images/detail/26_3.jpg",
+    "detail_image4": "static/images/detail/26_4.jpg",
+    "detail_image5": "static/images/detail/26_5.jpeg",
+    "images": [
+      "static/images/detail/26_1.jpg",
+      "static/images/detail/26_2.jpg",
+      "static/images/detail/26_3.jpg",
+      "static/images/detail/26_4.jpg",
+      "static/images/detail/26_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 27,
+    "detail_image1": "static/images/detail/27_1.jpg",
+    "detail_image2": "static/images/detail/27_2.jpg",
+    "detail_image3": "static/images/detail/27_3.jpg",
+    "detail_image4": "static/images/detail/27_4.jpg",
+    "detail_image5": "static/images/detail/27_5.jpg",
+    "images": [
+      "static/images/detail/27_1.jpg",
+      "static/images/detail/27_2.jpg",
+      "static/images/detail/27_3.jpg",
+      "static/images/detail/27_4.jpg",
+      "static/images/detail/27_5.jpg"
+    ]
+  },
+  {
+    "product_id": 28,
+    "detail_image1": "static/images/detail/28_1.jpg",
+    "detail_image2": "static/images/detail/28_2.jpg",
+    "detail_image3": "static/images/detail/28_3.jpg",
+    "detail_image4": "static/images/detail/28_4.jpeg",
+    "detail_image5": "static/images/detail/28_5.jpg",
+    "images": [
+      "static/images/detail/28_1.jpg",
+      "static/images/detail/28_2.jpg",
+      "static/images/detail/28_3.jpg",
+      "static/images/detail/28_4.jpeg",
+      "static/images/detail/28_5.jpg"
+    ]
+  },
+  {
+    "product_id": 29,
+    "detail_image1": "static/images/detail/29_1.jpg",
+    "detail_image2": "static/images/detail/29_2.jpg",
+    "detail_image3": "static/images/detail/29_3.jpg",
+    "detail_image4": "static/images/detail/29_4.png",
+    "detail_image5": "static/images/detail/29_5.jpg",
+    "images": [
+      "static/images/detail/29_1.jpg",
+      "static/images/detail/29_2.jpg",
+      "static/images/detail/29_3.jpg",
+      "static/images/detail/29_4.png",
+      "static/images/detail/29_5.jpg"
+    ]
+  },
+  {
+    "product_id": 30,
+    "detail_image1": "static/images/detail/30_1.jpg",
+    "detail_image2": "static/images/detail/30_2.jpg",
+    "detail_image3": "static/images/detail/30_3.jpg",
+    "detail_image4": "static/images/detail/30_4.jpg",
+    "detail_image5": "static/images/detail/30_5.jpg",
+    "images": [
+      "static/images/detail/30_1.jpg",
+      "static/images/detail/30_2.jpg",
+      "static/images/detail/30_3.jpg",
+      "static/images/detail/30_4.jpg",
+      "static/images/detail/30_5.jpg"
+    ]
+  },
+  {
+    "product_id": 31,
+    "detail_image1": "static/images/detail/31_1.jpg",
+    "detail_image2": "static/images/detail/31_2.jpg",
+    "detail_image3": "static/images/detail/31_3.jpg",
+    "detail_image4": "static/images/detail/31_4.jpg",
+    "detail_image5": "static/images/detail/31_5.png",
+    "images": [
+      "static/images/detail/31_1.jpg",
+      "static/images/detail/31_2.jpg",
+      "static/images/detail/31_3.jpg",
+      "static/images/detail/31_4.jpg",
+      "static/images/detail/31_5.png"
+    ]
+  },
+  {
+    "product_id": 32,
+    "detail_image1": "static/images/detail/32_1.jpg",
+    "detail_image2": "static/images/detail/32_2.jpg",
+    "detail_image3": "static/images/detail/32_3.webp",
+    "detail_image4": "static/images/detail/32_4.png",
+    "detail_image5": "static/images/detail/32_5.jpg",
+    "images": [
+      "static/images/detail/32_1.jpg",
+      "static/images/detail/32_2.jpg",
+      "static/images/detail/32_3.webp",
+      "static/images/detail/32_4.png",
+      "static/images/detail/32_5.jpg"
+    ]
+  },
+  {
+    "product_id": 33,
+    "detail_image1": "static/images/detail/33_1.jpg",
+    "detail_image2": "static/images/detail/33_2.jpg",
+    "detail_image3": "static/images/detail/33_3.jpg",
+    "detail_image4": "static/images/detail/33_4.jpg",
+    "detail_image5": "static/images/detail/33_5.jpg",
+    "images": [
+      "static/images/detail/33_1.jpg",
+      "static/images/detail/33_2.jpg",
+      "static/images/detail/33_3.jpg",
+      "static/images/detail/33_4.jpg",
+      "static/images/detail/33_5.jpg"
+    ]
+  },
+  {
+    "product_id": 34,
+    "detail_image1": "static/images/detail/34_1.jpg",
+    "detail_image2": "static/images/detail/34_2.jpg",
+    "detail_image3": "static/images/detail/34_3.jpg",
+    "detail_image4": "static/images/detail/34_4.jpg",
+    "detail_image5": "static/images/detail/34_5.jpg",
+    "images": [
+      "static/images/detail/34_1.jpg",
+      "static/images/detail/34_2.jpg",
+      "static/images/detail/34_3.jpg",
+      "static/images/detail/34_4.jpg",
+      "static/images/detail/34_5.jpg"
+    ]
+  },
+  {
+    "product_id": 35,
+    "detail_image1": "static/images/detail/35_1.jpg",
+    "detail_image2": "static/images/detail/35_2.jpg",
+    "detail_image3": "static/images/detail/35_3.jpg",
+    "detail_image4": "static/images/detail/35_4.jpg",
+    "detail_image5": "static/images/detail/35_5.jpg",
+    "images": [
+      "static/images/detail/35_1.jpg",
+      "static/images/detail/35_2.jpg",
+      "static/images/detail/35_3.jpg",
+      "static/images/detail/35_4.jpg",
+      "static/images/detail/35_5.jpg"
+    ]
+  },
+  {
+    "product_id": 36,
+    "detail_image1": "static/images/detail/36_1.jpg",
+    "detail_image2": "static/images/detail/36_2.jpg",
+    "detail_image3": "static/images/detail/36_3.jpg",
+    "detail_image4": "static/images/detail/36_4.jpg",
+    "detail_image5": "static/images/detail/36_5.jpg",
+    "images": [
+      "static/images/detail/36_1.jpg",
+      "static/images/detail/36_2.jpg",
+      "static/images/detail/36_3.jpg",
+      "static/images/detail/36_4.jpg",
+      "static/images/detail/36_5.jpg"
+    ]
+  },
+  {
+    "product_id": 37,
+    "detail_image1": "static/images/detail/37_1.jpg",
+    "detail_image2": "static/images/detail/37_2.jpg",
+    "detail_image3": "static/images/detail/37_3.jpg",
+    "detail_image4": "static/images/detail/37_4.jpg",
+    "detail_image5": "static/images/detail/37_5.jpg",
+    "images": [
+      "static/images/detail/37_1.jpg",
+      "static/images/detail/37_2.jpg",
+      "static/images/detail/37_3.jpg",
+      "static/images/detail/37_4.jpg",
+      "static/images/detail/37_5.jpg"
+    ]
+  },
+  {
+    "product_id": 38,
+    "detail_image1": "static/images/detail/38_1.jpg",
+    "detail_image2": "static/images/detail/38_2.jpg",
+    "detail_image3": "static/images/detail/38_3.jpg",
+    "detail_image4": "static/images/detail/38_4.jpg",
+    "detail_image5": "static/images/detail/38_5.jpg",
+    "images": [
+      "static/images/detail/38_1.jpg",
+      "static/images/detail/38_2.jpg",
+      "static/images/detail/38_3.jpg",
+      "static/images/detail/38_4.jpg",
+      "static/images/detail/38_5.jpg"
+    ]
+  },
+  {
+    "product_id": 39,
+    "detail_image1": "static/images/detail/39_1.jpg",
+    "detail_image2": "static/images/detail/39_2.jpg",
+    "detail_image3": "static/images/detail/39_3.jpg",
+    "detail_image4": "static/images/detail/39_4.jpg",
+    "detail_image5": "static/images/detail/39_5.jpg",
+    "images": [
+      "static/images/detail/39_1.jpg",
+      "static/images/detail/39_2.jpg",
+      "static/images/detail/39_3.jpg",
+      "static/images/detail/39_4.jpg",
+      "static/images/detail/39_5.jpg"
+    ]
+  },
+  {
+    "product_id": 40,
+    "detail_image1": "static/images/detail/40_1.jpg",
+    "detail_image2": "static/images/detail/40_2.jpg",
+    "detail_image3": "static/images/detail/40_3.jpg",
+    "detail_image4": "static/images/detail/40_4.jpg",
+    "detail_image5": "static/images/detail/40_5.jpg",
+    "images": [
+      "static/images/detail/40_1.jpg",
+      "static/images/detail/40_2.jpg",
+      "static/images/detail/40_3.jpg",
+      "static/images/detail/40_4.jpg",
+      "static/images/detail/40_5.jpg"
+    ]
+  },
+  {
+    "product_id": 41,
+    "detail_image1": "static/images/detail/41_1.jpg",
+    "detail_image2": "static/images/detail/41_2.jpg",
+    "detail_image3": "static/images/detail/41_3.jpg",
+    "detail_image4": "static/images/detail/41_4.jpg",
+    "detail_image5": "static/images/detail/41_5.jpeg",
+    "images": [
+      "static/images/detail/41_1.jpg",
+      "static/images/detail/41_2.jpg",
+      "static/images/detail/41_3.jpg",
+      "static/images/detail/41_4.jpg",
+      "static/images/detail/41_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 42,
+    "detail_image1": "static/images/detail/42_1.jpg",
+    "detail_image2": "static/images/detail/42_2.jpg",
+    "detail_image3": "static/images/detail/42_3.jpg",
+    "detail_image4": "static/images/detail/42_4.jpg",
+    "detail_image5": "static/images/detail/42_5.jpg",
+    "images": [
+      "static/images/detail/42_1.jpg",
+      "static/images/detail/42_2.jpg",
+      "static/images/detail/42_3.jpg",
+      "static/images/detail/42_4.jpg",
+      "static/images/detail/42_5.jpg"
+    ]
+  },
+  {
+    "product_id": 43,
+    "detail_image1": "static/images/detail/43_1.jpg",
+    "detail_image2": "static/images/detail/43_2.jpg",
+    "detail_image3": "static/images/detail/43_3.jpg",
+    "detail_image4": "static/images/detail/43_4.jpg",
+    "detail_image5": "static/images/detail/43_5.jpg",
+    "images": [
+      "static/images/detail/43_1.jpg",
+      "static/images/detail/43_2.jpg",
+      "static/images/detail/43_3.jpg",
+      "static/images/detail/43_4.jpg",
+      "static/images/detail/43_5.jpg"
+    ]
+  },
+  {
+    "product_id": 44,
+    "detail_image1": "static/images/detail/44_1.jpg",
+    "detail_image2": "static/images/detail/44_2.jpg",
+    "detail_image3": "static/images/detail/44_3.jpg",
+    "detail_image4": "static/images/detail/44_4.jpg",
+    "detail_image5": "static/images/detail/44_5.jpg",
+    "images": [
+      "static/images/detail/44_1.jpg",
+      "static/images/detail/44_2.jpg",
+      "static/images/detail/44_3.jpg",
+      "static/images/detail/44_4.jpg",
+      "static/images/detail/44_5.jpg"
+    ]
+  },
+  {
+    "product_id": 45,
+    "detail_image1": "static/images/detail/45_1.jpg",
+    "detail_image2": "static/images/detail/45_2.jpg",
+    "detail_image3": "static/images/detail/45_3.jpg",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/45_1.jpg",
+      "static/images/detail/45_2.jpg",
+      "static/images/detail/45_3.jpg"
+    ]
+  },
+  {
+    "product_id": 46,
+    "detail_image1": "static/images/detail/46_1.jpg",
+    "detail_image2": "static/images/detail/46_2.jpg",
+    "detail_image3": "static/images/detail/46_3.jpg",
+    "detail_image4": "static/images/detail/46_4.jpg",
+    "detail_image5": "static/images/detail/46_5.jpg",
+    "images": [
+      "static/images/detail/46_1.jpg",
+      "static/images/detail/46_2.jpg",
+      "static/images/detail/46_3.jpg",
+      "static/images/detail/46_4.jpg",
+      "static/images/detail/46_5.jpg"
+    ]
+  },
+  {
+    "product_id": 47,
+    "detail_image1": "static/images/detail/47_1.jpg",
+    "detail_image2": "static/images/detail/47_2.jpg",
+    "detail_image3": "static/images/detail/47_3.webp",
+    "detail_image4": "static/images/detail/47_4.jpg",
+    "detail_image5": "static/images/detail/47_5.jpg",
+    "images": [
+      "static/images/detail/47_1.jpg",
+      "static/images/detail/47_2.jpg",
+      "static/images/detail/47_3.webp",
+      "static/images/detail/47_4.jpg",
+      "static/images/detail/47_5.jpg"
+    ]
+  },
+  {
+    "product_id": 48,
+    "detail_image1": "static/images/detail/48_1.jpg",
+    "detail_image2": "static/images/detail/48_2.jpg",
+    "detail_image3": "static/images/detail/48_3.jpg",
+    "detail_image4": "static/images/detail/48_4.jpg",
+    "detail_image5": "static/images/detail/48_5.jpg",
+    "images": [
+      "static/images/detail/48_1.jpg",
+      "static/images/detail/48_2.jpg",
+      "static/images/detail/48_3.jpg",
+      "static/images/detail/48_4.jpg",
+      "static/images/detail/48_5.jpg"
+    ]
+  },
+  {
+    "product_id": 49,
+    "detail_image1": "static/images/detail/49_1.jpg",
+    "detail_image2": "static/images/detail/49_2.png",
+    "detail_image3": "static/images/detail/49_3.jpg",
+    "detail_image4": "static/images/detail/49_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/49_1.jpg",
+      "static/images/detail/49_2.png",
+      "static/images/detail/49_3.jpg",
+      "static/images/detail/49_4.jpg"
+    ]
+  },
+  {
+    "product_id": 50,
+    "detail_image1": "static/images/detail/50_1.jpg",
+    "detail_image2": "static/images/detail/50_2.jpg",
+    "detail_image3": "static/images/detail/50_3.jpg",
+    "detail_image4": "static/images/detail/50_4.jpg",
+    "detail_image5": "static/images/detail/50_5.jpg",
+    "images": [
+      "static/images/detail/50_1.jpg",
+      "static/images/detail/50_2.jpg",
+      "static/images/detail/50_3.jpg",
+      "static/images/detail/50_4.jpg",
+      "static/images/detail/50_5.jpg"
+    ]
+  },
+  {
+    "product_id": 51,
+    "detail_image1": "static/images/detail/51_1.jpg",
+    "detail_image2": "static/images/detail/51_2.jpg",
+    "detail_image3": "static/images/detail/51_3.jpg",
+    "detail_image4": "static/images/detail/51_4.jpg",
+    "detail_image5": "static/images/detail/51_5.jpg",
+    "images": [
+      "static/images/detail/51_1.jpg",
+      "static/images/detail/51_2.jpg",
+      "static/images/detail/51_3.jpg",
+      "static/images/detail/51_4.jpg",
+      "static/images/detail/51_5.jpg"
+    ]
+  },
+  {
+    "product_id": 52,
+    "detail_image1": "static/images/detail/52_1.jpg",
+    "detail_image2": "static/images/detail/52_2.jpg",
+    "detail_image3": "static/images/detail/52_3.jpg",
+    "detail_image4": "static/images/detail/52_4.jpg",
+    "detail_image5": "static/images/detail/52_5.jpg",
+    "images": [
+      "static/images/detail/52_1.jpg",
+      "static/images/detail/52_2.jpg",
+      "static/images/detail/52_3.jpg",
+      "static/images/detail/52_4.jpg",
+      "static/images/detail/52_5.jpg"
+    ]
+  },
+  {
+    "product_id": 53,
+    "detail_image1": "static/images/detail/53_1.jpg",
+    "detail_image2": "static/images/detail/53_2.jpg",
+    "detail_image3": "static/images/detail/53_3.jpeg",
+    "detail_image4": "static/images/detail/53_4.jpg",
+    "detail_image5": "static/images/detail/53_5.jpg",
+    "images": [
+      "static/images/detail/53_1.jpg",
+      "static/images/detail/53_2.jpg",
+      "static/images/detail/53_3.jpeg",
+      "static/images/detail/53_4.jpg",
+      "static/images/detail/53_5.jpg"
+    ]
+  },
+  {
+    "product_id": 54,
+    "detail_image1": "static/images/detail/54_1.jpg",
+    "detail_image2": "static/images/detail/54_2.jpg",
+    "detail_image3": "static/images/detail/54_3.jpg",
+    "detail_image4": "static/images/detail/54_4.jpg",
+    "detail_image5": "static/images/detail/54_5.jpg",
+    "images": [
+      "static/images/detail/54_1.jpg",
+      "static/images/detail/54_2.jpg",
+      "static/images/detail/54_3.jpg",
+      "static/images/detail/54_4.jpg",
+      "static/images/detail/54_5.jpg"
+    ]
+  },
+  {
+    "product_id": 55,
+    "detail_image1": "static/images/detail/55_1.jpg",
+    "detail_image2": "static/images/detail/55_2.jpg",
+    "detail_image3": "static/images/detail/55_3.jpg",
+    "detail_image4": "static/images/detail/55_4.jpg",
+    "detail_image5": "static/images/detail/55_5.jpg",
+    "images": [
+      "static/images/detail/55_1.jpg",
+      "static/images/detail/55_2.jpg",
+      "static/images/detail/55_3.jpg",
+      "static/images/detail/55_4.jpg",
+      "static/images/detail/55_5.jpg"
+    ]
+  },
+  {
+    "product_id": 56,
+    "detail_image1": "static/images/detail/56_1.jpg",
+    "detail_image2": "static/images/detail/56_2.jpg",
+    "detail_image3": "static/images/detail/56_3.jpg",
+    "detail_image4": "static/images/detail/56_4.jpg",
+    "detail_image5": "static/images/detail/56_5.jpg",
+    "images": [
+      "static/images/detail/56_1.jpg",
+      "static/images/detail/56_2.jpg",
+      "static/images/detail/56_3.jpg",
+      "static/images/detail/56_4.jpg",
+      "static/images/detail/56_5.jpg"
+    ]
+  },
+  {
+    "product_id": 57,
+    "detail_image1": "static/images/detail/57_1.jpg",
+    "detail_image2": "static/images/detail/57_2.jpg",
+    "detail_image3": "static/images/detail/57_3.jpg",
+    "detail_image4": "static/images/detail/57_4.jpg",
+    "detail_image5": "static/images/detail/57_5.jpg",
+    "images": [
+      "static/images/detail/57_1.jpg",
+      "static/images/detail/57_2.jpg",
+      "static/images/detail/57_3.jpg",
+      "static/images/detail/57_4.jpg",
+      "static/images/detail/57_5.jpg"
+    ]
+  },
+  {
+    "product_id": 58,
+    "detail_image1": "static/images/detail/58_1.jpg",
+    "detail_image2": "static/images/detail/58_2.jpg",
+    "detail_image3": "static/images/detail/58_3.jpg",
+    "detail_image4": "static/images/detail/58_4.png",
+    "detail_image5": "static/images/detail/58_5.jpg",
+    "images": [
+      "static/images/detail/58_1.jpg",
+      "static/images/detail/58_2.jpg",
+      "static/images/detail/58_3.jpg",
+      "static/images/detail/58_4.png",
+      "static/images/detail/58_5.jpg"
+    ]
+  },
+  {
+    "product_id": 59,
+    "detail_image1": "static/images/detail/59_1.jpg",
+    "detail_image2": "static/images/detail/59_2.jpg",
+    "detail_image3": "static/images/detail/59_3.jpg",
+    "detail_image4": "static/images/detail/59_4.jpg",
+    "detail_image5": "static/images/detail/59_5.jpg",
+    "images": [
+      "static/images/detail/59_1.jpg",
+      "static/images/detail/59_2.jpg",
+      "static/images/detail/59_3.jpg",
+      "static/images/detail/59_4.jpg",
+      "static/images/detail/59_5.jpg"
+    ]
+  },
+  {
+    "product_id": 60,
+    "detail_image1": "static/images/detail/60_1.jpg",
+    "detail_image2": "static/images/detail/60_2.jpg",
+    "detail_image3": "static/images/detail/60_3.jpg",
+    "detail_image4": "static/images/detail/60_4.jpg",
+    "detail_image5": "static/images/detail/60_5.jpg",
+    "images": [
+      "static/images/detail/60_1.jpg",
+      "static/images/detail/60_2.jpg",
+      "static/images/detail/60_3.jpg",
+      "static/images/detail/60_4.jpg",
+      "static/images/detail/60_5.jpg"
+    ]
+  },
+  {
+    "product_id": 61,
+    "detail_image1": "static/images/detail/61_1.jpg",
+    "detail_image2": "static/images/detail/61_2.jpg",
+    "detail_image3": "static/images/detail/61_3.jpg",
+    "detail_image4": "static/images/detail/61_4.jpg",
+    "detail_image5": "static/images/detail/61_5.jpg",
+    "images": [
+      "static/images/detail/61_1.jpg",
+      "static/images/detail/61_2.jpg",
+      "static/images/detail/61_3.jpg",
+      "static/images/detail/61_4.jpg",
+      "static/images/detail/61_5.jpg"
+    ]
+  },
+  {
+    "product_id": 62,
+    "detail_image1": "static/images/detail/62_1.jpg",
+    "detail_image2": "static/images/detail/62_2.jpg",
+    "detail_image3": "static/images/detail/62_3.jpg",
+    "detail_image4": "static/images/detail/62_4.jpg",
+    "detail_image5": "static/images/detail/62_5.jpeg",
+    "images": [
+      "static/images/detail/62_1.jpg",
+      "static/images/detail/62_2.jpg",
+      "static/images/detail/62_3.jpg",
+      "static/images/detail/62_4.jpg",
+      "static/images/detail/62_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 63,
+    "detail_image1": "static/images/detail/63_1.jpg",
+    "detail_image2": "static/images/detail/63_2.jpg",
+    "detail_image3": "static/images/detail/63_3.jpg",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/63_1.jpg",
+      "static/images/detail/63_2.jpg",
+      "static/images/detail/63_3.jpg"
+    ]
+  },
+  {
+    "product_id": 64,
+    "detail_image1": "static/images/detail/64_1.jpg",
+    "detail_image2": "static/images/detail/64_2.jpg",
+    "detail_image3": "static/images/detail/64_3.jpg",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/64_1.jpg",
+      "static/images/detail/64_2.jpg",
+      "static/images/detail/64_3.jpg"
+    ]
+  },
+  {
+    "product_id": 65,
+    "detail_image1": "static/images/detail/65_1.jpg",
+    "detail_image2": "static/images/detail/65_2.png",
+    "detail_image3": "static/images/detail/65_3.jpg",
+    "detail_image4": "static/images/detail/65_4.jpg",
+    "detail_image5": "static/images/detail/65_5.jpg",
+    "images": [
+      "static/images/detail/65_1.jpg",
+      "static/images/detail/65_2.png",
+      "static/images/detail/65_3.jpg",
+      "static/images/detail/65_4.jpg",
+      "static/images/detail/65_5.jpg"
+    ]
+  },
+  {
+    "product_id": 66,
+    "detail_image1": "static/images/detail/66_1.jpg",
+    "detail_image2": "static/images/detail/66_2.jpg",
+    "detail_image3": "static/images/detail/66_3.jpg",
+    "detail_image4": "static/images/detail/66_4.jpg",
+    "detail_image5": "static/images/detail/66_5.jpg",
+    "images": [
+      "static/images/detail/66_1.jpg",
+      "static/images/detail/66_2.jpg",
+      "static/images/detail/66_3.jpg",
+      "static/images/detail/66_4.jpg",
+      "static/images/detail/66_5.jpg"
+    ]
+  },
+  {
+    "product_id": 67,
+    "detail_image1": "static/images/detail/67_1.jpg",
+    "detail_image2": "static/images/detail/67_2.jpg",
+    "detail_image3": "static/images/detail/67_3.jpg",
+    "detail_image4": "static/images/detail/67_4.jpg",
+    "detail_image5": "static/images/detail/67_5.jpg",
+    "images": [
+      "static/images/detail/67_1.jpg",
+      "static/images/detail/67_2.jpg",
+      "static/images/detail/67_3.jpg",
+      "static/images/detail/67_4.jpg",
+      "static/images/detail/67_5.jpg"
+    ]
+  },
+  {
+    "product_id": 68,
+    "detail_image1": "static/images/detail/68_1.jpg",
+    "detail_image2": "static/images/detail/68_2.jpg",
+    "detail_image3": "static/images/detail/68_3.jpg",
+    "detail_image4": "static/images/detail/68_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/68_1.jpg",
+      "static/images/detail/68_2.jpg",
+      "static/images/detail/68_3.jpg",
+      "static/images/detail/68_4.jpg"
+    ]
+  },
+  {
+    "product_id": 69,
+    "detail_image1": "static/images/detail/69_1.jpg",
+    "detail_image2": "static/images/detail/69_2.jpg",
+    "detail_image3": "static/images/detail/69_3.jpg",
+    "detail_image4": "static/images/detail/69_4.jpg",
+    "detail_image5": "static/images/detail/69_5.jpg",
+    "images": [
+      "static/images/detail/69_1.jpg",
+      "static/images/detail/69_2.jpg",
+      "static/images/detail/69_3.jpg",
+      "static/images/detail/69_4.jpg",
+      "static/images/detail/69_5.jpg"
+    ]
+  },
+  {
+    "product_id": 70,
+    "detail_image1": "static/images/detail/70_1.png",
+    "detail_image2": "static/images/detail/70_2.jpg",
+    "detail_image3": "static/images/detail/70_3.jpg",
+    "detail_image4": "static/images/detail/70_4.jpg",
+    "detail_image5": "static/images/detail/70_5.jpg",
+    "images": [
+      "static/images/detail/70_1.png",
+      "static/images/detail/70_2.jpg",
+      "static/images/detail/70_3.jpg",
+      "static/images/detail/70_4.jpg",
+      "static/images/detail/70_5.jpg"
+    ]
+  },
+  {
+    "product_id": 71,
+    "detail_image1": "static/images/detail/71_1.jpg",
+    "detail_image2": "static/images/detail/71_2.jpg",
+    "detail_image3": "static/images/detail/71_3.png",
+    "detail_image4": "static/images/detail/71_4.jpg",
+    "detail_image5": "static/images/detail/71_5.jpg",
+    "images": [
+      "static/images/detail/71_1.jpg",
+      "static/images/detail/71_2.jpg",
+      "static/images/detail/71_3.png",
+      "static/images/detail/71_4.jpg",
+      "static/images/detail/71_5.jpg"
+    ]
+  },
+  {
+    "product_id": 72,
+    "detail_image1": "static/images/detail/72_1.jpg",
+    "detail_image2": "static/images/detail/72_2.jpg",
+    "detail_image3": "static/images/detail/72_3.jpg",
+    "detail_image4": "static/images/detail/72_4.jpg",
+    "detail_image5": "static/images/detail/72_5.jpg",
+    "images": [
+      "static/images/detail/72_1.jpg",
+      "static/images/detail/72_2.jpg",
+      "static/images/detail/72_3.jpg",
+      "static/images/detail/72_4.jpg",
+      "static/images/detail/72_5.jpg"
+    ]
+  },
+  {
+    "product_id": 73,
+    "detail_image1": "static/images/detail/73_1.jpg",
+    "detail_image2": "static/images/detail/73_2.jpg",
+    "detail_image3": "static/images/detail/73_3.jpg",
+    "detail_image4": "static/images/detail/73_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/73_1.jpg",
+      "static/images/detail/73_2.jpg",
+      "static/images/detail/73_3.jpg",
+      "static/images/detail/73_4.jpg"
+    ]
+  },
+  {
+    "product_id": 74,
+    "detail_image1": "static/images/detail/74_1.jpg",
+    "detail_image2": "static/images/detail/74_2.jpg",
+    "detail_image3": "static/images/detail/74_3.jpeg",
+    "detail_image4": "static/images/detail/74_4.jpeg",
+    "detail_image5": "static/images/detail/74_5.png",
+    "images": [
+      "static/images/detail/74_1.jpg",
+      "static/images/detail/74_2.jpg",
+      "static/images/detail/74_3.jpeg",
+      "static/images/detail/74_4.jpeg",
+      "static/images/detail/74_5.png"
+    ]
+  },
+  {
+    "product_id": 75,
+    "detail_image1": "static/images/detail/75_1.jpeg",
+    "detail_image2": "static/images/detail/75_2.jpg",
+    "detail_image3": "static/images/detail/75_3.jpg",
+    "detail_image4": "static/images/detail/75_4.jpg",
+    "detail_image5": "static/images/detail/75_5.jpg",
+    "images": [
+      "static/images/detail/75_1.jpeg",
+      "static/images/detail/75_2.jpg",
+      "static/images/detail/75_3.jpg",
+      "static/images/detail/75_4.jpg",
+      "static/images/detail/75_5.jpg"
+    ]
+  },
+  {
+    "product_id": 76,
+    "detail_image1": "static/images/detail/76_1.png",
+    "detail_image2": "static/images/detail/76_2.jpg",
+    "detail_image3": "static/images/detail/76_3.jpg",
+    "detail_image4": "static/images/detail/76_4.png",
+    "detail_image5": "static/images/detail/76_5.jpg",
+    "images": [
+      "static/images/detail/76_1.png",
+      "static/images/detail/76_2.jpg",
+      "static/images/detail/76_3.jpg",
+      "static/images/detail/76_4.png",
+      "static/images/detail/76_5.jpg"
+    ]
+  },
+  {
+    "product_id": 77,
+    "detail_image1": "static/images/detail/77_1.jpg",
+    "detail_image2": "static/images/detail/77_2.jpg",
+    "detail_image3": "static/images/detail/77_3.jpg",
+    "detail_image4": "static/images/detail/77_4.jpg",
+    "detail_image5": "static/images/detail/77_5.jpg",
+    "images": [
+      "static/images/detail/77_1.jpg",
+      "static/images/detail/77_2.jpg",
+      "static/images/detail/77_3.jpg",
+      "static/images/detail/77_4.jpg",
+      "static/images/detail/77_5.jpg"
+    ]
+  },
+  {
+    "product_id": 78,
+    "detail_image1": "static/images/detail/78_1.jpg",
+    "detail_image2": "static/images/detail/78_2.jpg",
+    "detail_image3": "static/images/detail/78_3.jpg",
+    "detail_image4": "static/images/detail/78_4.jpg",
+    "detail_image5": "static/images/detail/78_5.jpg",
+    "images": [
+      "static/images/detail/78_1.jpg",
+      "static/images/detail/78_2.jpg",
+      "static/images/detail/78_3.jpg",
+      "static/images/detail/78_4.jpg",
+      "static/images/detail/78_5.jpg"
+    ]
+  },
+  {
+    "product_id": 79,
+    "detail_image1": "static/images/detail/79_1.jpg",
+    "detail_image2": "static/images/detail/79_2.jpg",
+    "detail_image3": "static/images/detail/79_3.jpg",
+    "detail_image4": "static/images/detail/79_4.jpg",
+    "detail_image5": "static/images/detail/79_5.jpg",
+    "images": [
+      "static/images/detail/79_1.jpg",
+      "static/images/detail/79_2.jpg",
+      "static/images/detail/79_3.jpg",
+      "static/images/detail/79_4.jpg",
+      "static/images/detail/79_5.jpg"
+    ]
+  },
+  {
+    "product_id": 80,
+    "detail_image1": "static/images/detail/80_1.jpg",
+    "detail_image2": "static/images/detail/80_2.png",
+    "detail_image3": "static/images/detail/80_3.jpg",
+    "detail_image4": "static/images/detail/80_4.jpg",
+    "detail_image5": "static/images/detail/80_5.png",
+    "images": [
+      "static/images/detail/80_1.jpg",
+      "static/images/detail/80_2.png",
+      "static/images/detail/80_3.jpg",
+      "static/images/detail/80_4.jpg",
+      "static/images/detail/80_5.png"
+    ]
+  },
+  {
+    "product_id": 81,
+    "detail_image1": "static/images/detail/81_1.jpg",
+    "detail_image2": "static/images/detail/81_2.jpg",
+    "detail_image3": "static/images/detail/81_3.jpg",
+    "detail_image4": "static/images/detail/81_4.jpg",
+    "detail_image5": "static/images/detail/81_5.jpg",
+    "images": [
+      "static/images/detail/81_1.jpg",
+      "static/images/detail/81_2.jpg",
+      "static/images/detail/81_3.jpg",
+      "static/images/detail/81_4.jpg",
+      "static/images/detail/81_5.jpg"
+    ]
+  },
+  {
+    "product_id": 82,
+    "detail_image1": "static/images/detail/82_1.jpg",
+    "detail_image2": "static/images/detail/82_2.jpg",
+    "detail_image3": "static/images/detail/82_3.jpg",
+    "detail_image4": "static/images/detail/82_4.jpg",
+    "detail_image5": "static/images/detail/82_5.jpg",
+    "images": [
+      "static/images/detail/82_1.jpg",
+      "static/images/detail/82_2.jpg",
+      "static/images/detail/82_3.jpg",
+      "static/images/detail/82_4.jpg",
+      "static/images/detail/82_5.jpg"
+    ]
+  },
+  {
+    "product_id": 83,
+    "detail_image1": "static/images/detail/83_1.jpg",
+    "detail_image2": "static/images/detail/83_2.jpg",
+    "detail_image3": "static/images/detail/83_3.jpg",
+    "detail_image4": "static/images/detail/83_4.jpg",
+    "detail_image5": "static/images/detail/83_5.jpg",
+    "images": [
+      "static/images/detail/83_1.jpg",
+      "static/images/detail/83_2.jpg",
+      "static/images/detail/83_3.jpg",
+      "static/images/detail/83_4.jpg",
+      "static/images/detail/83_5.jpg"
+    ]
+  },
+  {
+    "product_id": 84,
+    "detail_image1": "static/images/detail/84_1.jpg",
+    "detail_image2": "static/images/detail/84_2.jpg",
+    "detail_image3": "static/images/detail/84_3.jpg",
+    "detail_image4": "static/images/detail/84_4.jpg",
+    "detail_image5": "static/images/detail/84_5.jpg",
+    "images": [
+      "static/images/detail/84_1.jpg",
+      "static/images/detail/84_2.jpg",
+      "static/images/detail/84_3.jpg",
+      "static/images/detail/84_4.jpg",
+      "static/images/detail/84_5.jpg"
+    ]
+  },
+  {
+    "product_id": 85,
+    "detail_image1": "static/images/detail/85_1.jpg",
+    "detail_image2": "static/images/detail/85_2.jpg",
+    "detail_image3": "static/images/detail/85_3.jpg",
+    "detail_image4": "static/images/detail/85_4.jpg",
+    "detail_image5": "static/images/detail/85_5.png",
+    "images": [
+      "static/images/detail/85_1.jpg",
+      "static/images/detail/85_2.jpg",
+      "static/images/detail/85_3.jpg",
+      "static/images/detail/85_4.jpg",
+      "static/images/detail/85_5.png"
+    ]
+  },
+  {
+    "product_id": 86,
+    "detail_image1": "static/images/detail/86_1.jpg",
+    "detail_image2": "static/images/detail/86_2.jpg",
+    "detail_image3": "static/images/detail/86_3.jpg",
+    "detail_image4": "static/images/detail/86_4.jpg",
+    "detail_image5": "static/images/detail/86_5.jpg",
+    "images": [
+      "static/images/detail/86_1.jpg",
+      "static/images/detail/86_2.jpg",
+      "static/images/detail/86_3.jpg",
+      "static/images/detail/86_4.jpg",
+      "static/images/detail/86_5.jpg"
+    ]
+  },
+  {
+    "product_id": 87,
+    "detail_image1": "static/images/detail/87_1.jpg",
+    "detail_image2": "static/images/detail/87_2.jpg",
+    "detail_image3": "static/images/detail/87_3.jpg",
+    "detail_image4": "static/images/detail/87_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/87_1.jpg",
+      "static/images/detail/87_2.jpg",
+      "static/images/detail/87_3.jpg",
+      "static/images/detail/87_4.jpg"
+    ]
+  },
+  {
+    "product_id": 88,
+    "detail_image1": "static/images/detail/88_1.png",
+    "detail_image2": "static/images/detail/88_2.jpg",
+    "detail_image3": "static/images/detail/88_3.jpg",
+    "detail_image4": "static/images/detail/88_4.jpg",
+    "detail_image5": "static/images/detail/88_5.jpg",
+    "images": [
+      "static/images/detail/88_1.png",
+      "static/images/detail/88_2.jpg",
+      "static/images/detail/88_3.jpg",
+      "static/images/detail/88_4.jpg",
+      "static/images/detail/88_5.jpg"
+    ]
+  },
+  {
+    "product_id": 89,
+    "detail_image1": "static/images/detail/89_1.webp",
+    "detail_image2": "static/images/detail/89_2.jpg",
+    "detail_image3": "static/images/detail/89_3.jpg",
+    "detail_image4": "static/images/detail/89_4.png",
+    "detail_image5": "static/images/detail/89_5.jpg",
+    "images": [
+      "static/images/detail/89_1.webp",
+      "static/images/detail/89_2.jpg",
+      "static/images/detail/89_3.jpg",
+      "static/images/detail/89_4.png",
+      "static/images/detail/89_5.jpg"
+    ]
+  },
+  {
+    "product_id": 90,
+    "detail_image1": "static/images/detail/90_1.jpg",
+    "detail_image2": "static/images/detail/90_2.jpg",
+    "detail_image3": "static/images/detail/90_3.jpg",
+    "detail_image4": "static/images/detail/90_4.jpg",
+    "detail_image5": "static/images/detail/90_5.jpg",
+    "images": [
+      "static/images/detail/90_1.jpg",
+      "static/images/detail/90_2.jpg",
+      "static/images/detail/90_3.jpg",
+      "static/images/detail/90_4.jpg",
+      "static/images/detail/90_5.jpg"
+    ]
+  },
+  {
+    "product_id": 91,
+    "detail_image1": "static/images/detail/91_1.jpg",
+    "detail_image2": "static/images/detail/91_2.jpg",
+    "detail_image3": "static/images/detail/91_3.png",
+    "detail_image4": "static/images/detail/91_4.jpg",
+    "detail_image5": "static/images/detail/91_5.jpg",
+    "images": [
+      "static/images/detail/91_1.jpg",
+      "static/images/detail/91_2.jpg",
+      "static/images/detail/91_3.png",
+      "static/images/detail/91_4.jpg",
+      "static/images/detail/91_5.jpg"
+    ]
+  },
+  {
+    "product_id": 92,
+    "detail_image1": "static/images/detail/92_1.jpg",
+    "detail_image2": "static/images/detail/92_2.jpg",
+    "detail_image3": "static/images/detail/92_3.jpg",
+    "detail_image4": "static/images/detail/92_4.jpg",
+    "detail_image5": "static/images/detail/92_5.png",
+    "images": [
+      "static/images/detail/92_1.jpg",
+      "static/images/detail/92_2.jpg",
+      "static/images/detail/92_3.jpg",
+      "static/images/detail/92_4.jpg",
+      "static/images/detail/92_5.png"
+    ]
+  },
+  {
+    "product_id": 93,
+    "detail_image1": "static/images/detail/93_1.jpg",
+    "detail_image2": "static/images/detail/93_2.jpg",
+    "detail_image3": "static/images/detail/93_3.jpg",
+    "detail_image4": "static/images/detail/93_4.jpg",
+    "detail_image5": "static/images/detail/93_5.jpg",
+    "images": [
+      "static/images/detail/93_1.jpg",
+      "static/images/detail/93_2.jpg",
+      "static/images/detail/93_3.jpg",
+      "static/images/detail/93_4.jpg",
+      "static/images/detail/93_5.jpg"
+    ]
+  },
+  {
+    "product_id": 94,
+    "detail_image1": "static/images/detail/94_1.jpg",
+    "detail_image2": "static/images/detail/94_2.jpg",
+    "detail_image3": "static/images/detail/94_3.jpg",
+    "detail_image4": "static/images/detail/94_4.jpg",
+    "detail_image5": "static/images/detail/94_5.jpg",
+    "images": [
+      "static/images/detail/94_1.jpg",
+      "static/images/detail/94_2.jpg",
+      "static/images/detail/94_3.jpg",
+      "static/images/detail/94_4.jpg",
+      "static/images/detail/94_5.jpg"
+    ]
+  },
+  {
+    "product_id": 95,
+    "detail_image1": "static/images/detail/95_1.png",
+    "detail_image2": "static/images/detail/95_2.jpg",
+    "detail_image3": "static/images/detail/95_3.jpg",
+    "detail_image4": "static/images/detail/95_4.jpg",
+    "detail_image5": "static/images/detail/95_5.jpg",
+    "images": [
+      "static/images/detail/95_1.png",
+      "static/images/detail/95_2.jpg",
+      "static/images/detail/95_3.jpg",
+      "static/images/detail/95_4.jpg",
+      "static/images/detail/95_5.jpg"
+    ]
+  },
+  {
+    "product_id": 96,
+    "detail_image1": "static/images/detail/96_1.jpg",
+    "detail_image2": "static/images/detail/96_2.jpg",
+    "detail_image3": "static/images/detail/96_3.jpg",
+    "detail_image4": "static/images/detail/96_4.jpg",
+    "detail_image5": "static/images/detail/96_5.webp",
+    "images": [
+      "static/images/detail/96_1.jpg",
+      "static/images/detail/96_2.jpg",
+      "static/images/detail/96_3.jpg",
+      "static/images/detail/96_4.jpg",
+      "static/images/detail/96_5.webp"
+    ]
+  },
+  {
+    "product_id": 97,
+    "detail_image1": "static/images/detail/97_1.jpg",
+    "detail_image2": "static/images/detail/97_2.jpg",
+    "detail_image3": "static/images/detail/97_3.jpg",
+    "detail_image4": "static/images/detail/97_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/97_1.jpg",
+      "static/images/detail/97_2.jpg",
+      "static/images/detail/97_3.jpg",
+      "static/images/detail/97_4.jpg"
+    ]
+  },
+  {
+    "product_id": 98,
+    "detail_image1": "static/images/detail/98_1.jpg",
+    "detail_image2": "static/images/detail/98_2.jpg",
+    "detail_image3": "static/images/detail/98_3.jpg",
+    "detail_image4": "static/images/detail/98_4.jpg",
+    "detail_image5": "static/images/detail/98_5.jpg",
+    "images": [
+      "static/images/detail/98_1.jpg",
+      "static/images/detail/98_2.jpg",
+      "static/images/detail/98_3.jpg",
+      "static/images/detail/98_4.jpg",
+      "static/images/detail/98_5.jpg"
+    ]
+  },
+  {
+    "product_id": 99,
+    "detail_image1": "static/images/detail/99_1.jpg",
+    "detail_image2": "static/images/detail/99_2.webp",
+    "detail_image3": "static/images/detail/99_3.jpg",
+    "detail_image4": "static/images/detail/99_4.jpeg",
+    "detail_image5": "static/images/detail/99_5.jpg",
+    "images": [
+      "static/images/detail/99_1.jpg",
+      "static/images/detail/99_2.webp",
+      "static/images/detail/99_3.jpg",
+      "static/images/detail/99_4.jpeg",
+      "static/images/detail/99_5.jpg"
+    ]
+  },
+  {
+    "product_id": 100,
+    "detail_image1": "static/images/detail/100_1.webp",
+    "detail_image2": "static/images/detail/100_2.webp",
+    "detail_image3": "static/images/detail/100_3.webp",
+    "detail_image4": "static/images/detail/100_4.jpg",
+    "detail_image5": "static/images/detail/100_5.jpg",
+    "images": [
+      "static/images/detail/100_1.webp",
+      "static/images/detail/100_2.webp",
+      "static/images/detail/100_3.webp",
+      "static/images/detail/100_4.jpg",
+      "static/images/detail/100_5.jpg"
+    ]
+  },
+  {
+    "product_id": 101,
+    "detail_image1": "static/images/detail/101_1.jpg",
+    "detail_image2": "static/images/detail/101_2.png",
+    "detail_image3": "static/images/detail/101_3.png",
+    "detail_image4": "static/images/detail/101_4.png",
+    "detail_image5": "static/images/detail/101_5.jpg",
+    "images": [
+      "static/images/detail/101_1.jpg",
+      "static/images/detail/101_2.png",
+      "static/images/detail/101_3.png",
+      "static/images/detail/101_4.png",
+      "static/images/detail/101_5.jpg"
+    ]
+  },
+  {
+    "product_id": 102,
+    "detail_image1": "static/images/detail/102_1.png",
+    "detail_image2": "static/images/detail/102_2.jpg",
+    "detail_image3": "static/images/detail/102_3.png",
+    "detail_image4": "static/images/detail/102_4.jpg",
+    "detail_image5": "static/images/detail/102_5.jpg",
+    "images": [
+      "static/images/detail/102_1.png",
+      "static/images/detail/102_2.jpg",
+      "static/images/detail/102_3.png",
+      "static/images/detail/102_4.jpg",
+      "static/images/detail/102_5.jpg"
+    ]
+  },
+  {
+    "product_id": 103,
+    "detail_image1": "static/images/detail/103_1.jpg",
+    "detail_image2": "static/images/detail/103_2.jpg",
+    "detail_image3": "static/images/detail/103_3.jpg",
+    "detail_image4": "static/images/detail/103_4.png",
+    "detail_image5": "static/images/detail/103_5.jpg",
+    "images": [
+      "static/images/detail/103_1.jpg",
+      "static/images/detail/103_2.jpg",
+      "static/images/detail/103_3.jpg",
+      "static/images/detail/103_4.png",
+      "static/images/detail/103_5.jpg"
+    ]
+  },
+  {
+    "product_id": 104,
+    "detail_image1": "static/images/detail/104_1.jpg",
+    "detail_image2": "static/images/detail/104_2.jpg",
+    "detail_image3": "static/images/detail/104_3.jpg",
+    "detail_image4": "static/images/detail/104_4.jpeg",
+    "detail_image5": "static/images/detail/104_5.jpg",
+    "images": [
+      "static/images/detail/104_1.jpg",
+      "static/images/detail/104_2.jpg",
+      "static/images/detail/104_3.jpg",
+      "static/images/detail/104_4.jpeg",
+      "static/images/detail/104_5.jpg"
+    ]
+  },
+  {
+    "product_id": 105,
+    "detail_image1": "static/images/detail/105_1.jpg",
+    "detail_image2": "static/images/detail/105_2.jpg",
+    "detail_image3": "static/images/detail/105_3.jpg",
+    "detail_image4": "static/images/detail/105_4.jpg",
+    "detail_image5": "static/images/detail/105_5.jpg",
+    "images": [
+      "static/images/detail/105_1.jpg",
+      "static/images/detail/105_2.jpg",
+      "static/images/detail/105_3.jpg",
+      "static/images/detail/105_4.jpg",
+      "static/images/detail/105_5.jpg"
+    ]
+  },
+  {
+    "product_id": 106,
+    "detail_image1": "static/images/detail/106_1.png",
+    "detail_image2": "static/images/detail/106_2.jpg",
+    "detail_image3": "static/images/detail/106_3.jpg",
+    "detail_image4": "static/images/detail/106_4.jpg",
+    "detail_image5": "static/images/detail/106_5.jpg",
+    "images": [
+      "static/images/detail/106_1.png",
+      "static/images/detail/106_2.jpg",
+      "static/images/detail/106_3.jpg",
+      "static/images/detail/106_4.jpg",
+      "static/images/detail/106_5.jpg"
+    ]
+  },
+  {
+    "product_id": 107,
+    "detail_image1": "static/images/detail/107_1.jpg",
+    "detail_image2": "static/images/detail/107_2.jpg",
+    "detail_image3": "static/images/detail/107_3.jpg",
+    "detail_image4": "static/images/detail/107_4.jpg",
+    "detail_image5": "static/images/detail/107_5.jpg",
+    "images": [
+      "static/images/detail/107_1.jpg",
+      "static/images/detail/107_2.jpg",
+      "static/images/detail/107_3.jpg",
+      "static/images/detail/107_4.jpg",
+      "static/images/detail/107_5.jpg"
+    ]
+  },
+  {
+    "product_id": 108,
+    "detail_image1": "static/images/detail/108_1.jpg",
+    "detail_image2": "static/images/detail/108_2.jpg",
+    "detail_image3": "static/images/detail/108_3.jpg",
+    "detail_image4": "static/images/detail/108_4.jpg",
+    "detail_image5": "static/images/detail/108_5.jpg",
+    "images": [
+      "static/images/detail/108_1.jpg",
+      "static/images/detail/108_2.jpg",
+      "static/images/detail/108_3.jpg",
+      "static/images/detail/108_4.jpg",
+      "static/images/detail/108_5.jpg"
+    ]
+  },
+  {
+    "product_id": 109,
+    "detail_image1": "static/images/detail/109_1.jpg",
+    "detail_image2": "static/images/detail/109_2.jpg",
+    "detail_image3": "static/images/detail/109_3.jpg",
+    "detail_image4": "static/images/detail/109_4.jpg",
+    "detail_image5": "static/images/detail/109_5.jpg",
+    "images": [
+      "static/images/detail/109_1.jpg",
+      "static/images/detail/109_2.jpg",
+      "static/images/detail/109_3.jpg",
+      "static/images/detail/109_4.jpg",
+      "static/images/detail/109_5.jpg"
+    ]
+  },
+  {
+    "product_id": 110,
+    "detail_image1": "static/images/detail/110_1.jpg",
+    "detail_image2": "static/images/detail/110_2.jpg",
+    "detail_image3": "static/images/detail/110_3.jpeg",
+    "detail_image4": "static/images/detail/110_4.jpeg",
+    "detail_image5": "static/images/detail/110_5.jpg",
+    "images": [
+      "static/images/detail/110_1.jpg",
+      "static/images/detail/110_2.jpg",
+      "static/images/detail/110_3.jpeg",
+      "static/images/detail/110_4.jpeg",
+      "static/images/detail/110_5.jpg"
+    ]
+  },
+  {
+    "product_id": 111,
+    "detail_image1": "static/images/detail/111_1.jpg",
+    "detail_image2": "static/images/detail/111_2.jpg",
+    "detail_image3": "static/images/detail/111_3.png",
+    "detail_image4": "static/images/detail/111_4.jpg",
+    "detail_image5": "static/images/detail/111_5.jpg",
+    "images": [
+      "static/images/detail/111_1.jpg",
+      "static/images/detail/111_2.jpg",
+      "static/images/detail/111_3.png",
+      "static/images/detail/111_4.jpg",
+      "static/images/detail/111_5.jpg"
+    ]
+  },
+  {
+    "product_id": 112,
+    "detail_image1": "static/images/detail/112_1.jpg",
+    "detail_image2": "static/images/detail/112_2.jpg",
+    "detail_image3": "static/images/detail/112_3.jpg",
+    "detail_image4": "static/images/detail/112_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/112_1.jpg",
+      "static/images/detail/112_2.jpg",
+      "static/images/detail/112_3.jpg",
+      "static/images/detail/112_4.jpg"
+    ]
+  },
+  {
+    "product_id": 200,
+    "detail_image1": "static/images/detail/200_1.jpg",
+    "detail_image2": "static/images/detail/200_2.jpg",
+    "detail_image3": "static/images/detail/200_3.jpg",
+    "detail_image4": "static/images/detail/200_4.jpg",
+    "detail_image5": "static/images/detail/200_5.jpg",
+    "images": [
+      "static/images/detail/200_1.jpg",
+      "static/images/detail/200_2.jpg",
+      "static/images/detail/200_3.jpg",
+      "static/images/detail/200_4.jpg",
+      "static/images/detail/200_5.jpg"
+    ]
+  },
+  {
+    "product_id": 201,
+    "detail_image1": "static/images/detail/201_1.jpg",
+    "detail_image2": "static/images/detail/201_2.jpeg",
+    "detail_image3": "static/images/detail/201_3.jpg",
+    "detail_image4": "static/images/detail/201_4.jpg",
+    "detail_image5": "static/images/detail/201_5.jpg",
+    "images": [
+      "static/images/detail/201_1.jpg",
+      "static/images/detail/201_2.jpeg",
+      "static/images/detail/201_3.jpg",
+      "static/images/detail/201_4.jpg",
+      "static/images/detail/201_5.jpg"
+    ]
+  },
+  {
+    "product_id": 202,
+    "detail_image1": "static/images/detail/202_1.jpg",
+    "detail_image2": "static/images/detail/202_2.jpg",
+    "detail_image3": "static/images/detail/202_3.jpg",
+    "detail_image4": "static/images/detail/202_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/202_1.jpg",
+      "static/images/detail/202_2.jpg",
+      "static/images/detail/202_3.jpg",
+      "static/images/detail/202_4.jpg"
+    ]
+  },
+  {
+    "product_id": 203,
+    "detail_image1": "static/images/detail/203_1.jpg",
+    "detail_image2": "static/images/detail/203_2.jpg",
+    "detail_image3": "static/images/detail/203_3.jpg",
+    "detail_image4": "static/images/detail/203_4.jpg",
+    "detail_image5": "static/images/detail/203_5.jpg",
+    "images": [
+      "static/images/detail/203_1.jpg",
+      "static/images/detail/203_2.jpg",
+      "static/images/detail/203_3.jpg",
+      "static/images/detail/203_4.jpg",
+      "static/images/detail/203_5.jpg"
+    ]
+  },
+  {
+    "product_id": 204,
+    "detail_image1": "static/images/detail/204_1.jpg",
+    "detail_image2": "static/images/detail/204_2.jpg",
+    "detail_image3": "static/images/detail/204_3.jpg",
+    "detail_image4": "static/images/detail/204_4.jpg",
+    "detail_image5": "static/images/detail/204_5.jpg",
+    "images": [
+      "static/images/detail/204_1.jpg",
+      "static/images/detail/204_2.jpg",
+      "static/images/detail/204_3.jpg",
+      "static/images/detail/204_4.jpg",
+      "static/images/detail/204_5.jpg"
+    ]
+  },
+  {
+    "product_id": 205,
+    "detail_image1": "static/images/detail/205_1.jpg",
+    "detail_image2": "static/images/detail/205_2.jpg",
+    "detail_image3": "static/images/detail/205_3.jpg",
+    "detail_image4": "static/images/detail/205_4.jpg",
+    "detail_image5": "static/images/detail/205_5.jpg",
+    "images": [
+      "static/images/detail/205_1.jpg",
+      "static/images/detail/205_2.jpg",
+      "static/images/detail/205_3.jpg",
+      "static/images/detail/205_4.jpg",
+      "static/images/detail/205_5.jpg"
+    ]
+  },
+  {
+    "product_id": 206,
+    "detail_image1": "static/images/detail/206_1.jpg",
+    "detail_image2": "static/images/detail/206_2.jpg",
+    "detail_image3": "static/images/detail/206_3.jpg",
+    "detail_image4": "static/images/detail/206_4.jpg",
+    "detail_image5": "static/images/detail/206_5.jpg",
+    "images": [
+      "static/images/detail/206_1.jpg",
+      "static/images/detail/206_2.jpg",
+      "static/images/detail/206_3.jpg",
+      "static/images/detail/206_4.jpg",
+      "static/images/detail/206_5.jpg"
+    ]
+  },
+  {
+    "product_id": 207,
+    "detail_image1": "static/images/detail/207_1.webp",
+    "detail_image2": "static/images/detail/207_2.jpg",
+    "detail_image3": "static/images/detail/207_3.webp",
+    "detail_image4": "static/images/detail/207_4.jpg",
+    "detail_image5": "static/images/detail/207_5.jpg",
+    "images": [
+      "static/images/detail/207_1.webp",
+      "static/images/detail/207_2.jpg",
+      "static/images/detail/207_3.webp",
+      "static/images/detail/207_4.jpg",
+      "static/images/detail/207_5.jpg"
+    ]
+  },
+  {
+    "product_id": 208,
+    "detail_image1": "static/images/detail/208_1.jpg",
+    "detail_image2": "static/images/detail/208_2.jpg",
+    "detail_image3": "static/images/detail/208_3.jpg",
+    "detail_image4": "static/images/detail/208_4.jpg",
+    "detail_image5": "static/images/detail/208_5.jpg",
+    "images": [
+      "static/images/detail/208_1.jpg",
+      "static/images/detail/208_2.jpg",
+      "static/images/detail/208_3.jpg",
+      "static/images/detail/208_4.jpg",
+      "static/images/detail/208_5.jpg"
+    ]
+  },
+  {
+    "product_id": 209,
+    "detail_image1": "static/images/detail/209_1.jpg",
+    "detail_image2": "static/images/detail/209_2.jpg",
+    "detail_image3": "static/images/detail/209_3.jpg",
+    "detail_image4": "static/images/detail/209_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/209_1.jpg",
+      "static/images/detail/209_2.jpg",
+      "static/images/detail/209_3.jpg",
+      "static/images/detail/209_4.jpg"
+    ]
+  },
+  {
+    "product_id": 210,
+    "detail_image1": "static/images/detail/210_1.jpg",
+    "detail_image2": "static/images/detail/210_2.png",
+    "detail_image3": "static/images/detail/210_3.jpg",
+    "detail_image4": "static/images/detail/210_4.jpg",
+    "detail_image5": "static/images/detail/210_5.jpg",
+    "images": [
+      "static/images/detail/210_1.jpg",
+      "static/images/detail/210_2.png",
+      "static/images/detail/210_3.jpg",
+      "static/images/detail/210_4.jpg",
+      "static/images/detail/210_5.jpg"
+    ]
+  },
+  {
+    "product_id": 211,
+    "detail_image1": "static/images/detail/211_1.png",
+    "detail_image2": "static/images/detail/211_2.jpg",
+    "detail_image3": "static/images/detail/211_3.png",
+    "detail_image4": "static/images/detail/211_4.png",
+    "detail_image5": "static/images/detail/211_5.jpg",
+    "images": [
+      "static/images/detail/211_1.png",
+      "static/images/detail/211_2.jpg",
+      "static/images/detail/211_3.png",
+      "static/images/detail/211_4.png",
+      "static/images/detail/211_5.jpg"
+    ]
+  },
+  {
+    "product_id": 212,
+    "detail_image1": "static/images/detail/212_1.jpg",
+    "detail_image2": "static/images/detail/212_2.jpg",
+    "detail_image3": "static/images/detail/212_3.jpg",
+    "detail_image4": "static/images/detail/212_4.jpg",
+    "detail_image5": "static/images/detail/212_5.jpg",
+    "images": [
+      "static/images/detail/212_1.jpg",
+      "static/images/detail/212_2.jpg",
+      "static/images/detail/212_3.jpg",
+      "static/images/detail/212_4.jpg",
+      "static/images/detail/212_5.jpg"
+    ]
+  },
+  {
+    "product_id": 213,
+    "detail_image1": "static/images/detail/213_1.jpg",
+    "detail_image2": "static/images/detail/213_2.jpeg",
+    "detail_image3": "static/images/detail/213_3.jpg",
+    "detail_image4": "static/images/detail/213_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/213_1.jpg",
+      "static/images/detail/213_2.jpeg",
+      "static/images/detail/213_3.jpg",
+      "static/images/detail/213_4.jpg"
+    ]
+  },
+  {
+    "product_id": 214,
+    "detail_image1": "static/images/detail/214_1.jpg",
+    "detail_image2": "static/images/detail/214_2.jpg",
+    "detail_image3": "static/images/detail/214_3.png",
+    "detail_image4": "static/images/detail/214_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/214_1.jpg",
+      "static/images/detail/214_2.jpg",
+      "static/images/detail/214_3.png",
+      "static/images/detail/214_4.jpg"
+    ]
+  },
+  {
+    "product_id": 215,
+    "detail_image1": "static/images/detail/215_1.png",
+    "detail_image2": "static/images/detail/215_2.jpg",
+    "detail_image3": "static/images/detail/215_3.jpg",
+    "detail_image4": "static/images/detail/215_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/215_1.png",
+      "static/images/detail/215_2.jpg",
+      "static/images/detail/215_3.jpg",
+      "static/images/detail/215_4.jpg"
+    ]
+  },
+  {
+    "product_id": 216,
+    "detail_image1": "static/images/detail/216_1.jpg",
+    "detail_image2": "static/images/detail/216_2.jpg",
+    "detail_image3": "static/images/detail/216_3.jpg",
+    "detail_image4": "static/images/detail/216_4.jpg",
+    "detail_image5": "static/images/detail/216_5.jpg",
+    "images": [
+      "static/images/detail/216_1.jpg",
+      "static/images/detail/216_2.jpg",
+      "static/images/detail/216_3.jpg",
+      "static/images/detail/216_4.jpg",
+      "static/images/detail/216_5.jpg"
+    ]
+  },
+  {
+    "product_id": 217,
+    "detail_image1": "static/images/detail/217_1.jpg",
+    "detail_image2": "static/images/detail/217_2.jpg",
+    "detail_image3": "static/images/detail/217_3.jpg",
+    "detail_image4": "static/images/detail/217_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/217_1.jpg",
+      "static/images/detail/217_2.jpg",
+      "static/images/detail/217_3.jpg",
+      "static/images/detail/217_4.jpg"
+    ]
+  },
+  {
+    "product_id": 218,
+    "detail_image1": "static/images/detail/218_1.png",
+    "detail_image2": "static/images/detail/218_2.jpg",
+    "detail_image3": "static/images/detail/218_3.jpg",
+    "detail_image4": "static/images/detail/218_4.png",
+    "detail_image5": "static/images/detail/218_5.jpg",
+    "images": [
+      "static/images/detail/218_1.png",
+      "static/images/detail/218_2.jpg",
+      "static/images/detail/218_3.jpg",
+      "static/images/detail/218_4.png",
+      "static/images/detail/218_5.jpg"
+    ]
+  },
+  {
+    "product_id": 219,
+    "detail_image1": "static/images/detail/219_1.jpg",
+    "detail_image2": "static/images/detail/219_2.jpg",
+    "detail_image3": "static/images/detail/219_3.jpg",
+    "detail_image4": "static/images/detail/219_4.jpg",
+    "detail_image5": "static/images/detail/219_5.jpg",
+    "images": [
+      "static/images/detail/219_1.jpg",
+      "static/images/detail/219_2.jpg",
+      "static/images/detail/219_3.jpg",
+      "static/images/detail/219_4.jpg",
+      "static/images/detail/219_5.jpg"
+    ]
+  },
+  {
+    "product_id": 220,
+    "detail_image1": "static/images/detail/220_1.jpeg",
+    "detail_image2": "static/images/detail/220_2.jpg",
+    "detail_image3": "static/images/detail/220_3.jpg",
+    "detail_image4": "static/images/detail/220_4.jpg",
+    "detail_image5": "static/images/detail/220_5.png",
+    "images": [
+      "static/images/detail/220_1.jpeg",
+      "static/images/detail/220_2.jpg",
+      "static/images/detail/220_3.jpg",
+      "static/images/detail/220_4.jpg",
+      "static/images/detail/220_5.png"
+    ]
+  },
+  {
+    "product_id": 221,
+    "detail_image1": "static/images/detail/221_1.jpg",
+    "detail_image2": "static/images/detail/221_2.jpg",
+    "detail_image3": "static/images/detail/221_3.jpg",
+    "detail_image4": "static/images/detail/221_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/221_1.jpg",
+      "static/images/detail/221_2.jpg",
+      "static/images/detail/221_3.jpg",
+      "static/images/detail/221_4.jpg"
+    ]
+  },
+  {
+    "product_id": 222,
+    "detail_image1": "static/images/detail/222_1.jpg",
+    "detail_image2": "static/images/detail/222_2.jpg",
+    "detail_image3": "static/images/detail/222_3.jpg",
+    "detail_image4": "static/images/detail/222_4.jpg",
+    "detail_image5": "static/images/detail/222_5.jpg",
+    "images": [
+      "static/images/detail/222_1.jpg",
+      "static/images/detail/222_2.jpg",
+      "static/images/detail/222_3.jpg",
+      "static/images/detail/222_4.jpg",
+      "static/images/detail/222_5.jpg"
+    ]
+  },
+  {
+    "product_id": 223,
+    "detail_image1": "static/images/detail/223_1.jpg",
+    "detail_image2": "static/images/detail/223_2.jpeg",
+    "detail_image3": "static/images/detail/223_3.jpg",
+    "detail_image4": "static/images/detail/223_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/223_1.jpg",
+      "static/images/detail/223_2.jpeg",
+      "static/images/detail/223_3.jpg",
+      "static/images/detail/223_4.jpg"
+    ]
+  },
+  {
+    "product_id": 224,
+    "detail_image1": "static/images/detail/224_1.jpg",
+    "detail_image2": "static/images/detail/224_2.jpg",
+    "detail_image3": "static/images/detail/224_3.jpg",
+    "detail_image4": "static/images/detail/224_4.webp",
+    "detail_image5": "static/images/detail/224_5.jpg",
+    "images": [
+      "static/images/detail/224_1.jpg",
+      "static/images/detail/224_2.jpg",
+      "static/images/detail/224_3.jpg",
+      "static/images/detail/224_4.webp",
+      "static/images/detail/224_5.jpg"
+    ]
+  },
+  {
+    "product_id": 225,
+    "detail_image1": "static/images/detail/225_1.jpg",
+    "detail_image2": "static/images/detail/225_2.jpg",
+    "detail_image3": "static/images/detail/225_3.jpg",
+    "detail_image4": "static/images/detail/225_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/225_1.jpg",
+      "static/images/detail/225_2.jpg",
+      "static/images/detail/225_3.jpg",
+      "static/images/detail/225_4.jpg"
+    ]
+  },
+  {
+    "product_id": 226,
+    "detail_image1": "static/images/detail/226_1.jpg",
+    "detail_image2": "static/images/detail/226_2.png",
+    "detail_image3": "static/images/detail/226_3.jpg",
+    "detail_image4": "static/images/detail/226_4.jpg",
+    "detail_image5": "static/images/detail/226_5.jpg",
+    "images": [
+      "static/images/detail/226_1.jpg",
+      "static/images/detail/226_2.png",
+      "static/images/detail/226_3.jpg",
+      "static/images/detail/226_4.jpg",
+      "static/images/detail/226_5.jpg"
+    ]
+  },
+  {
+    "product_id": 227,
+    "detail_image1": "static/images/detail/227_1.jpg",
+    "detail_image2": "static/images/detail/227_2.jpg",
+    "detail_image3": "static/images/detail/227_3.jpg",
+    "detail_image4": "static/images/detail/227_4.jpg",
+    "detail_image5": "static/images/detail/227_5.jpg",
+    "images": [
+      "static/images/detail/227_1.jpg",
+      "static/images/detail/227_2.jpg",
+      "static/images/detail/227_3.jpg",
+      "static/images/detail/227_4.jpg",
+      "static/images/detail/227_5.jpg"
+    ]
+  },
+  {
+    "product_id": 228,
+    "detail_image1": "static/images/detail/228_1.jpg",
+    "detail_image2": "static/images/detail/228_2.jpg",
+    "detail_image3": "static/images/detail/228_3.png",
+    "detail_image4": "static/images/detail/228_4.jpg",
+    "detail_image5": "static/images/detail/228_5.png",
+    "images": [
+      "static/images/detail/228_1.jpg",
+      "static/images/detail/228_2.jpg",
+      "static/images/detail/228_3.png",
+      "static/images/detail/228_4.jpg",
+      "static/images/detail/228_5.png"
+    ]
+  },
+  {
+    "product_id": 229,
+    "detail_image1": "static/images/detail/229_1.jpg",
+    "detail_image2": "static/images/detail/229_2.png",
+    "detail_image3": "static/images/detail/229_3.png",
+    "detail_image4": "static/images/detail/229_4.jpg",
+    "detail_image5": "static/images/detail/229_5.png",
+    "images": [
+      "static/images/detail/229_1.jpg",
+      "static/images/detail/229_2.png",
+      "static/images/detail/229_3.png",
+      "static/images/detail/229_4.jpg",
+      "static/images/detail/229_5.png"
+    ]
+  },
+  {
+    "product_id": 230,
+    "detail_image1": "static/images/detail/230_1.jpg",
+    "detail_image2": "static/images/detail/230_2.jpg",
+    "detail_image3": "static/images/detail/230_3.jpg",
+    "detail_image4": "static/images/detail/230_4.jpg",
+    "detail_image5": "static/images/detail/230_5.jpg",
+    "images": [
+      "static/images/detail/230_1.jpg",
+      "static/images/detail/230_2.jpg",
+      "static/images/detail/230_3.jpg",
+      "static/images/detail/230_4.jpg",
+      "static/images/detail/230_5.jpg"
+    ]
+  },
+  {
+    "product_id": 231,
+    "detail_image1": "static/images/detail/231_1.jpg",
+    "detail_image2": "static/images/detail/231_2.jpeg",
+    "detail_image3": "static/images/detail/231_3.png",
+    "detail_image4": "static/images/detail/231_4.jpg",
+    "detail_image5": "static/images/detail/231_5.jpg",
+    "images": [
+      "static/images/detail/231_1.jpg",
+      "static/images/detail/231_2.jpeg",
+      "static/images/detail/231_3.png",
+      "static/images/detail/231_4.jpg",
+      "static/images/detail/231_5.jpg"
+    ]
+  },
+  {
+    "product_id": 232,
+    "detail_image1": "static/images/detail/232_1.jpg",
+    "detail_image2": "static/images/detail/232_2.jpg",
+    "detail_image3": "static/images/detail/232_3.jpg",
+    "detail_image4": "static/images/detail/232_4.jpg",
+    "detail_image5": "static/images/detail/232_5.jpg",
+    "images": [
+      "static/images/detail/232_1.jpg",
+      "static/images/detail/232_2.jpg",
+      "static/images/detail/232_3.jpg",
+      "static/images/detail/232_4.jpg",
+      "static/images/detail/232_5.jpg"
+    ]
+  },
+  {
+    "product_id": 233,
+    "detail_image1": "static/images/detail/233_1.jpg",
+    "detail_image2": "static/images/detail/233_2.jpg",
+    "detail_image3": "static/images/detail/233_3.jpg",
+    "detail_image4": "static/images/detail/233_4.jpg",
+    "detail_image5": "static/images/detail/233_5.jpg",
+    "images": [
+      "static/images/detail/233_1.jpg",
+      "static/images/detail/233_2.jpg",
+      "static/images/detail/233_3.jpg",
+      "static/images/detail/233_4.jpg",
+      "static/images/detail/233_5.jpg"
+    ]
+  },
+  {
+    "product_id": 234,
+    "detail_image1": "static/images/detail/234_1.jpg",
+    "detail_image2": "static/images/detail/234_2.jpg",
+    "detail_image3": "static/images/detail/234_3.jpg",
+    "detail_image4": "static/images/detail/234_4.jpg",
+    "detail_image5": "static/images/detail/234_5.jpg",
+    "images": [
+      "static/images/detail/234_1.jpg",
+      "static/images/detail/234_2.jpg",
+      "static/images/detail/234_3.jpg",
+      "static/images/detail/234_4.jpg",
+      "static/images/detail/234_5.jpg"
+    ]
+  },
+  {
+    "product_id": 235,
+    "detail_image1": "static/images/detail/235_1.jpg",
+    "detail_image2": "static/images/detail/235_2.jpg",
+    "detail_image3": "static/images/detail/235_3.jpg",
+    "detail_image4": "static/images/detail/235_4.jpg",
+    "detail_image5": "static/images/detail/235_5.jpg",
+    "images": [
+      "static/images/detail/235_1.jpg",
+      "static/images/detail/235_2.jpg",
+      "static/images/detail/235_3.jpg",
+      "static/images/detail/235_4.jpg",
+      "static/images/detail/235_5.jpg"
+    ]
+  },
+  {
+    "product_id": 236,
+    "detail_image1": "static/images/detail/236_1.jpg",
+    "detail_image2": "static/images/detail/236_2.jpg",
+    "detail_image3": "static/images/detail/236_3.jpg",
+    "detail_image4": "static/images/detail/236_4.jpeg",
+    "detail_image5": "static/images/detail/236_5.jpg",
+    "images": [
+      "static/images/detail/236_1.jpg",
+      "static/images/detail/236_2.jpg",
+      "static/images/detail/236_3.jpg",
+      "static/images/detail/236_4.jpeg",
+      "static/images/detail/236_5.jpg"
+    ]
+  },
+  {
+    "product_id": 237,
+    "detail_image1": "static/images/detail/237_1.png",
+    "detail_image2": "static/images/detail/237_2.png",
+    "detail_image3": "static/images/detail/237_3.jpg",
+    "detail_image4": "static/images/detail/237_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/237_1.png",
+      "static/images/detail/237_2.png",
+      "static/images/detail/237_3.jpg",
+      "static/images/detail/237_4.jpg"
+    ]
+  },
+  {
+    "product_id": 238,
+    "detail_image1": "static/images/detail/238_1.jpg",
+    "detail_image2": "static/images/detail/238_2.png",
+    "detail_image3": "static/images/detail/238_3.png",
+    "detail_image4": "static/images/detail/238_4.png",
+    "detail_image5": "static/images/detail/238_5.jpg",
+    "images": [
+      "static/images/detail/238_1.jpg",
+      "static/images/detail/238_2.png",
+      "static/images/detail/238_3.png",
+      "static/images/detail/238_4.png",
+      "static/images/detail/238_5.jpg"
+    ]
+  },
+  {
+    "product_id": 239,
+    "detail_image1": "static/images/detail/239_1.jpeg",
+    "detail_image2": "static/images/detail/239_2.jpg",
+    "detail_image3": "static/images/detail/239_3.png",
+    "detail_image4": "static/images/detail/239_4.png",
+    "detail_image5": "static/images/detail/239_5.png",
+    "images": [
+      "static/images/detail/239_1.jpeg",
+      "static/images/detail/239_2.jpg",
+      "static/images/detail/239_3.png",
+      "static/images/detail/239_4.png",
+      "static/images/detail/239_5.png"
+    ]
+  },
+  {
+    "product_id": 240,
+    "detail_image1": "static/images/detail/240_1.jpg",
+    "detail_image2": "static/images/detail/240_2.jpg",
+    "detail_image3": "static/images/detail/240_3.jpg",
+    "detail_image4": "static/images/detail/240_4.jpg",
+    "detail_image5": "static/images/detail/240_5.jpg",
+    "images": [
+      "static/images/detail/240_1.jpg",
+      "static/images/detail/240_2.jpg",
+      "static/images/detail/240_3.jpg",
+      "static/images/detail/240_4.jpg",
+      "static/images/detail/240_5.jpg"
+    ]
+  },
+  {
+    "product_id": 241,
+    "detail_image1": "static/images/detail/241_1.jpg",
+    "detail_image2": "static/images/detail/241_2.jpg",
+    "detail_image3": "static/images/detail/241_3.jpg",
+    "detail_image4": "static/images/detail/241_4.jpg",
+    "detail_image5": "static/images/detail/241_5.jpg",
+    "images": [
+      "static/images/detail/241_1.jpg",
+      "static/images/detail/241_2.jpg",
+      "static/images/detail/241_3.jpg",
+      "static/images/detail/241_4.jpg",
+      "static/images/detail/241_5.jpg"
+    ]
+  },
+  {
+    "product_id": 242,
+    "detail_image1": "static/images/detail/242_1.jpg",
+    "detail_image2": "static/images/detail/242_2.jpg",
+    "detail_image3": "static/images/detail/242_3.jpg",
+    "detail_image4": "static/images/detail/242_4.jpeg",
+    "detail_image5": "static/images/detail/242_5.jpg",
+    "images": [
+      "static/images/detail/242_1.jpg",
+      "static/images/detail/242_2.jpg",
+      "static/images/detail/242_3.jpg",
+      "static/images/detail/242_4.jpeg",
+      "static/images/detail/242_5.jpg"
+    ]
+  },
+  {
+    "product_id": 243,
+    "detail_image1": "static/images/detail/243_1.jpg",
+    "detail_image2": "static/images/detail/243_2.jpg",
+    "detail_image3": "static/images/detail/243_3.jpg",
+    "detail_image4": "static/images/detail/243_4.jpg",
+    "detail_image5": "static/images/detail/243_5.jpg",
+    "images": [
+      "static/images/detail/243_1.jpg",
+      "static/images/detail/243_2.jpg",
+      "static/images/detail/243_3.jpg",
+      "static/images/detail/243_4.jpg",
+      "static/images/detail/243_5.jpg"
+    ]
+  },
+  {
+    "product_id": 244,
+    "detail_image1": "static/images/detail/244_1.jpg",
+    "detail_image2": "static/images/detail/244_2.jpg",
+    "detail_image3": "static/images/detail/244_3.jpg",
+    "detail_image4": "static/images/detail/244_4.jpg",
+    "detail_image5": "static/images/detail/244_5.jpg",
+    "images": [
+      "static/images/detail/244_1.jpg",
+      "static/images/detail/244_2.jpg",
+      "static/images/detail/244_3.jpg",
+      "static/images/detail/244_4.jpg",
+      "static/images/detail/244_5.jpg"
+    ]
+  },
+  {
+    "product_id": 245,
+    "detail_image1": "static/images/detail/245_1.jpg",
+    "detail_image2": "static/images/detail/245_2.jpg",
+    "detail_image3": "static/images/detail/245_3.jpg",
+    "detail_image4": "static/images/detail/245_4.jpg",
+    "detail_image5": "static/images/detail/245_5.jpg",
+    "images": [
+      "static/images/detail/245_1.jpg",
+      "static/images/detail/245_2.jpg",
+      "static/images/detail/245_3.jpg",
+      "static/images/detail/245_4.jpg",
+      "static/images/detail/245_5.jpg"
+    ]
+  },
+  {
+    "product_id": 246,
+    "detail_image1": "static/images/detail/246_1.jpg",
+    "detail_image2": "static/images/detail/246_2.jpg",
+    "detail_image3": "static/images/detail/246_3.jpg",
+    "detail_image4": "static/images/detail/246_4.jpg",
+    "detail_image5": "static/images/detail/246_5.jpg",
+    "images": [
+      "static/images/detail/246_1.jpg",
+      "static/images/detail/246_2.jpg",
+      "static/images/detail/246_3.jpg",
+      "static/images/detail/246_4.jpg",
+      "static/images/detail/246_5.jpg"
+    ]
+  },
+  {
+    "product_id": 247,
+    "detail_image1": "static/images/detail/247_1.jpg",
+    "detail_image2": "static/images/detail/247_2.jpg",
+    "detail_image3": "static/images/detail/247_3.jpg",
+    "detail_image4": "static/images/detail/247_4.jpg",
+    "detail_image5": "static/images/detail/247_5.jpg",
+    "images": [
+      "static/images/detail/247_1.jpg",
+      "static/images/detail/247_2.jpg",
+      "static/images/detail/247_3.jpg",
+      "static/images/detail/247_4.jpg",
+      "static/images/detail/247_5.jpg"
+    ]
+  },
+  {
+    "product_id": 248,
+    "detail_image1": "static/images/detail/248_1.jpg",
+    "detail_image2": "static/images/detail/248_2.jpg",
+    "detail_image3": "static/images/detail/248_3.jpg",
+    "detail_image4": "static/images/detail/248_4.jpg",
+    "detail_image5": "static/images/detail/248_5.jpg",
+    "images": [
+      "static/images/detail/248_1.jpg",
+      "static/images/detail/248_2.jpg",
+      "static/images/detail/248_3.jpg",
+      "static/images/detail/248_4.jpg",
+      "static/images/detail/248_5.jpg"
+    ]
+  },
+  {
+    "product_id": 249,
+    "detail_image1": "static/images/detail/249_1.jpg",
+    "detail_image2": "static/images/detail/249_2.jpg",
+    "detail_image3": "static/images/detail/249_3.jpg",
+    "detail_image4": "static/images/detail/249_4.jpg",
+    "detail_image5": "static/images/detail/249_5.jpeg",
+    "images": [
+      "static/images/detail/249_1.jpg",
+      "static/images/detail/249_2.jpg",
+      "static/images/detail/249_3.jpg",
+      "static/images/detail/249_4.jpg",
+      "static/images/detail/249_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 250,
+    "detail_image1": "static/images/detail/250_1.jpg",
+    "detail_image2": "static/images/detail/250_2.jpg",
+    "detail_image3": "static/images/detail/250_3.jpg",
+    "detail_image4": "static/images/detail/250_4.jpg",
+    "detail_image5": "static/images/detail/250_5.jpg",
+    "images": [
+      "static/images/detail/250_1.jpg",
+      "static/images/detail/250_2.jpg",
+      "static/images/detail/250_3.jpg",
+      "static/images/detail/250_4.jpg",
+      "static/images/detail/250_5.jpg"
+    ]
+  },
+  {
+    "product_id": 251,
+    "detail_image1": "static/images/detail/251_1.png",
+    "detail_image2": "static/images/detail/251_2.jpg",
+    "detail_image3": "static/images/detail/251_3.jpg",
+    "detail_image4": "static/images/detail/251_4.jpg",
+    "detail_image5": "static/images/detail/251_5.png",
+    "images": [
+      "static/images/detail/251_1.png",
+      "static/images/detail/251_2.jpg",
+      "static/images/detail/251_3.jpg",
+      "static/images/detail/251_4.jpg",
+      "static/images/detail/251_5.png"
+    ]
+  },
+  {
+    "product_id": 252,
+    "detail_image1": "static/images/detail/252_1.jpg",
+    "detail_image2": "static/images/detail/252_2.png",
+    "detail_image3": "static/images/detail/252_3.jpg",
+    "detail_image4": "static/images/detail/252_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/252_1.jpg",
+      "static/images/detail/252_2.png",
+      "static/images/detail/252_3.jpg",
+      "static/images/detail/252_4.jpg"
+    ]
+  },
+  {
+    "product_id": 253,
+    "detail_image1": "static/images/detail/253_1.jpg",
+    "detail_image2": "static/images/detail/253_2.jpg",
+    "detail_image3": "static/images/detail/253_3.jpg",
+    "detail_image4": "static/images/detail/253_4.jpg",
+    "detail_image5": "static/images/detail/253_5.jpg",
+    "images": [
+      "static/images/detail/253_1.jpg",
+      "static/images/detail/253_2.jpg",
+      "static/images/detail/253_3.jpg",
+      "static/images/detail/253_4.jpg",
+      "static/images/detail/253_5.jpg"
+    ]
+  },
+  {
+    "product_id": 254,
+    "detail_image1": "static/images/detail/254_1.jpg",
+    "detail_image2": "static/images/detail/254_2.png",
+    "detail_image3": "static/images/detail/254_3.jpg",
+    "detail_image4": "static/images/detail/254_4.jpg",
+    "detail_image5": "static/images/detail/254_5.jpeg",
+    "images": [
+      "static/images/detail/254_1.jpg",
+      "static/images/detail/254_2.png",
+      "static/images/detail/254_3.jpg",
+      "static/images/detail/254_4.jpg",
+      "static/images/detail/254_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 255,
+    "detail_image1": "static/images/detail/255_1.jpg",
+    "detail_image2": "static/images/detail/255_2.jpg",
+    "detail_image3": "static/images/detail/255_3.jpg",
+    "detail_image4": "static/images/detail/255_4.jpeg",
+    "detail_image5": "static/images/detail/255_5.jpg",
+    "images": [
+      "static/images/detail/255_1.jpg",
+      "static/images/detail/255_2.jpg",
+      "static/images/detail/255_3.jpg",
+      "static/images/detail/255_4.jpeg",
+      "static/images/detail/255_5.jpg"
+    ]
+  },
+  {
+    "product_id": 256,
+    "detail_image1": "static/images/detail/256_1.jpg",
+    "detail_image2": "static/images/detail/256_2.jpg",
+    "detail_image3": "static/images/detail/256_3.jpg",
+    "detail_image4": "static/images/detail/256_4.jpg",
+    "detail_image5": "static/images/detail/256_5.jpg",
+    "images": [
+      "static/images/detail/256_1.jpg",
+      "static/images/detail/256_2.jpg",
+      "static/images/detail/256_3.jpg",
+      "static/images/detail/256_4.jpg",
+      "static/images/detail/256_5.jpg"
+    ]
+  },
+  {
+    "product_id": 257,
+    "detail_image1": "static/images/detail/257_1.jpg",
+    "detail_image2": "static/images/detail/257_2.jpg",
+    "detail_image3": "static/images/detail/257_3.jpg",
+    "detail_image4": "static/images/detail/257_4.png",
+    "detail_image5": "static/images/detail/257_5.jpg",
+    "images": [
+      "static/images/detail/257_1.jpg",
+      "static/images/detail/257_2.jpg",
+      "static/images/detail/257_3.jpg",
+      "static/images/detail/257_4.png",
+      "static/images/detail/257_5.jpg"
+    ]
+  },
+  {
+    "product_id": 258,
+    "detail_image1": "static/images/detail/258_1.jpg",
+    "detail_image2": "static/images/detail/258_2.jpg",
+    "detail_image3": "static/images/detail/258_3.jpg",
+    "detail_image4": "static/images/detail/258_4.jpg",
+    "detail_image5": "static/images/detail/258_5.jpg",
+    "images": [
+      "static/images/detail/258_1.jpg",
+      "static/images/detail/258_2.jpg",
+      "static/images/detail/258_3.jpg",
+      "static/images/detail/258_4.jpg",
+      "static/images/detail/258_5.jpg"
+    ]
+  },
+  {
+    "product_id": 259,
+    "detail_image1": "static/images/detail/259_1.jpg",
+    "detail_image2": "static/images/detail/259_2.jpg",
+    "detail_image3": "static/images/detail/259_3.jpg",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/259_1.jpg",
+      "static/images/detail/259_2.jpg",
+      "static/images/detail/259_3.jpg"
+    ]
+  },
+  {
+    "product_id": 260,
+    "detail_image1": "static/images/detail/260_1.jpg",
+    "detail_image2": "static/images/detail/260_2.jpg",
+    "detail_image3": "static/images/detail/260_3.jpg",
+    "detail_image4": "static/images/detail/260_4.png",
+    "detail_image5": "static/images/detail/260_5.jpg",
+    "images": [
+      "static/images/detail/260_1.jpg",
+      "static/images/detail/260_2.jpg",
+      "static/images/detail/260_3.jpg",
+      "static/images/detail/260_4.png",
+      "static/images/detail/260_5.jpg"
+    ]
+  },
+  {
+    "product_id": 261,
+    "detail_image1": "static/images/detail/261_1.jpg",
+    "detail_image2": "static/images/detail/261_2.jpg",
+    "detail_image3": "static/images/detail/261_3.jpg",
+    "detail_image4": "static/images/detail/261_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/261_1.jpg",
+      "static/images/detail/261_2.jpg",
+      "static/images/detail/261_3.jpg",
+      "static/images/detail/261_4.jpg"
+    ]
+  },
+  {
+    "product_id": 262,
+    "detail_image1": "static/images/detail/262_1.jpg",
+    "detail_image2": "static/images/detail/262_2.jpg",
+    "detail_image3": "static/images/detail/262_3.jpg",
+    "detail_image4": "static/images/detail/262_4.jpeg",
+    "detail_image5": "static/images/detail/262_5.jpg",
+    "images": [
+      "static/images/detail/262_1.jpg",
+      "static/images/detail/262_2.jpg",
+      "static/images/detail/262_3.jpg",
+      "static/images/detail/262_4.jpeg",
+      "static/images/detail/262_5.jpg"
+    ]
+  },
+  {
+    "product_id": 263,
+    "detail_image1": "static/images/detail/263_1.jpg",
+    "detail_image2": "static/images/detail/263_2.jpg",
+    "detail_image3": "static/images/detail/263_3.jpg",
+    "detail_image4": "static/images/detail/263_4.jpg",
+    "detail_image5": "static/images/detail/263_5.png",
+    "images": [
+      "static/images/detail/263_1.jpg",
+      "static/images/detail/263_2.jpg",
+      "static/images/detail/263_3.jpg",
+      "static/images/detail/263_4.jpg",
+      "static/images/detail/263_5.png"
+    ]
+  },
+  {
+    "product_id": 264,
+    "detail_image1": "static/images/detail/264_1.jpg",
+    "detail_image2": "static/images/detail/264_2.jpg",
+    "detail_image3": "static/images/detail/264_3.jpg",
+    "detail_image4": "static/images/detail/264_4.jpg",
+    "detail_image5": "static/images/detail/264_5.jpg",
+    "images": [
+      "static/images/detail/264_1.jpg",
+      "static/images/detail/264_2.jpg",
+      "static/images/detail/264_3.jpg",
+      "static/images/detail/264_4.jpg",
+      "static/images/detail/264_5.jpg"
+    ]
+  },
+  {
+    "product_id": 265,
+    "detail_image1": "static/images/detail/265_1.jpg",
+    "detail_image2": "static/images/detail/265_2.png",
+    "detail_image3": "static/images/detail/265_3.jpg",
+    "detail_image4": "static/images/detail/265_4.png",
+    "detail_image5": "static/images/detail/265_5.jpg",
+    "images": [
+      "static/images/detail/265_1.jpg",
+      "static/images/detail/265_2.png",
+      "static/images/detail/265_3.jpg",
+      "static/images/detail/265_4.png",
+      "static/images/detail/265_5.jpg"
+    ]
+  },
+  {
+    "product_id": 266,
+    "detail_image1": "static/images/detail/266_1.jpg",
+    "detail_image2": "static/images/detail/266_2.jpg",
+    "detail_image3": "static/images/detail/266_3.jpg",
+    "detail_image4": "static/images/detail/266_4.jpg",
+    "detail_image5": "static/images/detail/266_5.jpg",
+    "images": [
+      "static/images/detail/266_1.jpg",
+      "static/images/detail/266_2.jpg",
+      "static/images/detail/266_3.jpg",
+      "static/images/detail/266_4.jpg",
+      "static/images/detail/266_5.jpg"
+    ]
+  },
+  {
+    "product_id": 267,
+    "detail_image1": "static/images/detail/267_1.jpg",
+    "detail_image2": "static/images/detail/267_2.jpg",
+    "detail_image3": "static/images/detail/267_3.jpeg",
+    "detail_image4": "static/images/detail/267_4.jpg",
+    "detail_image5": "static/images/detail/267_5.jpeg",
+    "images": [
+      "static/images/detail/267_1.jpg",
+      "static/images/detail/267_2.jpg",
+      "static/images/detail/267_3.jpeg",
+      "static/images/detail/267_4.jpg",
+      "static/images/detail/267_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 268,
+    "detail_image1": "static/images/detail/268_1.png",
+    "detail_image2": "static/images/detail/268_2.jpg",
+    "detail_image3": "static/images/detail/268_3.jpg",
+    "detail_image4": "static/images/detail/268_4.jpg",
+    "detail_image5": "static/images/detail/268_5.jpeg",
+    "images": [
+      "static/images/detail/268_1.png",
+      "static/images/detail/268_2.jpg",
+      "static/images/detail/268_3.jpg",
+      "static/images/detail/268_4.jpg",
+      "static/images/detail/268_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 269,
+    "detail_image1": "static/images/detail/269_1.jpg",
+    "detail_image2": "static/images/detail/269_2.jpg",
+    "detail_image3": "static/images/detail/269_3.jpg",
+    "detail_image4": "static/images/detail/269_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/269_1.jpg",
+      "static/images/detail/269_2.jpg",
+      "static/images/detail/269_3.jpg",
+      "static/images/detail/269_4.jpg"
+    ]
+  },
+  {
+    "product_id": 270,
+    "detail_image1": "static/images/detail/270_1.jpg",
+    "detail_image2": "static/images/detail/270_2.jpg",
+    "detail_image3": "static/images/detail/270_3.jpg",
+    "detail_image4": "static/images/detail/270_4.jpg",
+    "detail_image5": "static/images/detail/270_5.jpeg",
+    "images": [
+      "static/images/detail/270_1.jpg",
+      "static/images/detail/270_2.jpg",
+      "static/images/detail/270_3.jpg",
+      "static/images/detail/270_4.jpg",
+      "static/images/detail/270_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 271,
+    "detail_image1": "static/images/detail/271_1.jpg",
+    "detail_image2": "static/images/detail/271_2.jpg",
+    "detail_image3": "static/images/detail/271_3.jpg",
+    "detail_image4": "static/images/detail/271_4.jpg",
+    "detail_image5": "static/images/detail/271_5.jpg",
+    "images": [
+      "static/images/detail/271_1.jpg",
+      "static/images/detail/271_2.jpg",
+      "static/images/detail/271_3.jpg",
+      "static/images/detail/271_4.jpg",
+      "static/images/detail/271_5.jpg"
+    ]
+  },
+  {
+    "product_id": 272,
+    "detail_image1": "static/images/detail/272_1.jpg",
+    "detail_image2": "static/images/detail/272_2.jpg",
+    "detail_image3": "static/images/detail/272_3.jpg",
+    "detail_image4": "static/images/detail/272_4.jpg",
+    "detail_image5": "static/images/detail/272_5.jpg",
+    "images": [
+      "static/images/detail/272_1.jpg",
+      "static/images/detail/272_2.jpg",
+      "static/images/detail/272_3.jpg",
+      "static/images/detail/272_4.jpg",
+      "static/images/detail/272_5.jpg"
+    ]
+  },
+  {
+    "product_id": 273,
+    "detail_image1": "static/images/detail/273_1.jpg",
+    "detail_image2": "static/images/detail/273_2.jpg",
+    "detail_image3": "static/images/detail/273_3.jpg",
+    "detail_image4": "static/images/detail/273_4.jpg",
+    "detail_image5": "static/images/detail/273_5.jpg",
+    "images": [
+      "static/images/detail/273_1.jpg",
+      "static/images/detail/273_2.jpg",
+      "static/images/detail/273_3.jpg",
+      "static/images/detail/273_4.jpg",
+      "static/images/detail/273_5.jpg"
+    ]
+  },
+  {
+    "product_id": 274,
+    "detail_image1": "static/images/detail/274_1.jpg",
+    "detail_image2": "static/images/detail/274_2.jpg",
+    "detail_image3": "static/images/detail/274_3.png",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/274_1.jpg",
+      "static/images/detail/274_2.jpg",
+      "static/images/detail/274_3.png"
+    ]
+  },
+  {
+    "product_id": 275,
+    "detail_image1": "static/images/detail/275_1.png",
+    "detail_image2": "static/images/detail/275_2.png",
+    "detail_image3": "static/images/detail/275_3.jpg",
+    "detail_image4": "static/images/detail/275_4.jpg",
+    "detail_image5": "static/images/detail/275_5.jpg",
+    "images": [
+      "static/images/detail/275_1.png",
+      "static/images/detail/275_2.png",
+      "static/images/detail/275_3.jpg",
+      "static/images/detail/275_4.jpg",
+      "static/images/detail/275_5.jpg"
+    ]
+  },
+  {
+    "product_id": 276,
+    "detail_image1": "static/images/detail/276_1.jpg",
+    "detail_image2": "static/images/detail/276_2.jpg",
+    "detail_image3": "static/images/detail/276_3.jpg",
+    "detail_image4": "static/images/detail/276_4.jpg",
+    "detail_image5": "static/images/detail/276_5.jpg",
+    "images": [
+      "static/images/detail/276_1.jpg",
+      "static/images/detail/276_2.jpg",
+      "static/images/detail/276_3.jpg",
+      "static/images/detail/276_4.jpg",
+      "static/images/detail/276_5.jpg"
+    ]
+  },
+  {
+    "product_id": 277,
+    "detail_image1": "static/images/detail/277_1.jpg",
+    "detail_image2": "static/images/detail/277_2.jpg",
+    "detail_image3": "static/images/detail/277_3.jpg",
+    "detail_image4": "static/images/detail/277_4.jpg",
+    "detail_image5": "static/images/detail/277_5.jpg",
+    "images": [
+      "static/images/detail/277_1.jpg",
+      "static/images/detail/277_2.jpg",
+      "static/images/detail/277_3.jpg",
+      "static/images/detail/277_4.jpg",
+      "static/images/detail/277_5.jpg"
+    ]
+  },
+  {
+    "product_id": 278,
+    "detail_image1": "static/images/detail/278_1.jpg",
+    "detail_image2": "static/images/detail/278_2.jpg",
+    "detail_image3": "static/images/detail/278_3.jpg",
+    "detail_image4": "static/images/detail/278_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/278_1.jpg",
+      "static/images/detail/278_2.jpg",
+      "static/images/detail/278_3.jpg",
+      "static/images/detail/278_4.jpg"
+    ]
+  },
+  {
+    "product_id": 279,
+    "detail_image1": "static/images/detail/279_1.jpg",
+    "detail_image2": "static/images/detail/279_2.jpg",
+    "detail_image3": "static/images/detail/279_3.jpg",
+    "detail_image4": "static/images/detail/279_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/279_1.jpg",
+      "static/images/detail/279_2.jpg",
+      "static/images/detail/279_3.jpg",
+      "static/images/detail/279_4.jpg"
+    ]
+  },
+  {
+    "product_id": 280,
+    "detail_image1": "static/images/detail/280_1.jpg",
+    "detail_image2": "static/images/detail/280_2.jpg",
+    "detail_image3": "static/images/detail/280_3.jpeg",
+    "detail_image4": "static/images/detail/280_4.jpg",
+    "detail_image5": "static/images/detail/280_5.jpeg",
+    "images": [
+      "static/images/detail/280_1.jpg",
+      "static/images/detail/280_2.jpg",
+      "static/images/detail/280_3.jpeg",
+      "static/images/detail/280_4.jpg",
+      "static/images/detail/280_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 281,
+    "detail_image1": "static/images/detail/281_1.jpg",
+    "detail_image2": "static/images/detail/281_2.jpg",
+    "detail_image3": "static/images/detail/281_3.jpg",
+    "detail_image4": "static/images/detail/281_4.jpg",
+    "detail_image5": "static/images/detail/281_5.jpg",
+    "images": [
+      "static/images/detail/281_1.jpg",
+      "static/images/detail/281_2.jpg",
+      "static/images/detail/281_3.jpg",
+      "static/images/detail/281_4.jpg",
+      "static/images/detail/281_5.jpg"
+    ]
+  },
+  {
+    "product_id": 282,
+    "detail_image1": "static/images/detail/282_1.jpg",
+    "detail_image2": "static/images/detail/282_2.jpg",
+    "detail_image3": "static/images/detail/282_3.jpg",
+    "detail_image4": "static/images/detail/282_4.png",
+    "detail_image5": "static/images/detail/282_5.jpeg",
+    "images": [
+      "static/images/detail/282_1.jpg",
+      "static/images/detail/282_2.jpg",
+      "static/images/detail/282_3.jpg",
+      "static/images/detail/282_4.png",
+      "static/images/detail/282_5.jpeg"
+    ]
+  },
+  {
+    "product_id": 283,
+    "detail_image1": "static/images/detail/283_1.jpg",
+    "detail_image2": "static/images/detail/283_2.jpeg",
+    "detail_image3": "static/images/detail/283_3.jpg",
+    "detail_image4": "static/images/detail/283_4.png",
+    "detail_image5": "static/images/detail/283_5.jpg",
+    "images": [
+      "static/images/detail/283_1.jpg",
+      "static/images/detail/283_2.jpeg",
+      "static/images/detail/283_3.jpg",
+      "static/images/detail/283_4.png",
+      "static/images/detail/283_5.jpg"
+    ]
+  },
+  {
+    "product_id": 284,
+    "detail_image1": "static/images/detail/284_1.png",
+    "detail_image2": "static/images/detail/284_2.png",
+    "detail_image3": "static/images/detail/284_3.png",
+    "detail_image4": "static/images/detail/284_4.png",
+    "detail_image5": "static/images/detail/284_5.png",
+    "images": [
+      "static/images/detail/284_1.png",
+      "static/images/detail/284_2.png",
+      "static/images/detail/284_3.png",
+      "static/images/detail/284_4.png",
+      "static/images/detail/284_5.png"
+    ]
+  },
+  {
+    "product_id": 285,
+    "detail_image1": "static/images/detail/285_1.jpg",
+    "detail_image2": "static/images/detail/285_2.jpeg",
+    "detail_image3": "static/images/detail/285_3.jpg",
+    "detail_image4": null,
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/285_1.jpg",
+      "static/images/detail/285_2.jpeg",
+      "static/images/detail/285_3.jpg"
+    ]
+  },
+  {
+    "product_id": 286,
+    "detail_image1": "static/images/detail/286_1.jpg",
+    "detail_image2": "static/images/detail/286_2.jpeg",
+    "detail_image3": "static/images/detail/286_3.jpeg",
+    "detail_image4": "static/images/detail/286_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/286_1.jpg",
+      "static/images/detail/286_2.jpeg",
+      "static/images/detail/286_3.jpeg",
+      "static/images/detail/286_4.jpg"
+    ]
+  },
+  {
+    "product_id": 287,
+    "detail_image1": "static/images/detail/287_1.jpeg",
+    "detail_image2": "static/images/detail/287_2.jpg",
+    "detail_image3": "static/images/detail/287_3.jpeg",
+    "detail_image4": "static/images/detail/287_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/287_1.jpeg",
+      "static/images/detail/287_2.jpg",
+      "static/images/detail/287_3.jpeg",
+      "static/images/detail/287_4.jpg"
+    ]
+  },
+  {
+    "product_id": 288,
+    "detail_image1": "static/images/detail/288_1.jpg",
+    "detail_image2": "static/images/detail/288_2.jpg",
+    "detail_image3": "static/images/detail/288_3.jpg",
+    "detail_image4": "static/images/detail/288_4.jpg",
+    "detail_image5": "static/images/detail/288_5.jpg",
+    "images": [
+      "static/images/detail/288_1.jpg",
+      "static/images/detail/288_2.jpg",
+      "static/images/detail/288_3.jpg",
+      "static/images/detail/288_4.jpg",
+      "static/images/detail/288_5.jpg"
+    ]
+  },
+  {
+    "product_id": 289,
+    "detail_image1": "static/images/detail/289_1.jpg",
+    "detail_image2": "static/images/detail/289_2.jpg",
+    "detail_image3": "static/images/detail/289_3.jpg",
+    "detail_image4": "static/images/detail/289_4.jpg",
+    "detail_image5": "static/images/detail/289_5.jpg",
+    "images": [
+      "static/images/detail/289_1.jpg",
+      "static/images/detail/289_2.jpg",
+      "static/images/detail/289_3.jpg",
+      "static/images/detail/289_4.jpg",
+      "static/images/detail/289_5.jpg"
+    ]
+  },
+  {
+    "product_id": 290,
+    "detail_image1": "static/images/detail/290_1.jpg",
+    "detail_image2": "static/images/detail/290_2.jpg",
+    "detail_image3": "static/images/detail/290_3.jpg",
+    "detail_image4": "static/images/detail/290_4.jpg",
+    "detail_image5": "static/images/detail/290_5.jpg",
+    "images": [
+      "static/images/detail/290_1.jpg",
+      "static/images/detail/290_2.jpg",
+      "static/images/detail/290_3.jpg",
+      "static/images/detail/290_4.jpg",
+      "static/images/detail/290_5.jpg"
+    ]
+  },
+  {
+    "product_id": 291,
+    "detail_image1": "static/images/detail/291_1.jpg",
+    "detail_image2": "static/images/detail/291_2.png",
+    "detail_image3": "static/images/detail/291_3.jpg",
+    "detail_image4": "static/images/detail/291_4.jpg",
+    "detail_image5": "static/images/detail/291_5.jpg",
+    "images": [
+      "static/images/detail/291_1.jpg",
+      "static/images/detail/291_2.png",
+      "static/images/detail/291_3.jpg",
+      "static/images/detail/291_4.jpg",
+      "static/images/detail/291_5.jpg"
+    ]
+  },
+  {
+    "product_id": 292,
+    "detail_image1": "static/images/detail/292_1.jpg",
+    "detail_image2": "static/images/detail/292_2.jpg",
+    "detail_image3": "static/images/detail/292_3.jpeg",
+    "detail_image4": "static/images/detail/292_4.jpg",
+    "detail_image5": "static/images/detail/292_5.jpg",
+    "images": [
+      "static/images/detail/292_1.jpg",
+      "static/images/detail/292_2.jpg",
+      "static/images/detail/292_3.jpeg",
+      "static/images/detail/292_4.jpg",
+      "static/images/detail/292_5.jpg"
+    ]
+  },
+  {
+    "product_id": 293,
+    "detail_image1": "static/images/detail/293_1.jpg",
+    "detail_image2": "static/images/detail/293_2.png",
+    "detail_image3": "static/images/detail/293_3.png",
+    "detail_image4": "static/images/detail/293_4.png",
+    "detail_image5": "static/images/detail/293_5.jpg",
+    "images": [
+      "static/images/detail/293_1.jpg",
+      "static/images/detail/293_2.png",
+      "static/images/detail/293_3.png",
+      "static/images/detail/293_4.png",
+      "static/images/detail/293_5.jpg"
+    ]
+  },
+  {
+    "product_id": 294,
+    "detail_image1": "static/images/detail/294_1.jpg",
+    "detail_image2": "static/images/detail/294_2.jpg",
+    "detail_image3": "static/images/detail/294_3.jpg",
+    "detail_image4": "static/images/detail/294_4.jpg",
+    "detail_image5": null,
+    "images": [
+      "static/images/detail/294_1.jpg",
+      "static/images/detail/294_2.jpg",
+      "static/images/detail/294_3.jpg",
+      "static/images/detail/294_4.jpg"
+    ]
+  },
+  {
+    "product_id": 295,
+    "detail_image1": "static/images/detail/295_1.jpg",
+    "detail_image2": "static/images/detail/295_2.jpg",
+    "detail_image3": "static/images/detail/295_3.png",
+    "detail_image4": "static/images/detail/295_4.jpg",
+    "detail_image5": "static/images/detail/295_5.png",
+    "images": [
+      "static/images/detail/295_1.jpg",
+      "static/images/detail/295_2.jpg",
+      "static/images/detail/295_3.png",
+      "static/images/detail/295_4.jpg",
+      "static/images/detail/295_5.png"
+    ]
+  },
+  {
+    "product_id": 296,
+    "detail_image1": "static/images/detail/296_1.jpg",
+    "detail_image2": "static/images/detail/296_2.jpg",
+    "detail_image3": "static/images/detail/296_3.jpg",
+    "detail_image4": "static/images/detail/296_4.jpg",
+    "detail_image5": "static/images/detail/296_5.jpg",
+    "images": [
+      "static/images/detail/296_1.jpg",
+      "static/images/detail/296_2.jpg",
+      "static/images/detail/296_3.jpg",
+      "static/images/detail/296_4.jpg",
+      "static/images/detail/296_5.jpg"
+    ]
+  },
+  {
+    "product_id": 297,
+    "detail_image1": "static/images/detail/297_1.png",
+    "detail_image2": "static/images/detail/297_2.png",
+    "detail_image3": "static/images/detail/297_3.png",
+    "detail_image4": "static/images/detail/297_4.png",
+    "detail_image5": "static/images/detail/297_5.png",
+    "images": [
+      "static/images/detail/297_1.png",
+      "static/images/detail/297_2.png",
+      "static/images/detail/297_3.png",
+      "static/images/detail/297_4.png",
+      "static/images/detail/297_5.png"
+    ]
+  },
+  {
+    "product_id": 298,
+    "detail_image1": "static/images/detail/298_1.jpeg",
+    "detail_image2": "static/images/detail/298_2.jpeg",
+    "detail_image3": "static/images/detail/298_3.png",
+    "detail_image4": "static/images/detail/298_4.png",
+    "detail_image5": "static/images/detail/298_5.png",
+    "images": [
+      "static/images/detail/298_1.jpeg",
+      "static/images/detail/298_2.jpeg",
+      "static/images/detail/298_3.png",
+      "static/images/detail/298_4.png",
+      "static/images/detail/298_5.png"
+    ]
+  },
+  {
+    "product_id": 299,
+    "detail_image1": "static/images/detail/299_1.jpeg",
+    "detail_image2": "static/images/detail/299_2.jpg",
+    "detail_image3": "static/images/detail/299_3.jpg",
+    "detail_image4": "static/images/detail/299_4.png",
+    "detail_image5": "static/images/detail/299_5.jpg",
+    "images": [
+      "static/images/detail/299_1.jpeg",
+      "static/images/detail/299_2.jpg",
+      "static/images/detail/299_3.jpg",
+      "static/images/detail/299_4.png",
+      "static/images/detail/299_5.jpg"
+    ]
+  },
+  {
+    "product_id": 300,
+    "detail_image1": "static/images/detail/300_1.jpg",
+    "detail_image2": "static/images/detail/300_2.jpeg",
+    "detail_image3": "static/images/detail/300_3.jpeg",
+    "detail_image4": "static/images/detail/300_4.png",
+    "detail_image5": "static/images/detail/300_5.jpg",
+    "images": [
+      "static/images/detail/300_1.jpg",
+      "static/images/detail/300_2.jpeg",
+      "static/images/detail/300_3.jpeg",
+      "static/images/detail/300_4.png",
+      "static/images/detail/300_5.jpg"
+    ]
+  }
+]

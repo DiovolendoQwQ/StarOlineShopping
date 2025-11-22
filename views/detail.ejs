@@ -537,6 +537,10 @@
     .review-images{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
     .review-images img{width:100%;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
     @media (max-width:768px){.review-images{grid-template-columns:repeat(3,1fr)}}
+    .product-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px;align-items:stretch}
+    .detail-image{width:100%;aspect-ratio:4/3;border-radius:12px;border:1px solid #eee;box-shadow:0 6px 18px rgba(0,0,0,.08);object-fit:cover;background:#fafafa;transition:transform .2s ease,box-shadow .2s ease}
+    .detail-image:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.12)}
+    @media (max-width:768px){.product-images{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
     .spec-grid-table{display:grid;border:1px solid #eee;border-radius:8px;overflow:hidden;background:#fff}
     .spec-grid-table .row{display:grid;grid-template-columns:160px 1fr}
     .spec-grid-table .cell{padding:12px 16px;border-top:1px solid #eee;font-size:14px;color:#333}
@@ -742,9 +746,16 @@
       </div>
       <div class="tab-panel">
         <!-- 数据库字段: product.detail_html -->
+        <% if (product && product.detail_images && product.detail_images.length) { %>
+          <div class="product-images">
+            <% product.detail_images.forEach(function(img, idx){ %>
+              <img src="<%= img %>" alt="<%= (product.name || '商品') %> 详情图 <%= idx + 1 %>" class="detail-image" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/image/default.png'">
+            <% }) %>
+          </div>
+        <% } %>
         <% if (product && product.detail_html) { %>
           <div id="product-detail-html"><%- product.detail_html %></div>
-        <% } else { %>
+        <% } else if (!(product && product.detail_images && product.detail_images.length)) { %>
           <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">暂无图文详情</div>
         <% } %>
         <!-- 可选动态块: product.price_notice_html -->

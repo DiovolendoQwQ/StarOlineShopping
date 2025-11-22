@@ -230,6 +230,34 @@ db.serialize(() => {
     if (err) console.error('❌ 创建 idx_images_type_order 失败:', err.message);
   });
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS image_detail (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER NOT NULL,
+      detail_image1 TEXT,
+      detail_image2 TEXT,
+      detail_image3 TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 image_detail 表失败:', err.message);
+    else console.log('✅ image_detail 表已创建或已存在');
+  });
+  db.run(`CREATE INDEX IF NOT EXISTS idx_image_detail_product ON image_detail(product_id);`, (err) => {
+    if (err) console.error('❌ 创建 idx_image_detail_product 失败:', err.message);
+  });
+  db.run(`ALTER TABLE image_detail ADD COLUMN detail_image4 TEXT`, (alterErr) => {
+    if (alterErr && !alterErr.message.includes('duplicate column name')) {
+      console.error('❌ 添加 detail_image4 字段失败:', alterErr.message);
+    }
+  });
+  db.run(`ALTER TABLE image_detail ADD COLUMN detail_image5 TEXT`, (alterErr) => {
+    if (alterErr && !alterErr.message.includes('duplicate column name')) {
+      console.error('❌ 添加 detail_image5 字段失败:', alterErr.message);
+    }
+  });
+
   // 统一评价表
   db.run(`
     CREATE TABLE IF NOT EXISTS reviews (
