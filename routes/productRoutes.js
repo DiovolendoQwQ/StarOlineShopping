@@ -22,6 +22,12 @@ function toRootImagePath(image) {
   return `/image/${cleaned || 'default.png'}`;
 }
 
+function toPngLocal(image) {
+  const url = toRootImagePath(image);
+  if (/^https?:\/\//i.test(url)) return url;
+  return url.replace(/\.(jpg|jpeg|webp|gif|bmp)$/i, '.png');
+}
+
 function dedupeProducts(list) {
   const seen = new Set();
   const out = [];
@@ -175,7 +181,7 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     product.reviews = reviews || [];
     const detail = await db.getAsync(`SELECT detail_image1, detail_image2, detail_image3, detail_image4, detail_image5 FROM image_detail WHERE product_id = ?`, [productId]);
     if (detail) {
-      const imgs = [detail.detail_image1, detail.detail_image2, detail.detail_image3, detail.detail_image4, detail.detail_image5].filter(Boolean).map(toRootImagePath);
+      const imgs = [detail.detail_image1, detail.detail_image2, detail.detail_image3, detail.detail_image4, detail.detail_image5].filter(Boolean).map(toPngLocal);
       product.detail_images = imgs;
     } else {
       product.detail_images = [];
@@ -183,7 +189,17 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     if (!product.detail_images || product.detail_images.length === 0) {
       const pi = await db.allAsync(`SELECT image_url FROM product_images WHERE product_id = ? AND type = 'detail' ORDER BY sort_order ASC`, [productId]);
       if (pi && pi.length) {
-        product.detail_images = pi.map(r => toRootImagePath(r.image_url));
+        product.detail_images = pi.map(r => toPngLocal(r.image_url));
+      }
+    }
+    if (!product.detail_images || product.detail_images.length === 0) {
+      if (product.image) {
+        product.detail_images = [toPngLocal(product.image)];
+      }
+    }
+    if (!product.detail_images || product.detail_images.length === 0) {
+      if (product.image) {
+        product.detail_images = [product.image];
       }
     }
     res.render('detail', { product });
