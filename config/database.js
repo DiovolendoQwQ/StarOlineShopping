@@ -208,26 +208,10 @@ db.serialize(() => {
     else console.log('✅ analytics_summary 表已创建或已存在');
   });
 
-  // 统一图片表
-  db.run(`
-    CREATE TABLE IF NOT EXISTS product_images (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      product_id INTEGER NOT NULL,
-      image_url TEXT NOT NULL,
-      type TEXT NOT NULL CHECK (type IN ('main','gallery','detail')),
-      sort_order INTEGER DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
-    );
-  `, (err) => {
-    if (err) console.error('❌ 创建 product_images 表失败:', err.message);
-    else console.log('✅ product_images 表已创建或已存在');
-  });
-  db.run(`CREATE INDEX IF NOT EXISTS idx_images_product ON product_images(product_id);`, (err) => {
-    if (err) console.error('❌ 创建 idx_images_product 失败:', err.message);
-  });
-  db.run(`CREATE INDEX IF NOT EXISTS idx_images_type_order ON product_images(product_id, type, sort_order);`, (err) => {
-    if (err) console.error('❌ 创建 idx_images_type_order 失败:', err.message);
+  // 移除旧版统一图片表 product_images（已不再使用，改为 image_detail）
+  db.run(`DROP TABLE IF EXISTS product_images;`, (err) => {
+    if (err) console.error('❌ 删除 product_images 表失败:', err.message);
+    else console.log('🧹 已删除旧表 product_images');
   });
 
   db.run(`
