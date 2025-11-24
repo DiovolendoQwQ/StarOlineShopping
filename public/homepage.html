@@ -1604,8 +1604,16 @@
                 });
                 // 为导航选购按钮设置直接跳转商品详情
                 document.querySelectorAll('.banner_y .nav .xuangou_right a.add-to-cart').forEach(function(a){
-                    var pid = a.getAttribute('data-product-id');
-                    if (pid) a.setAttribute('href', '/product/' + pid);
+                    var right = a.closest('.xuangou_right');
+                    var container = right && right.parentElement;
+                    var leftLink = container && container.querySelector('.xuangou_left a');
+                    var href = leftLink && leftLink.getAttribute('href');
+                    if (href) {
+                        a.setAttribute('href', href);
+                    } else {
+                        var pid = a.getAttribute('data-product-id');
+                        if (pid) a.setAttribute('href', '/product/' + pid);
+                    }
                 });
             })();
         });

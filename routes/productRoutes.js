@@ -172,7 +172,7 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     if (!product) {
       return res.status(404).send('商品未找到');
     }
-    product.image = toRootImagePath(product.image);
+    product.image = toPngLocal(product.image);
     const reviews = await db.allAsync(
       `SELECT user_name AS author, content AS content, avatar_url AS avatar, rating, sku_info, created_at
        FROM reviews WHERE product_id = ? ORDER BY created_at DESC LIMIT 50`,
@@ -186,20 +186,16 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     } else {
       product.detail_images = [];
     }
-    if (!product.detail_images || product.detail_images.length === 0) {
-      const pi = await db.allAsync(`SELECT image_url FROM product_images WHERE product_id = ? AND type = 'detail' ORDER BY sort_order ASC`, [productId]);
-      if (pi && pi.length) {
-        product.detail_images = pi.map(r => toPngLocal(r.image_url));
-      }
-    }
+    // 移除对 product_images 的依赖
     if (!product.detail_images || product.detail_images.length === 0) {
       if (product.image) {
         product.detail_images = [toPngLocal(product.image)];
       }
     }
+    // 最终兜底：使用主图
     if (!product.detail_images || product.detail_images.length === 0) {
       if (product.image) {
-        product.detail_images = [product.image];
+        product.detail_images = [toPngLocal(product.image)];
       }
     }
     res.render('detail', { product });
