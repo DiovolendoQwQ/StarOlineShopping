@@ -181,22 +181,12 @@ router.get('/:id', behaviorTracker.trackProductView(), async (req, res) => {
     product.reviews = reviews || [];
     const detail = await db.getAsync(`SELECT detail_image1, detail_image2, detail_image3, detail_image4, detail_image5 FROM image_detail WHERE product_id = ?`, [productId]);
     if (detail) {
-      const imgs = [detail.detail_image1, detail.detail_image2, detail.detail_image3, detail.detail_image4, detail.detail_image5].filter(Boolean).map(toPngLocal);
+      const imgs = [detail.detail_image1, detail.detail_image2, detail.detail_image3, detail.detail_image4, detail.detail_image5]
+        .filter(Boolean)
+        .map(toRootImagePath);
       product.detail_images = imgs;
     } else {
       product.detail_images = [];
-    }
-    // 移除对 product_images 的依赖
-    if (!product.detail_images || product.detail_images.length === 0) {
-      if (product.image) {
-        product.detail_images = [toPngLocal(product.image)];
-      }
-    }
-    // 最终兜底：使用主图
-    if (!product.detail_images || product.detail_images.length === 0) {
-      if (product.image) {
-        product.detail_images = [toPngLocal(product.image)];
-      }
     }
     res.render('detail', { product });
   } catch (err) {
