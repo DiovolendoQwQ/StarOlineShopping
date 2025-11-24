@@ -46,7 +46,8 @@ db.serialize(() => {
       username TEXT NOT NULL, 
       email TEXT UNIQUE NOT NULL, 
       password TEXT NOT NULL,
-      role TEXT DEFAULT NULL
+      role TEXT DEFAULT NULL,
+      avatar_url TEXT
     );
   `, (err) => {
     if (err) console.error('❌ 创建 users 表失败:', err.message);
@@ -59,6 +60,15 @@ db.serialize(() => {
            console.error('❌ 添加 role 字段失败:', alterErr.message);
          } else if (!alterErr) {
            console.log('✅ users 表已添加 role 字段');
+         }
+       });
+
+       // 检查并添加 avatar_url 字段（如果不存在）
+       db.run(`ALTER TABLE users ADD COLUMN avatar_url TEXT`, (alterErr) => {
+         if (alterErr && !alterErr.message.includes('duplicate column name')) {
+           console.error('❌ 添加 avatar_url 字段失败:', alterErr.message);
+         } else if (!alterErr) {
+           console.log('✅ users 表已添加 avatar_url 字段');
          }
        });
      }
@@ -235,6 +245,11 @@ db.serialize(() => {
     if (alterErr && !alterErr.message.includes('duplicate column name')) {
       console.error('❌ 添加 detail_image4 字段失败:', alterErr.message);
     }
+  });
+
+  // 索引：提升昵称查询/更新性能
+  db.run(`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`, (err) => {
+    if (err) console.error('❌ 创建 idx_users_username 失败:', err.message);
   });
   db.run(`ALTER TABLE image_detail ADD COLUMN detail_image5 TEXT`, (alterErr) => {
     if (alterErr && !alterErr.message.includes('duplicate column name')) {

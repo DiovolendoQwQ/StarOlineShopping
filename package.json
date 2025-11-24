@@ -4,7 +4,8 @@
     "start": "node app.js",
     "dev": "node app.js",
     "migrate": "node scripts/migrate-database.js",
-    "seed": "node scripts/seed-products.js"
+    "seed": "node scripts/seed-products.js",
+    "update:usernames": "node scripts/update-usernames.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
