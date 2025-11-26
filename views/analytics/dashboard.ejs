@@ -68,10 +68,56 @@
             background-color: #007bff;
             color: white;
         }
+        .terminal-window {
+            background:#0c0c0c;
+            color:#0f0;
+            font-family: 'Courier New', monospace;
+            padding:12px;
+            border-radius:10px;
+            height:400px;
+            overflow-y:auto;
+            line-height:1.5;
+        }
+        .terminal-header{
+            background:#121212;
+            color:#9ff39f;
+            font-family: 'Courier New', monospace;
+            border-radius:10px 10px 0 0;
+            padding:8px 12px;
+            display:flex; align-items:center; gap:10px;
+            border:1px solid #00aa55;
+            border-bottom:none;
+        }
+        .terminal-dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+        .dot-red{ background:#ff5f56; }
+        .dot-yellow{ background:#ffbd2e; }
+        .dot-green{ background:#27c93f; }
+        .terminal-title{ flex:1; text-align:center; color:#9ff39f; }
+        .terminal-container{ border:1px solid #00aa55; border-top:none; border-radius:0 0 10px 10px; }
+        .terminal-line { white-space: pre; }
+        .log-line { white-space: pre; }
+        .t-method { color:#0f0; }
+        .t-path { color:#c9f7c9; }
+        .t-time { color:#9ca3af; }
+        .t-size { color:#9ca3af; }
+        .t-status.ok { color:#10b981; }
+        .t-status.redir { color:#22d3ee; }
+        .t-status.warn { color:#f59e0b; }
+        .t-status.err { color:#ef4444; }
+        .terminal-cursor{ display:inline-block; width:8px; height:1em; background:#0f0; animation: blink 1s steps(1,end) infinite; vertical-align:baseline; }
+        @keyframes blink { 50% { opacity:0; } }
+        #server-monitor { background:#000; padding:12px; border-radius:12px; }
+        #server-monitor, #server-monitor .card, #server-monitor .card-body, #server-monitor .card-header {
+            background:#000; color:#e5ffe5; border-color:#00aa55;
+        }
+        #server-monitor .dashboard-card { border:1px solid #00aa55; box-shadow:none; }
+        #server-monitor .card-header h5 { color:#e5ffe5; }
+        #server-monitor small, #server-monitor .text-muted { color:#9ff39f !important; }
+        .log-item-error { background:#ffe6e6; color:#cc0000; font-family:'Courier New', monospace; border-bottom:1px solid #f5b3b3; padding:8px 10px; }
     </style>
 </head>
 
-<body>
+<body data-days="<%= days %>">
     <div class="container-fluid">
         <div class="row">
             <!-- 侧边栏 -->
@@ -695,69 +741,85 @@
                         </div>
                         <div class="cs-toast" id="admin-cs-toast"></div>
                     </div>
+
+            <!-- 服务器监控（放入主内容容器内） -->
+            <div id="server-monitor" class="section" style="display:none">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-microchip me-2"></i>CPU</h5>
+                            </div>
+                            <div class="card-body">
+                                <h3 id="cpu-usage">0%</h3>
+                                <small class="text-muted">实时CPU占用</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-memory me-2"></i>内存</h5>
+                            </div>
+                            <div class="card-body">
+                                <h4><span id="mem-free">0</span>/<span id="mem-total">0</span></h4>
+                                <small class="text-muted">可用/总内存(GB)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-plug me-2"></i>客户端</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="client-list" class="text-muted"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card dashboard-card" style="background:#000;">
+                            <div class="card-body" style="padding:0;">
+                                <div class="terminal-header">
+                                    <span class="terminal-dot dot-red"></span>
+                                    <span class="terminal-dot dot-yellow"></span>
+                                    <span class="terminal-dot dot-green"></span>
+                                    <div class="terminal-title">终端</div>
+                                </div>
+                                <div class="terminal-container">
+                                    <div id="terminal-window" class="terminal-window" aria-live="polite" aria-atomic="false"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- 错误日志（同级放入主内容容器） -->
+            <div id="error-logs" class="section" style="display:none">
+                <div class="card dashboard-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-exclamation-circle me-2"></i>错误与告警</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="log-list" style="max-height:400px; overflow:auto"></div>
+                    </div>
+                </div>
+            </div>
     </div>
-
-    <div id="admin-sections" class="container-fluid" style="display:none">
-        <div id="server-monitor" class="section" style="display:none">
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="card dashboard-card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-microchip me-2"></i>CPU</h5>
-                        </div>
-                        <div class="card-body">
-                            <h3 id="cpu-usage">0%</h3>
-                            <small class="text-muted">实时CPU占用</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card dashboard-card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-memory me-2"></i>内存</h5>
-                        </div>
-                        <div class="card-body">
-                            <h4><span id="mem-free">0</span>/<span id="mem-total">0</span></h4>
-                            <small class="text-muted">可用/总内存(GB)</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card dashboard-card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-plug me-2"></i>客户端</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="client-list" class="text-muted"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="error-logs" class="section" style="display:none">
-            <div class="card dashboard-card">
-                <div class="card-header">
-                    <h5><i class="fas fa-exclamation-circle me-2"></i>错误与告警</h5>
-                </div>
-                <div class="card-body">
-                    <div id="log-list" style="max-height:400px; overflow:auto"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
+    
     <script src="/js/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // 全局变量
-        let currentDays = <%= days %>;
+        let currentDays = Number(document.body?.dataset?.days || 30);
         let charts = {};
-        let sortBy = 'views'; // 默认按浏览量排序
+        let sortBy = 'views';
         let adminWs = null;
+        let overviewInterval = null;
 
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function () {
@@ -766,6 +828,33 @@
             initializeEventListeners();
             loadData();
             connectAdminWs();
+            // --- 新增：自动刷新逻辑 (每 2 秒刷新一次) --- 
+            console.log('启动自动刷新机制...'); 
+            setInterval(async () => { 
+                try { 
+                    // 1. 获取最新的实时数据 
+                    const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); 
+                    if (res.ok) { 
+                        const json = await res.json(); 
+                        // 2. 更新界面上的数字 
+                        if (json.data) { 
+                            updateRealtimeOverview(json.data); 
+                            // 在控制台打印一下，让你知道它在工作 
+                            console.log('🔄 数据已自动刷新:', new Date().toLocaleTimeString()); 
+                            
+                            // 3. 可选：给总收入加个闪烁特效，提示用户数据变了 
+                            const revenueEl = document.getElementById('total-revenue'); 
+                            if (revenueEl) { 
+                                revenueEl.style.color = '#4ade80'; // 变绿一下 
+                                setTimeout(() => { revenueEl.style.color = ''; }, 500); 
+                            } 
+                        } 
+                    } 
+                } catch (err) { 
+                    console.error('自动刷新失败:', err); 
+                } 
+            }, 2000); // 2000毫秒 = 2秒 
+            // -------------------------------------------
             initializeCustomerService();
             if (document.getElementById('admin-cs-session')) { document.getElementById('admin-cs-session').textContent = window.CustomerService.sessionId(); }
         });
@@ -776,7 +865,6 @@
             const sections = document.querySelectorAll('.section');
             const dayButtons = document.querySelectorAll('[data-days]');
             const mainContainer = document.querySelector('.col-md-10 > .container-fluid.py-4');
-            const adminContainer = document.getElementById('admin-sections');
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
@@ -791,14 +879,7 @@
                     sections.forEach(section => {
                         section.style.display = section.id === targetSection ? 'block' : 'none';
                     });
-                    const targetEl = document.getElementById(targetSection);
-                    if (targetEl && adminContainer && adminContainer.contains(targetEl)) {
-                        if (adminContainer) adminContainer.style.display = 'block';
-                        if (mainContainer) mainContainer.style.display = 'none';
-                    } else {
-                        if (adminContainer) adminContainer.style.display = 'none';
-                        if (mainContainer) mainContainer.style.display = 'block';
-                    }
+                    if (mainContainer) mainContainer.style.display = 'block';
                 });
             });
 
@@ -815,14 +896,7 @@
             if (active) {
                 const targetSection = active.getAttribute('data-section');
                 sections.forEach(section => { section.style.display = section.id === targetSection ? 'block' : 'none'; });
-                const targetEl = document.getElementById(targetSection);
-                if (targetEl && adminContainer && adminContainer.contains(targetEl)) {
-                    if (adminContainer) adminContainer.style.display = 'block';
-                    if (mainContainer) mainContainer.style.display = 'none';
-                } else {
-                    if (adminContainer) adminContainer.style.display = 'none';
-                    if (mainContainer) mainContainer.style.display = 'block';
-                }
+                if (mainContainer) mainContainer.style.display = 'block';
             }
         }
 
@@ -875,14 +949,24 @@
             adminWs = new WebSocket(`${proto}://${location.host}/admin/ws`);
             adminWs.onmessage = function (ev) {
                 let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
+                console.log('收到WS消息:', msg);
                 if (msg.type === 'metrics') updateMetrics(msg.metrics);
                 if (msg.type === 'clients') updateClients(msg.clients);
-                if (msg.type === 'log') appendLog(msg.log);
+                if (msg.type === 'log') { appendLog(msg.log); if (msg.log && msg.log.level === 'error') appendErrorLog(msg.log.message || 'ERROR'); }
+                if (msg.type === 'server_log') appendServerLog(msg.data || msg);
+                if (msg.type === 'error_log') appendErrorLog(msg.data);
+                if (msg.type === 'app_error') appendErrorLog(msg.data);
                 if (msg.type === 'log_init' && Array.isArray(msg.logs)) { msg.logs.forEach(appendLog); }
             };
         }
 
         function gb(n) { return (n / 1024 / 1024 / 1024).toFixed(2); }
+        function currentNumber(el) { const m = String(el?.textContent || '').match(/[\d.]+/); return m ? parseFloat(m[0]) : 0; }
+        function setDisplayText(el, value) { const id = el.id || ''; if (id === 'total-revenue') { el.textContent = '¥' + Number(value).toFixed(2); } else if (id === 'avg-order-value') { el.textContent = Number(value).toFixed(2); } else { el.textContent = Math.round(Number(value)); } }
+        function animateValue(id, start, end, duration) { const el = document.getElementById(id); if (!el) return; if (start === undefined || start === null) start = currentNumber(el); const s = Number(start) || 0; const e = Number(end) || 0; if (s === e) { setDisplayText(el, e); return; } const t0 = performance.now(); const run = (now) => { const p = Math.min((now - t0) / duration, 1); const val = s + (e - s) * p; setDisplayText(el, val); if (p < 1) requestAnimationFrame(run); }; requestAnimationFrame(run); }
+        async function refreshRealtimeData() { try { const resp = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const data = await resp.json(); updateRealtimeOverview(data.data); } catch (e) { console.error('实时概览刷新失败', e && e.message ? e.message : e); if (overviewInterval) { clearInterval(overviewInterval); overviewInterval = null; } } }
+        function startAutoRefresh() { try { if (overviewInterval) clearInterval(overviewInterval); refreshRealtimeData(); overviewInterval = setInterval(async () => { try { const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (res.ok) { const json = await res.json(); updateRealtimeOverview(json.data); } } catch (e) { console.error('自动刷新失败:', e); } }, 3000); window.addEventListener('beforeunload', function () { if (overviewInterval) { try { clearInterval(overviewInterval); } catch (_) { } overviewInterval = null; } }); } catch (_) { }
+        }
         function updateMetrics(m) {
             const cpuEl = document.getElementById('cpu-usage');
             const freeEl = document.getElementById('mem-free');
@@ -906,14 +990,78 @@
             }
         }
         function appendLog(log) {
-            const el = document.getElementById('log-list');
-            if (!el) return;
-            const d = document.createElement('div');
-            const tag = log.level === 'error' ? 'text-danger' : (log.level === 'warn' ? 'text-warning' : 'text-muted');
-            d.className = `mb-2 ${tag}`;
-            d.textContent = `[${log.timestamp}] ${log.level.toUpperCase()} ${log.message}`;
-            el.appendChild(d);
-            el.scrollTop = el.scrollHeight;
+            const term = document.getElementById('terminal-window');
+            if (!term) return;
+            const rawMsg = (log.message || '');
+            const rawPath = (log.path || log.url || log.uri || log.route || '');
+            if ((rawMsg && rawMsg.includes('@vite')) || (rawPath && rawPath.includes('@vite'))) return;
+            const cursorId = 'terminal-cursor';
+            let cursor = document.getElementById(cursorId);
+            if (cursor && cursor.parentElement) { try { cursor.parentElement.removeChild(cursor); } catch (_) {} }
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            const method = String((log.method || log.httpMethod || log.m || '')).toUpperCase();
+            const path = rawPath;
+            const statusNum = parseInt((log.status || log.statusCode || ''), 10) || (function(){ const m=(log.message||'').match(/\b(\d{3})\b/); return m?parseInt(m[1],10):0; })();
+            const msValRaw = (log.ms ?? log.responseTime ?? log.duration ?? (function(){ const m=(log.message||'').match(/([\d.]+)\s*ms/); return m?m[1]:''; })());
+            const msVal = msValRaw ? Number(msValRaw) : '';
+            const sizeVal = (log.length ?? log.contentLength ?? log.size ?? (function(){ const m=(log.message||'').match(/-\s*(\d+)/); return m?m[1]:''; })());
+            const sMethod = document.createElement('span'); sMethod.className = 't-method'; sMethod.textContent = method?`[${method}]`:'';
+            const sPath = document.createElement('span'); sPath.className = 't-path'; sPath.textContent = path?` ${path}`:'';
+            const sStatus = document.createElement('span'); sStatus.className = 't-status ' + (statusNum>=500?'err':statusNum>=400?'warn':statusNum>=300?'redir':'ok'); sStatus.textContent = statusNum?` ${statusNum}`:'';
+            const sTime = document.createElement('span'); sTime.className = 't-time'; sTime.textContent = msVal!==''?` ${msVal} ms`:'';
+            const sSize = document.createElement('span'); sSize.className = 't-size'; sSize.textContent = sizeVal?` - ${sizeVal}`:'';
+            if (!method && !path && !statusNum && msVal==='') { line.textContent = (log.message || JSON.stringify(log)); }
+            else { line.appendChild(sMethod); line.appendChild(sPath); line.appendChild(sStatus); line.appendChild(sTime); line.appendChild(sSize); }
+            term.appendChild(line);
+            cursor = document.createElement('span'); cursor.id = cursorId; cursor.className = 'terminal-cursor';
+            term.appendChild(cursor);
+            term.scrollTop = term.scrollHeight;
+        }
+
+        function appendServerLog(data) {
+            const term = document.getElementById('terminal-window');
+            if (!term) return;
+            const rawPath = data.url || data.path || '';
+            if (rawPath.includes('@vite')) return;
+            const cursorId = 'terminal-cursor';
+            let cursor = document.getElementById(cursorId);
+            if (cursor && cursor.parentElement) { try { cursor.parentElement.removeChild(cursor); } catch (_) {} }
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            const method = String((data.method||'')).toUpperCase();
+            const path = rawPath;
+            const statusNum = Number(data.status||0);
+            const msVal = Number((data.time!==undefined?data.time:''));
+            const sMethod = document.createElement('span'); sMethod.className = 't-method'; sMethod.textContent = method?`[${method}]`:'';
+            const sPath = document.createElement('span'); sPath.className = 't-path'; sPath.textContent = path?` ${path}`:'';
+            const sStatus = document.createElement('span'); sStatus.className = 't-status ' + (statusNum>=500?'err':statusNum>=400?'warn':statusNum>=300?'redir':'ok'); sStatus.textContent = statusNum?` ${statusNum}`:'';
+            const sTime = document.createElement('span'); sTime.className = 't-time'; sTime.textContent = (msVal||msVal===0)?` ${msVal} ms`:'';
+            line.appendChild(sMethod); line.appendChild(sPath); line.appendChild(sStatus); line.appendChild(sTime);
+            term.appendChild(line);
+            cursor = document.createElement('span'); cursor.id = cursorId; cursor.className = 'terminal-cursor';
+            term.appendChild(cursor);
+            term.scrollTop = term.scrollHeight;
+            if (statusNum >= 400) {
+                const msg = `[${method}] ${path} ${statusNum} ${msVal} ms`;
+                appendErrorLog(msg);
+            }
+        }
+
+        function appendErrorLog(message) {
+            const list = document.getElementById('log-list');
+            if (!list) return console.error('找不到 log-list 容器');
+            const item = document.createElement('div');
+            item.className = 'alert alert-danger d-flex align-items-center mb-2';
+            item.style.padding = '8px 12px';
+            item.innerHTML = `
+                <i class="fas fa-times-circle me-2"></i>
+                <div>
+                    <small class="text-muted" style="display:block; font-size:0.8em">${new Date().toLocaleTimeString()}</small>
+                    <span style="font-family:monospace; word-break:break-all;">${message}</span>
+                </div>
+            `;
+            list.prepend(item);
         }
 
         // 初始化事件监听器
@@ -1382,12 +1530,16 @@
                     const avgOrderValueEl = document.getElementById('avg-order-value');
                     const totalViewsEl = document.getElementById('total-views');
 
-                    if (totalUsersEl) totalUsersEl.textContent = data.users?.total || 0;
-                    if (dailyActiveUsersEl) dailyActiveUsersEl.textContent = data.users?.daily_active || 0;
-                    if (totalOrdersEl) totalOrdersEl.textContent = data.orders?.total || 0;
-                    if (totalRevenueEl) totalRevenueEl.textContent = `¥${(data.orders?.total_revenue || 0).toFixed(2)}`;
-                    if (avgOrderValueEl) avgOrderValueEl.textContent = (data.orders?.avg_value || 0).toFixed(2);
+                    if (totalUsersEl) animateValue('total-users', currentNumber(totalUsersEl), Number(data.users?.total || 0), 1000);
+                    if (dailyActiveUsersEl) animateValue('daily-active-users', currentNumber(dailyActiveUsersEl), Number(data.users?.daily_active || 0), 1000);
+                    if (totalOrdersEl) animateValue('total-orders', currentNumber(totalOrdersEl), Number(data.orders?.total || 0), 1000);
+                    if (totalRevenueEl) animateValue('total-revenue', currentNumber(totalRevenueEl), Number(data.orders?.total_revenue || 0), 1000);
+                    if (avgOrderValueEl) animateValue('avg-order-value', currentNumber(avgOrderValueEl), Number(data.orders?.avg_value || 0), 1000);
                     if (totalViewsEl) totalViewsEl.textContent = data.products?.total_views || 0;
+                    const conversionEl = document.getElementById('conversion-rate');
+                    if (conversionEl && data.conversion_rates) {
+                        conversionEl.textContent = (data.conversion_rates.viewToPurchase || 0) + '%';
+                    }
 
                     // 如果有会话指标数据
                     if (data.session_metrics) {

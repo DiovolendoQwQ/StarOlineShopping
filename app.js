@@ -31,6 +31,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+app.use((req, res, next) => {
+  const start = process.hrtime.bigint();
+  res.once('finish', () => {
+    try {
+      const ms = Number((process.hrtime.bigint() - start) / 1000000n);
+      const len = res.getHeader('Content-Length') || '';
+      broadcastAdmin({ type: 'server_log', data: { method: req.method, url: req.originalUrl, status: res.statusCode, time: ms, length: len } });
+    } catch (_) {}
+  });
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ secret: process.env.SESSION_SECRET || 'your_secret_key', resave: false, saveUninitialized: true }));
@@ -59,6 +70,7 @@ app.post('/register', (req, res) => res.redirect(307, '/auth/register'));
 app.post('/login', (req, res) => res.redirect(307, '/auth/login'));
 
 app.get('/', (req, res) => { console.log(color('INFO', `[${ts()}] 访问根路径，跳转到登录页面`)); res.sendFile(path.join(__dirname, 'public', 'login.html')); });
+app.get('/login', (req, res) => { console.log(color('INFO', `[${ts()}] 访问登录页面`)); res.sendFile(path.join(__dirname, 'public', 'login.html')); });
 app.get('/homepage', (req, res) => { console.log(color('INFO', `[${ts()}] 访问主页`)); res.sendFile(path.join(__dirname, 'public', 'homepage.html')); });
 
 const csStats = { 支付: 0, 物流: 0, 商品: 0, 账户: 0, 其他: 0 };
@@ -180,6 +192,24 @@ function pushLog(level, message, meta) {
   if (logs.length > 1000) logs.shift();
   broadcastAdmin({ type: 'log', log: item });
 }
+
+// 捕获并广播服务器错误到前端（在 WebSocket 初始化之后）
+(() => {
+  const origError = console.error.bind(console);
+  console.error = function (...args) {
+    try { origError(...args); } finally {
+      try {
+        const msg = args.map(a => {
+          if (a instanceof Error) return a.stack || a.message;
+          if (typeof a === 'string') return a;
+          try { return JSON.stringify(a); } catch (_) { return String(a); }
+        }).join(' ');
+        const clean = msg.replace(/\x1b\[[0-9;]*m/g, '');
+        broadcastAdmin({ type: 'error_log', data: clean });
+      } catch (_) { }
+    }
+  };
+})();
 
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', (line) => { const input = line.trim(); if (!input) return; if (input === 'help') { console.log(color('INFO', '命令: reply <sessionId> <message> | use <sessionId> | who | stats | list | help')); return; } if (input === 'stats') { console.log(color('INFO', `问题分类统计: ${JSON.stringify(csStats)}`)); return; } if (input === 'list') { console.log(color('INFO', `在线会话: ${JSON.stringify(Array.from(sessions.keys()))}`)); return; } if (input === 'who') { console.log(color('INFO', `当前会话: ${activeSessionId || '未设置'}`)); return; } const u = input.match(/^use\s+(\S+)$/); if (u) { setActiveSession(u[1]); return; } const m = input.match(/^reply\s+(\S+)\s+([\s\S]+)$/); if (m) { const sid = m[1]; const msg = m[2]; const ws = sessions.get(sid); if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'reply', sessionId: sid, message: msg, timestamp: ts() })); console.log(color('REPLY', `[${ts()}] 已回复 会话:${sid} 消息:${msg}`)); } catch (e) { console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`)); } } else { console.error(color('ERROR', `[${ts()}] 会话不可用或未连接: ${sid}`)); } return; } replyActive(input); });

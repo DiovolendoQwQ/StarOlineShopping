@@ -22,14 +22,22 @@ function verifyToken(req){
 
 function requireJwt(req, res, next){
   const payload = verifyToken(req);
-  if (!payload) return res.status(401).json({ error: 'unauthenticated' });
+  if (!payload) {
+    const wantsJson = (req.headers.accept && req.headers.accept.includes('application/json')) || req.get('X-Requested-With') === 'XMLHttpRequest';
+    if (wantsJson) return res.status(401).json({ error: 'unauthenticated' });
+    return res.redirect('/login');
+  }
   req.user = payload;
   next();
 }
 
 function requireAdminJwt(req, res, next){
   const payload = verifyToken(req);
-  if (!payload) return res.status(401).json({ error: 'unauthenticated' });
+  if (!payload) {
+    const wantsJson = (req.headers.accept && req.headers.accept.includes('application/json')) || req.get('X-Requested-With') === 'XMLHttpRequest';
+    if (wantsJson) return res.status(401).json({ error: 'unauthenticated' });
+    return res.redirect('/login');
+  }
   const { isAdmin } = require('./adminAuth');
   if (!isAdmin(payload)) return res.status(403).json({ error: 'forbidden' });
   req.user = payload;
