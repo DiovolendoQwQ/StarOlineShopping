@@ -11,6 +11,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const net = require('net');
 const session = require('express-session');
 require('dotenv').config();
 const morgan = require('morgan');
@@ -89,6 +90,7 @@ function replyActive(message) { if (!activeSessionId) { console.error(color('ERR
 function setupWebSockets() {
   if (!WebSocketServer) return;
   wss = new WebSocketServer({ server, path: '/ws' });
+  wss.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wss.on('connection', (ws, req) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ua = req.headers['user-agent'] || 'unknown';
@@ -123,6 +125,7 @@ function setupWebSockets() {
     });
   });
   wssAdmin = new WebSocketServer({ server, path: '/admin/ws' });
+  wssAdmin.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wssAdmin.on('connection', (ws) => {
     adminClients.add(ws);
     try { ws.send(JSON.stringify({ type: 'clients', clients: listClients() })); } catch (_) { }
@@ -150,13 +153,15 @@ function pushLog(level, message, meta) {
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', (line) => { const input = line.trim(); if (!input) return; if (input === 'help') { console.log(color('INFO', '命令: reply <sessionId> <message> | use <sessionId> | who | stats | list | help')); return; } if (input === 'stats') { console.log(color('INFO', `问题分类统计: ${JSON.stringify(csStats)}`)); return; } if (input === 'list') { console.log(color('INFO', `在线会话: ${JSON.stringify(Array.from(sessions.keys()))}`)); return; } if (input === 'who') { console.log(color('INFO', `当前会话: ${activeSessionId || '未设置'}`)); return; } const u = input.match(/^use\s+(\S+)$/); if (u) { setActiveSession(u[1]); return; } const m = input.match(/^reply\s+(\S+)\s+([\s\S]+)$/); if (m) { const sid = m[1]; const msg = m[2]; const ws = sessions.get(sid); if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'reply', sessionId: sid, message: msg, timestamp: ts() })); console.log(color('REPLY', `[${ts()}] 已回复 会话:${sid} 消息:${msg}`)); } catch (e) { console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`)); } } else { console.error(color('ERROR', `[${ts()}] 会话不可用或未连接: ${sid}`)); } return; } replyActive(input); });
 
-const PORT = process.env.PORT || 3000;
+let PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const WIFI_IFACE = process.env.WIFI_IFACE || '';
 const TLS_ENABLED = String(process.env.TLS_ENABLED || '0') === '1';
 const TLS_KEY_PATH = process.env.TLS_KEY_PATH || '';
 const TLS_CERT_PATH = process.env.TLS_CERT_PATH || '';
 function wifiAddrs() { const nets = os.networkInterfaces(); const res = []; const patterns = ['wi-fi', 'wifi', 'wlan', 'wireless']; for (const name of Object.keys(nets)) { const lname = name.toLowerCase(); const match = WIFI_IFACE ? (name === WIFI_IFACE) : patterns.some(p => lname.includes(p)); if (!match) continue; for (const ni of nets[name] || []) { if (ni.family === 'IPv4' && !ni.internal) { res.push(ni.address); } } } return res; }
+async function isPortFree(port, host) { return await new Promise((resolve) => { const s = net.createServer(); s.once('error', () => resolve(false)); s.once('listening', () => { s.close(() => resolve(true)); }); s.listen(port, host); }); }
+async function findFreePort(start, host) { for (let p = start; p < start + 20; p++) { if (await isPortFree(p, host)) return p; } return null; }
 function startServer() {
   if (TLS_ENABLED) {
     try {
@@ -172,15 +177,35 @@ function startServer() {
   }
 
   setupWebSockets();
-  const urls = wifiAddrs().map(ip => `${TLS_ENABLED ? 'https' : 'http'}://${ip}:${PORT}`).join(', ');
-  server.listen(PORT, HOST, () => {
+  const onListening = () => {
+    const urls = wifiAddrs().map(ip => `${TLS_ENABLED ? 'https' : 'http'}://${ip}:${PORT}`).join(', ');
     console.log(color('INFO', `服务器运行在 ${TLS_ENABLED ? 'https' : 'http'}://localhost:${PORT}`));
     if (urls) console.log(color('INFO', `无线局域网访问: ${urls}`));
     console.log(color('INFO', '后台数据分析系统已启动'));
     console.log(color('INFO', '- 数据面板: ' + (TLS_ENABLED ? 'https' : 'http') + '://localhost:' + PORT + '/analytics/dashboard'));
     console.log(color('INFO', '- 客服系统: ' + (TLS_ENABLED ? 'https' : 'http') + '://localhost:' + PORT + '/customer-service.html'));
     if (!wss) { console.log(color('ERROR', '未安装 ws 依赖，WebSocket 功能不可用。请安装后重启。')); } else { console.log(color('INFO', 'WebSocket 客服模块已启用，命令: help')); }
-  });
+  };
+  const attempt = async (port) => {
+    server.once('error', async (err) => {
+      if (err && err.code === 'EADDRINUSE') {
+        const next = await findFreePort(port + 1, HOST);
+        if (next) {
+          console.log(color('ERROR', `端口已被占用: ${port}，切换到: ${next}`));
+          PORT = next;
+          attempt(PORT);
+          return;
+        }
+        pushLog('error', '端口被占用且未找到可用端口');
+        process.exit(1);
+        return;
+      }
+      pushLog('error', '服务器错误: ' + err.message);
+      process.exit(1);
+    });
+    server.listen(port, HOST, onListening);
+  };
+  attempt(PORT);
 }
 
 function listClients() {
