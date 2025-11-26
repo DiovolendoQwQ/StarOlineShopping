@@ -85,17 +85,21 @@ let wss;
 let wssAdmin;
 let adminClients = new Set();
 let activeSessionId = null;
+const WS_PING_INTERVAL_MS = 30000;
 function setActiveSession(sid) { activeSessionId = sid; console.log(color('INFO', `[${ts()}] 当前会话已设置为: ${sid}，直接输入消息即可回复该会话。`)); }
 function replyActive(message) { if (!activeSessionId) { console.error(color('ERROR', `[${ts()}] 未设置当前会话。使用 'use <sessionId>' 或 'reply <sessionId> <message>'。`)); return; } const ws = sessions.get(activeSessionId); if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() })); console.log(color('REPLY', `[${ts()}] 已回复 会话:${activeSessionId} 消息:${message}`)); } catch (e) { console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`)); } } else { console.error(color('ERROR', `[${ts()}] 会话不可用或未连接: ${activeSessionId}`)); } }
 function setupWebSockets() {
   if (!WebSocketServer) return;
-  wss = new WebSocketServer({ server, path: '/ws' });
+  wss = new WebSocketServer({ noServer: true });
   wss.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wss.on('connection', (ws, req) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ua = req.headers['user-agent'] || 'unknown';
+    try { console.log(color('INFO', `[${ts()}] WS连接建立 IP:${ip} UA:${ua}`)); } catch (_) { }
+    ws.isAlive = true;
+    ws.on('pong', () => { ws.isAlive = true; });
     ws.on('message', (data) => {
-      let msg; try { msg = JSON.parse(data); } catch (e) { msg = { type: 'raw', data: String(data) }; }
+      let msg; try { msg = JSON.parse(typeof data === 'string' ? data : String(data instanceof Buffer ? data.toString() : data)); } catch (e) { msg = { type: 'raw', data: (data instanceof Buffer ? data.toString() : String(data)) }; }
       const sid = msg.sessionId || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
       if (!sessions.has(sid)) sessions.set(sid, ws);
       const cat = classify(msg.message || ''); csStats[cat]++;
@@ -114,9 +118,9 @@ function setupWebSockets() {
       }
       console.log(color('INFO', `[${ts()}] WS消息 会话:${sid} 类型:${msg.type}`));
     });
-    ws.on('close', () => {
+    ws.on('close', (code, reason) => {
       for (const [sid, s] of sessions.entries()) { if (s === ws) sessions.delete(sid); }
-      console.log(color('INFO', `[${ts()}] WS连接关闭 IP:${ip}`));
+      console.log(color('INFO', `[${ts()}] WS连接关闭 IP:${ip} code:${code} reason:${reason}`));
       broadcastAdmin({ type: 'clients', clients: listClients() });
     });
     ws.on('error', (err) => {
@@ -124,7 +128,18 @@ function setupWebSockets() {
       pushLog('error', err.message);
     });
   });
-  wssAdmin = new WebSocketServer({ server, path: '/admin/ws' });
+  const interval = setInterval(() => {
+    try {
+      for (const ws of wss.clients) {
+        if (!ws) continue;
+        if (ws.isAlive === false) { try { ws.terminate(); } catch (_) { }; continue; }
+        ws.isAlive = false;
+        try { ws.ping(); } catch (_) { }
+      }
+    } catch (_) { }
+  }, WS_PING_INTERVAL_MS);
+  wss.on('close', () => { try { clearInterval(interval); } catch (_) { } });
+  wssAdmin = new WebSocketServer({ noServer: true });
   wssAdmin.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wssAdmin.on('connection', (ws) => {
     adminClients.add(ws);
@@ -132,6 +147,22 @@ function setupWebSockets() {
     try { ws.send(JSON.stringify({ type: 'log_init', logs: logs.slice(-100) })); } catch (_) { }
     ws.on('close', () => { adminClients.delete(ws); });
     ws.on('error', () => { adminClients.delete(ws); });
+  });
+  server.on('upgrade', (req, socket, head) => {
+    try {
+      const url = new URL(req.url, (TLS_ENABLED ? 'https://' : 'http://') + req.headers.host);
+      if (url.pathname === '/ws') {
+        wss.handleUpgrade(req, socket, head, (ws) => { wss.emit('connection', ws, req); });
+        return;
+      }
+      if (url.pathname === '/admin/ws') {
+        wssAdmin.handleUpgrade(req, socket, head, (ws) => { wssAdmin.emit('connection', ws, req); });
+        return;
+      }
+      socket.destroy();
+    } catch (_) {
+      try { socket.destroy(); } catch (__) { }
+    }
   });
 }
 

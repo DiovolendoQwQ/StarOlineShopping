@@ -1,7 +1,7 @@
 (() => {
   const STATE = { ws: null, connected: false, reconnectAttempts: 0, sessionId: null };
   const QUEUE_KEY = 'cs_offline_queue';
-  const MAX_RETRY = 6;
+  const MAX_RETRY = 24;
 
   function now(){ return new Date().toISOString(); }
   function uuid(){ try { return crypto.randomUUID(); } catch(_) { return `${Date.now()}-${Math.random().toString(16).slice(2)}`; } }
@@ -30,9 +30,10 @@
       const evt = new CustomEvent('cs:message', { detail: msg });
       document.dispatchEvent(evt);
     };
-    ws.onclose = () => {
+    ws.onclose = (ev) => {
       STATE.connected = false;
       STATE.ws = null;
+      safeLog('ERROR', `WS 连接关闭 code:${ev && ev.code} reason:${ev && ev.reason}`);
       const evt = new CustomEvent('cs:status', { detail: { connected: false } }); document.dispatchEvent(evt);
       retryReconnect();
     };
