@@ -21,7 +21,9 @@
     "sqlite3": "^5.1.7",
     "types-registry": "^0.1.694",
     "uuid": "^11.1.0",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

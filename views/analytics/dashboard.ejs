@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %> - STAR购物平台</title>
+    <title>
+        <%= title %> - STAR购物平台
+    </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,48 +17,60 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
         }
+
         .dashboard-card:hover {
             transform: translateY(-2px);
         }
+
         .metric-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
+
         .chart-container {
             position: relative;
             height: 400px;
             margin: 20px 0;
         }
+
         .recommendation-item {
             border-left: 4px solid #007bff;
             padding-left: 15px;
             margin-bottom: 15px;
         }
+
         .priority-high {
             border-left-color: #dc3545;
         }
+
         .priority-medium {
             border-left-color: #ffc107;
         }
+
         .priority-low {
             border-left-color: #28a745;
         }
+
         .sidebar {
             background: #f8f9fa;
             min-height: 100vh;
             padding: 20px 0;
         }
+
         .nav-link {
             color: #495057;
             border-radius: 8px;
             margin: 2px 0;
         }
-        .nav-link:hover, .nav-link.active {
+
+        .nav-link:hover,
+        .nav-link.active {
             background-color: #007bff;
             color: white;
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -78,6 +93,15 @@
                     <a class="nav-link" href="#recommendations" data-section="recommendations">
                         <i class="fas fa-lightbulb me-2"></i>智能建议
                     </a>
+                    <a class="nav-link" href="#server-monitor" data-section="server-monitor">
+                        <i class="fas fa-server me-2"></i>服务器监控
+                    </a>
+                    <a class="nav-link" href="#error-logs" data-section="error-logs">
+                        <i class="fas fa-exclamation-circle me-2"></i>错误日志
+                    </a>
+                    <a class="nav-link" href="#customer-service" data-section="customer-service">
+                        <i class="fas fa-comments me-2"></i>客服咨询
+                    </a>
                 </nav>
                 <div class="mt-4">
                     <a href="/homepage" class="btn btn-outline-primary btn-sm">
@@ -91,7 +115,9 @@
                 <div class="container-fluid py-4">
                     <!-- 页面标题 -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2><i class="fas fa-chart-dashboard me-2"></i><%= title %></h2>
+                        <h2><i class="fas fa-chart-dashboard me-2"></i>
+                            <%= title %>
+                        </h2>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-primary" data-days="7">7天</button>
                             <button type="button" class="btn btn-outline-primary active" data-days="30">30天</button>
@@ -107,9 +133,12 @@
                                 <div class="card dashboard-card metric-card">
                                     <div class="card-body text-center">
                                         <i class="fas fa-users fa-2x mb-2"></i>
-                                        <h3 id="total-users"><%= report.summary.total_users || 0 %></h3>
+                                        <h3 id="total-users">
+                                            <%= report.summary.total_users || 0 %>
+                                        </h3>
                                         <p class="mb-0">总用户数</p>
-                                        <small class="text-light" id="user-growth">增长率: <%= report.summary.user_growth_rate || 0 %>%</small>
+                                        <small class="text-light" id="user-growth">增长率: <%=
+                                                report.summary.user_growth_rate || 0 %>%</small>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +146,9 @@
                                 <div class="card dashboard-card metric-card">
                                     <div class="card-body text-center">
                                         <i class="fas fa-chart-line fa-2x mb-2"></i>
-                                        <h3 id="daily-active-users"><%= report.summary.daily_active_users || 0 %></h3>
+                                        <h3 id="daily-active-users">
+                                            <%= report.summary.daily_active_users || 0 %>
+                                        </h3>
                                         <p class="mb-0">日活跃用户</p>
                                         <small class="text-light">今日活跃</small>
                                     </div>
@@ -127,9 +158,13 @@
                                 <div class="card dashboard-card metric-card">
                                     <div class="card-body text-center">
                                         <i class="fas fa-shopping-cart fa-2x mb-2"></i>
-                                        <h3 id="total-orders"><%= report.summary.total_orders || 0 %></h3>
+                                        <h3 id="total-orders">
+                                            <%= report.summary.total_orders || 0 %>
+                                        </h3>
                                         <p class="mb-0">总订单数</p>
-                                        <small class="text-light">¥<span id="avg-order-value"><%= (report.summary.avg_order_value || 0).toFixed(2) %></span> 平均订单</small>
+                                        <small class="text-light">¥<span id="avg-order-value">
+                                                <%= (report.summary.avg_order_value || 0).toFixed(2) %>
+                                            </span> 平均订单</small>
                                     </div>
                                 </div>
                             </div>
@@ -137,14 +172,15 @@
                                 <div class="card dashboard-card metric-card">
                                     <div class="card-body text-center">
                                         <i class="fas fa-dollar-sign fa-2x mb-2"></i>
-                                        <h3 id="total-revenue">¥<%= (report.summary.total_revenue || 0).toFixed(2) %></h3>
+                                        <h3 id="total-revenue">¥<%= (report.summary.total_revenue || 0).toFixed(2) %>
+                                        </h3>
                                         <p class="mb-0">总收入</p>
                                         <small class="text-light">累计收入</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 次要指标卡片 -->
                         <div class="row mb-4">
                             <div class="col-md-3">
@@ -160,7 +196,9 @@
                                 <div class="card dashboard-card">
                                     <div class="card-body text-center">
                                         <i class="fas fa-percentage fa-2x mb-2 text-success"></i>
-                                        <h4 id="conversion-rate"><%= report.summary.conversion_rates?.viewToPurchase || 0 %>%</h4>
+                                        <h4 id="conversion-rate">
+                                            <%= report.summary.conversion_rates?.viewToPurchase || 0 %>%
+                                        </h4>
                                         <p class="mb-0 text-muted">转化率</p>
                                     </div>
                                 </div>
@@ -184,7 +222,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 收入趋势图 -->
                         <div class="row mb-4">
                             <div class="col-md-12">
@@ -241,7 +279,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 图表区域 -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -265,7 +303,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 用户活跃度时间分布 -->
                         <div class="row mb-4">
                             <div class="col-md-12">
@@ -279,7 +317,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 用户路径分析 -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -348,7 +386,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 产品性能图表 -->
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -372,7 +410,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 产品排行表格 -->
                         <div class="row mb-4">
                             <div class="col-md-12">
@@ -380,9 +418,12 @@
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5><i class="fas fa-trophy me-2"></i>热门产品排行</h5>
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-outline-primary btn-sm" id="sort-by-views">按浏览量</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm" id="sort-by-sales">按销量</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm" id="sort-by-revenue">按收入</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                id="sort-by-views">按浏览量</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                id="sort-by-sales">按销量</button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                id="sort-by-revenue">按收入</button>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -411,7 +452,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 产品性能趋势 -->
                         <div class="row mb-4">
                             <div class="col-md-12">
@@ -420,8 +461,8 @@
                                         <h5><i class="fas fa-chart-line me-2"></i>产品销售趋势</h5>
                                     </div>
                                     <div class="card-body">
-                        <canvas id="productTrendChart" height="200"></canvas>
-                    </div>
+                                        <canvas id="productTrendChart" height="200"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -446,38 +487,287 @@
                                 <h5><i class="fas fa-lightbulb me-2"></i>智能建议</h5>
                             </div>
                             <div class="card-body" id="recommendationsContent">
-                                <% if (report.recommendations && report.recommendations.length > 0) { %>
+                                <% if (report.recommendations && report.recommendations.length> 0) { %>
                                     <% report.recommendations.forEach(function(rec) { %>
                                         <div class="recommendation-item priority-<%= rec.priority %>">
-                                            <h6><%= rec.title %></h6>
-                                            <p class="text-muted mb-1"><%= rec.description %></p>
+                                            <h6>
+                                                <%= rec.title %>
+                                            </h6>
+                                            <p class="text-muted mb-1">
+                                                <%= rec.description %>
+                                            </p>
                                             <small class="text-info">优先级: <%= rec.priority %></small>
                                         </div>
-                                    <% }); %>
-                                <% } else { %>
-                                    <p class="text-muted">暂无智能建议</p>
-                                <% } %>
+                                        <% }); %>
+                                            <% } else { %>
+                                                <p class="text-muted">暂无智能建议</p>
+                                                <% } %>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- 客服咨询（内嵌在主内容区） -->
+                    <div id="customer-service" class="section" style="display: none;">
+                        <style>
+                            .cs-container {
+                                max-width: 880px;
+                                margin: 0;
+                                padding: 0;
+                                border-radius: 12px;
+                                overflow: hidden;
+                                background: #fff
+                            }
+
+                            .cs-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 12px 16px;
+                                background: linear-gradient(135deg, #ff7a18, #ff3c00);
+                                color: #fff
+                            }
+
+                            .cs-title {
+                                font-size: 16px;
+                                font-weight: 600
+                            }
+
+                            .cs-status {
+                                font-size: 12px;
+                                opacity: .9
+                            }
+
+                            .cs-status .dot {
+                                display: inline-block;
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+                                margin-right: 6px;
+                                background: #22c55e
+                            }
+
+                            .cs-status.offline .dot {
+                                background: #ef4444
+                            }
+
+                            .cs-body {
+                                padding: 12px;
+                                background: linear-gradient(180deg, #f7f8fc 0%, #ffffff 100%)
+                            }
+
+                            .cs-chat {
+                                height: 420px;
+                                overflow: auto;
+                                border: 1px solid #eee;
+                                border-radius: 10px;
+                                padding: 12px;
+                                background: #f9fafb
+                            }
+
+                            .cs-msg-row {
+                                display: flex;
+                                align-items: flex-end;
+                                margin: 8px 0
+                            }
+
+                            .cs-msg-row.me {
+                                justify-content: flex-end
+                            }
+
+                            .cs-avatar {
+                                width: 28px;
+                                height: 28px;
+                                border-radius: 50%;
+                                background: #fde68a;
+                                flex: 0 0 28px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #b45309;
+                                font-weight: 700
+                            }
+
+                            .cs-avatar.srv {
+                                background: #bfdbfe;
+                                color: #1d4ed8
+                            }
+
+                            .cs-bubble {
+                                max-width: 68%;
+                                padding: 8px 10px;
+                                border-radius: 12px;
+                                position: relative;
+                                font-size: 14px;
+                                line-height: 1.6;
+                                box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
+                            }
+
+                            .cs-bubble.me {
+                                background: #e8f5e9;
+                                color: #1b5e20;
+                                border-top-right-radius: 4px
+                            }
+
+                            .cs-bubble.srv {
+                                background: #e3f2fd;
+                                color: #0b3b7a;
+                                border-top-left-radius: 4px
+                            }
+
+                            .cs-time {
+                                font-size: 11px;
+                                color: #999;
+                                margin-top: 4px
+                            }
+
+                            .cs-form {
+                                display: flex;
+                                gap: 10px;
+                                margin-top: 12px
+                            }
+
+                            .cs-form input {
+                                flex: 1;
+                                padding: 10px 12px;
+                                border: 1px solid #e5e7eb;
+                                border-radius: 10px;
+                                background: #fff;
+                                outline: none
+                            }
+
+                            .cs-form button {
+                                padding: 10px 16px;
+                                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                                color: #fff;
+                                border: none;
+                                border-radius: 10px;
+                                cursor: pointer;
+                                font-weight: 600
+                            }
+
+                            .cs-form button:disabled {
+                                opacity: .6;
+                                cursor: not-allowed
+                            }
+
+                            .cs-toast {
+                                position: fixed;
+                                left: 50%;
+                                bottom: 28px;
+                                transform: translateX(-50%);
+                                background: #111827;
+                                color: #fff;
+                                padding: 10px 16px;
+                                border-radius: 10px;
+                                box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+                                opacity: 0;
+                                visibility: hidden;
+                                transition: all .25s
+                            }
+
+                            .cs-toast.show {
+                                opacity: 1;
+                                visibility: visible
+                            }
+                        </style>
+                        <div class="card dashboard-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-comments me-2"></i>客服系统</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="cs-container">
+                                    <div class="cs-header">
+                                        <div class="cs-title">客服咨询</div>
+                                        <div class="cs-status" id="admin-cs-status">连接中...</div>
+                                    </div>
+                                    <div class="cs-body">
+                                        <div style="margin-bottom:8px;font-size:12px;color:#6b7280">会话ID：<span
+                                                id="admin-cs-session"></span></div>
+                                        <div class="cs-chat" id="admin-cs-chat"></div>
+                                        <div class="cs-form">
+                                            <input id="admin-cs-input" type="text" placeholder="请输入您的问题，比如“我想退货”" />
+                                            <button id="admin-cs-send" type="button">发送</button>
+                                        </div>
+                                        <div style="margin-top:10px;font-size:12px;color:#9ca3af">按 Enter 可快速发送</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cs-toast" id="admin-cs-toast"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div id="admin-sections" class="container-fluid" style="display:none">
+        <div id="server-monitor" class="section" style="display:none">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-microchip me-2"></i>CPU</h5>
+                        </div>
+                        <div class="card-body">
+                            <h3 id="cpu-usage">0%</h3>
+                            <small class="text-muted">实时CPU占用</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-memory me-2"></i>内存</h5>
+                        </div>
+                        <div class="card-body">
+                            <h4><span id="mem-free">0</span>/<span id="mem-total">0</span></h4>
+                            <small class="text-muted">可用/总内存(GB)</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-plug me-2"></i>客户端</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="client-list" class="text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="error-logs" class="section" style="display:none">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-exclamation-circle me-2"></i>错误与告警</h5>
+                </div>
+                <div class="card-body">
+                    <div id="log-list" style="max-height:400px; overflow:auto"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/js/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // 全局变量
         let currentDays = <%= days %>;
         let charts = {};
         let sortBy = 'views'; // 默认按浏览量排序
+        let adminWs = null;
 
         // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initializeNavigation();
             initializeCharts();
             initializeEventListeners();
             loadData();
+            connectAdminWs();
+            initializeCustomerService();
+            if (document.getElementById('admin-cs-session')) { document.getElementById('admin-cs-session').textContent = window.CustomerService.sessionId(); }
         });
 
         // 初始化导航
@@ -485,31 +775,145 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('.section');
             const dayButtons = document.querySelectorAll('[data-days]');
+            const mainContainer = document.querySelector('.col-md-10 > .container-fluid.py-4');
+            const adminContainer = document.getElementById('admin-sections');
 
             navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetSection = this.getAttribute('data-section');
-                    
+
                     // 更新导航状态
                     navLinks.forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
-                    
+
                     // 显示对应部分
                     sections.forEach(section => {
                         section.style.display = section.id === targetSection ? 'block' : 'none';
                     });
+                    const targetEl = document.getElementById(targetSection);
+                    if (targetEl && adminContainer && adminContainer.contains(targetEl)) {
+                        if (adminContainer) adminContainer.style.display = 'block';
+                        if (mainContainer) mainContainer.style.display = 'none';
+                    } else {
+                        if (adminContainer) adminContainer.style.display = 'none';
+                        if (mainContainer) mainContainer.style.display = 'block';
+                    }
                 });
             });
 
             dayButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     dayButtons.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentDays = parseInt(this.getAttribute('data-days'));
                     loadData();
                 });
             });
+
+            const active = document.querySelector('.nav-link.active');
+            if (active) {
+                const targetSection = active.getAttribute('data-section');
+                sections.forEach(section => { section.style.display = section.id === targetSection ? 'block' : 'none'; });
+                const targetEl = document.getElementById(targetSection);
+                if (targetEl && adminContainer && adminContainer.contains(targetEl)) {
+                    if (adminContainer) adminContainer.style.display = 'block';
+                    if (mainContainer) mainContainer.style.display = 'none';
+                } else {
+                    if (adminContainer) adminContainer.style.display = 'none';
+                    if (mainContainer) mainContainer.style.display = 'block';
+                }
+            }
+        }
+
+        function initializeCustomerService() {
+            const statusEl = document.getElementById('admin-cs-status');
+            const chatEl = document.getElementById('admin-cs-chat');
+            const inputEl = document.getElementById('admin-cs-input');
+            const sendBtn = document.getElementById('admin-cs-send');
+            const toastEl = document.getElementById('admin-cs-toast');
+            if (!chatEl || !inputEl || !sendBtn) return;
+            function fmtTime() { return new Date().toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit' }); }
+            function showToast(text) { toastEl.textContent = text; toastEl.classList.add('show'); setTimeout(() => { toastEl.classList.remove('show'); }, 2000); }
+            function addMsg(text, who) {
+                const row = document.createElement('div');
+                row.className = 'cs-msg-row ' + (who === 'me' ? 'me' : 'srv');
+                const avatar = document.createElement('div');
+                avatar.className = 'cs-avatar ' + (who === 'me' ? 'me' : 'srv');
+                avatar.textContent = who === 'me' ? '我' : '客';
+                const bubble = document.createElement('div');
+                bubble.className = 'cs-bubble ' + (who === 'me' ? 'me' : 'srv');
+                bubble.innerHTML = '<div>' + text + '</div><div class="cs-time">' + fmtTime() + '</div>';
+                if (who === 'me') { row.appendChild(bubble); row.appendChild(avatar); } else { row.appendChild(avatar); row.appendChild(bubble); }
+                chatEl.appendChild(row);
+                chatEl.scrollTop = chatEl.scrollHeight;
+            }
+            function doSend() {
+                const text = (inputEl.value || '').trim();
+                if (!text) return;
+                addMsg(text, 'me');
+                inputEl.value = '';
+                window.CustomerService.sendQuestion(text);
+            }
+            document.addEventListener('cs:status', function (ev) {
+                const d = ev.detail || {};
+                if (statusEl) { statusEl.classList.toggle('offline', !d.connected); statusEl.innerHTML = (d.connected ? '<span class="dot"></span>已连接' : '<span class="dot"></span>未连接，自动重试中...'); }
+                if (sendBtn) sendBtn.disabled = false;
+            });
+            document.addEventListener('cs:message', function (ev) {
+                const msg = ev.detail || {};
+                if (msg.type === 'reply') { addMsg(msg.message || '客服回复', 'srv'); }
+                if (msg.type === 'ack') { showToast('已收到，我们会尽快回复'); }
+            });
+            sendBtn.addEventListener('click', doSend);
+            inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doSend(); } });
+            try { window.CustomerService.connect(); } catch (_) { }
+        }
+
+        function connectAdminWs() {
+            const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            adminWs = new WebSocket(`${proto}://${location.host}/admin/ws`);
+            adminWs.onmessage = function (ev) {
+                let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
+                if (msg.type === 'metrics') updateMetrics(msg.metrics);
+                if (msg.type === 'clients') updateClients(msg.clients);
+                if (msg.type === 'log') appendLog(msg.log);
+                if (msg.type === 'log_init' && Array.isArray(msg.logs)) { msg.logs.forEach(appendLog); }
+            };
+        }
+
+        function gb(n) { return (n / 1024 / 1024 / 1024).toFixed(2); }
+        function updateMetrics(m) {
+            const cpuEl = document.getElementById('cpu-usage');
+            const freeEl = document.getElementById('mem-free');
+            const totalEl = document.getElementById('mem-total');
+            if (cpuEl) cpuEl.textContent = `${m.cpu}%`;
+            if (freeEl) freeEl.textContent = gb(m.memory.free);
+            if (totalEl) totalEl.textContent = gb(m.memory.total);
+        }
+        function updateClients(list) {
+            const el = document.getElementById('client-list');
+            if (!el) return;
+            el.innerHTML = '';
+            const count = Array.isArray(list) ? list.length : 0;
+            const t = document.createElement('div');
+            t.textContent = `在线会话: ${count}`;
+            el.appendChild(t);
+            if (count > 0) {
+                const ul = document.createElement('ul');
+                list.forEach(c => { const li = document.createElement('li'); li.textContent = c.sessionId; ul.appendChild(li); });
+                el.appendChild(ul);
+            }
+        }
+        function appendLog(log) {
+            const el = document.getElementById('log-list');
+            if (!el) return;
+            const d = document.createElement('div');
+            const tag = log.level === 'error' ? 'text-danger' : (log.level === 'warn' ? 'text-warning' : 'text-muted');
+            d.className = `mb-2 ${tag}`;
+            d.textContent = `[${log.timestamp}] ${log.level.toUpperCase()} ${log.message}`;
+            el.appendChild(d);
+            el.scrollTop = el.scrollHeight;
         }
 
         // 初始化事件监听器
@@ -613,7 +1017,7 @@
                 charts.hourlyActivity = new Chart(hourlyCtx, {
                     type: 'bar',
                     data: {
-                        labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+                        labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
                         datasets: [{
                             label: '活跃用户数',
                             data: [],
@@ -869,7 +1273,7 @@
         // 加载数据
         async function loadData() {
             console.log('开始加载数据，天数:', currentDays);
-            
+
             try {
                 // 加载实时概览数据
                 console.log('正在加载实时概览数据...');
@@ -930,7 +1334,7 @@
                 console.log('趋势数据:', trendData);
                 updateTrendChart(trendData.data);
                 console.log('✅ 趋势数据加载完成');
-                
+
                 console.log('🎉 所有数据加载完成');
 
             } catch (error) {
@@ -950,11 +1354,11 @@
                 }
                 const productData = await productResponse.json();
                 console.log('产品性能数据:', productData);
-                
+
                 if (!productData.data || !Array.isArray(productData.data)) {
                     throw new Error('产品性能数据格式不正确');
                 }
-                
+
                 updateProductTable(productData.data);
                 updateProductCharts(productData.data);
                 return true;
@@ -977,14 +1381,14 @@
                     const totalRevenueEl = document.getElementById('total-revenue');
                     const avgOrderValueEl = document.getElementById('avg-order-value');
                     const totalViewsEl = document.getElementById('total-views');
-                    
+
                     if (totalUsersEl) totalUsersEl.textContent = data.users?.total || 0;
                     if (dailyActiveUsersEl) dailyActiveUsersEl.textContent = data.users?.daily_active || 0;
                     if (totalOrdersEl) totalOrdersEl.textContent = data.orders?.total || 0;
                     if (totalRevenueEl) totalRevenueEl.textContent = `¥${(data.orders?.total_revenue || 0).toFixed(2)}`;
                     if (avgOrderValueEl) avgOrderValueEl.textContent = (data.orders?.avg_value || 0).toFixed(2);
                     if (totalViewsEl) totalViewsEl.textContent = data.products?.total_views || 0;
-                    
+
                     // 如果有会话指标数据
                     if (data.session_metrics) {
                         const avgSessionDurationEl = document.getElementById('avg-session-duration');
@@ -992,7 +1396,7 @@
                         if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics?.avg_duration || 0).toFixed(1);
                         if (bounceRateEl) bounceRateEl.textContent = `${(data.session_metrics?.bounce_rate || 0).toFixed(1)}%`;
                     }
-                    
+
                     // 更新收入趋势图
                     if (charts.revenue && data.revenue_trend && Array.isArray(data.revenue_trend)) {
                         try {
@@ -1033,7 +1437,7 @@
                         const avgSessionDurationEl = document.getElementById('avg-session-duration');
                         const bounceRateEl = document.getElementById('bounce-rate');
                         const avgActionsPerSessionEl = document.getElementById('avg-actions-per-session');
-                        
+
                         if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics.avg_duration || 0) + ' 分钟';
                         if (bounceRateEl) bounceRateEl.textContent = `${(data.session_metrics.bounce_rate || 0)}%`;
                         if (avgActionsPerSessionEl) avgActionsPerSessionEl.textContent = (data.session_metrics.avg_actions_per_session || 0).toFixed(1);
@@ -1089,7 +1493,7 @@
                     } else {
                         console.warn('⚠️ 用户路径数据缺失');
                     }
-                    
+
                     console.log('✅ 高级用户行为数据更新完成');
                 } else {
                     console.warn('⚠️ 高级用户行为数据为空');
@@ -1105,7 +1509,7 @@
             const pathsList = document.getElementById('user-paths-list');
             if (pathsList) {
                 pathsList.innerHTML = '';
-                
+
                 // 处理用户路径数据，按用户分组显示最近的行为序列
                 const userGroups = {};
                 paths.forEach(path => {
@@ -1114,13 +1518,13 @@
                     }
                     userGroups[path.user_id].push(path);
                 });
-                
+
                 // 显示前5个用户的行为路径
                 Object.keys(userGroups).slice(0, 5).forEach((userId, index) => {
                     const userPaths = userGroups[userId].slice(0, 5); // 每个用户显示最多5个行为
                     const pathElement = document.createElement('div');
                     pathElement.className = 'mb-2 p-2 bg-dark rounded';
-                    
+
                     const pathSequence = userPaths.map(p => p.action_type).join(' → ');
                     pathElement.innerHTML = `
                         <small class="text-muted">用户 #${userId}</small>
@@ -1136,25 +1540,25 @@
         function updateBehaviorCharts(data) {
             try {
                 console.log('正在更新用户行为图表和指标...', data);
-                
+
                 // 更新用户行为概览指标
                 try {
                     const totalClicksEl = document.getElementById('total-clicks');
                     const cartAddsEl = document.getElementById('cart-additions');
                     const wishlistAddsEl = document.getElementById('wishlist-additions');
                     const sharesEl = document.getElementById('shares');
-                    
+
                     // 从actionStats中提取各种行为的统计数据
                     let totalClicks = 0;
                     let cartAdditions = 0;
                     let wishlistAdditions = 0;
                     let shares = 0;
-                    
+
                     if (data.actionStats && Array.isArray(data.actionStats)) {
                         data.actionStats.forEach(stat => {
                             const actionType = stat.action_type;
                             const count = stat.count || 0;
-                            
+
                             // 统计点击数（包括浏览、产品查看等）
                             if (actionType === 'view' || actionType === 'product_view' || actionType === 'click') {
                                 totalClicks += count;
@@ -1173,19 +1577,19 @@
                             }
                         });
                     }
-                    
+
                     // 如果没有从actionStats获取到数据，尝试从rawConversionData获取
                     if (totalClicks === 0 && data.rawConversionData) {
                         totalClicks = data.rawConversionData.views || 0;
                         cartAdditions = data.rawConversionData.cart_adds || 0;
                     }
-                    
+
                     // 更新DOM元素
                     if (totalClicksEl) totalClicksEl.textContent = totalClicks;
                     if (cartAddsEl) cartAddsEl.textContent = cartAdditions;
                     if (wishlistAddsEl) wishlistAddsEl.textContent = wishlistAdditions;
                     if (sharesEl) sharesEl.textContent = shares;
-                    
+
                     console.log('✅ 用户行为概览指标更新完成:', {
                         totalClicks,
                         cartAdditions,
@@ -1195,7 +1599,7 @@
                 } catch (metricsError) {
                     console.error('❌ 更新用户行为概览指标失败:', metricsError);
                 }
-                
+
                 // 更新行为分布图表
                 if (data.actionStats && charts.behavior) {
                     try {
@@ -1222,7 +1626,7 @@
                         console.error('❌ 更新转化漏斗图表失败:', funnelError);
                     }
                 }
-                
+
                 console.log('✅ 用户行为图表和指标更新完成');
             } catch (error) {
                 console.error('❌ 更新用户行为图表失败:', error);
@@ -1239,16 +1643,16 @@
                     console.error('❌ 找不到产品表格tbody元素');
                     return;
                 }
-                
+
                 tbody.innerHTML = '';
-                
+
                 if (!data || !Array.isArray(data)) {
                     console.warn('⚠️ 产品数据为空或格式不正确');
                     const row = tbody.insertRow();
                     row.innerHTML = '<td colspan="10" class="text-center text-muted">暂无产品数据</td>';
                     return;
                 }
-                
+
                 data.forEach((product, index) => {
                     try {
                         // 从产品名称推断类别
@@ -1264,7 +1668,7 @@
                         else if (name.includes('键盘')) category = '键盘';
                         else if (name.includes('鼠标')) category = '鼠标';
                         else if (name.includes('显示器')) category = '显示器';
-                        
+
                         const row = tbody.insertRow();
                         row.innerHTML = `
                             <td>${index + 1}</td>
@@ -1282,7 +1686,7 @@
                         console.error(`❌ 创建产品表格行失败 (索引 ${index}):`, rowError, product);
                     }
                 });
-                
+
                 console.log(`✅ 产品表格更新完成，共 ${data.length} 行`);
             } catch (error) {
                 console.error('❌ 更新产品表格失败:', error);
@@ -1294,28 +1698,28 @@
         function updateProductCharts(data) {
             try {
                 console.log('正在更新产品图表，数据长度:', data ? data.length : 0);
-                
+
                 if (!data || !Array.isArray(data)) {
                     console.warn('⚠️ 产品图表数据为空或格式不正确');
                     return;
                 }
-                
+
                 // 更新产品概览指标
                 try {
                     const totalProductsEl = document.getElementById('total-products');
                     const hotProductsEl = document.getElementById('hot-products');
                     const trendingProductsEl = document.getElementById('trending-products');
                     const lowStockProductsEl = document.getElementById('low-stock-products');
-                    
+
                     if (totalProductsEl) totalProductsEl.textContent = data.length || 0;
                     if (hotProductsEl) hotProductsEl.textContent = data.filter(p => (p.views || 0) > 100).length || 0;
-                    
+
                     // 使用composite_score作为趋势指标的替代
                     const trendingCount = data.filter(p => (p.composite_score || 0) > 50).length || 0;
                     if (trendingProductsEl) trendingProductsEl.textContent = trendingCount;
-                    
+
                     if (lowStockProductsEl) lowStockProductsEl.textContent = data.filter(p => (p.stock || 0) < 10).length || 0;
-                    
+
                     console.log('✅ 产品概览指标更新完成');
                 } catch (metricsError) {
                     console.error('❌ 更新产品概览指标失败:', metricsError);
@@ -1339,11 +1743,11 @@
                             else if (name.includes('键盘')) category = '键盘';
                             else if (name.includes('鼠标')) category = '鼠标';
                             else if (name.includes('显示器')) category = '显示器';
-                            
+
                             const finalCategory = product.category || category;
                             categoryData[finalCategory] = (categoryData[finalCategory] || 0) + (product.revenue || 0);
                         });
-                        
+
                         charts.category.data.labels = Object.keys(categoryData);
                         charts.category.data.datasets[0].data = Object.values(categoryData);
                         charts.category.update();
@@ -1367,7 +1771,7 @@
                                 ratingData[rating - 1]++;
                             }
                         });
-                        
+
                         charts.rating.data.datasets[0].data = ratingData;
                         charts.rating.update();
                         console.log('✅ 产品评分分布图更新完成');
@@ -1377,7 +1781,7 @@
                 } else {
                     console.warn('⚠️ 产品评分分布图对象不存在');
                 }
-                
+
                 console.log('✅ 产品图表更新完成');
             } catch (error) {
                 console.error('❌ 更新产品图表失败:', error);
@@ -1389,12 +1793,12 @@
         function updateTrendChart(data) {
             try {
                 console.log('正在更新趋势图表，数据:', data);
-                
+
                 // 更新趋势分析页面的图表
                 if (charts.trend) {
                     let labels = [];
                     let datasets = [];
-                    
+
                     // 处理活跃用户数据
                     if (data.active_users && Array.isArray(data.active_users) && data.active_users.length > 0) {
                         labels = data.active_users.map(item => {
@@ -1402,7 +1806,7 @@
                             const date = new Date(item.date);
                             return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
                         });
-                        
+
                         datasets.push({
                             label: '活跃用户',
                             data: data.active_users.map(item => item.value || 0),
@@ -1416,10 +1820,10 @@
                             pointRadius: 4,
                             pointHoverRadius: 6
                         });
-                        
+
                         console.log('活跃用户数据点:', data.active_users.map(item => item.value || 0));
                     }
-                    
+
                     // 处理订单数据
                     if (data.orders && Array.isArray(data.orders) && data.orders.length > 0) {
                         // 如果还没有标签，使用订单数据的日期
@@ -1429,7 +1833,7 @@
                                 return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
                             });
                         }
-                        
+
                         datasets.push({
                             label: '订单数',
                             data: data.orders.map(item => item.value || 0),
@@ -1443,10 +1847,10 @@
                             pointRadius: 4,
                             pointHoverRadius: 6
                         });
-                        
+
                         console.log('订单数据点:', data.orders.map(item => item.value || 0));
                     }
-                    
+
                     // 处理收入数据
                     if (data.revenue && Array.isArray(data.revenue) && data.revenue.length > 0) {
                         // 如果还没有标签，使用收入数据的日期
@@ -1456,7 +1860,7 @@
                                 return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
                             });
                         }
-                        
+
                         datasets.push({
                             label: '收入 (¥)',
                             data: data.revenue.map(item => item.value || 0),
@@ -1471,7 +1875,7 @@
                             pointHoverRadius: 6,
                             yAxisID: 'y1'
                         });
-                        
+
                         // 添加第二个Y轴用于收入
                         if (!charts.trend.options.scales.y1) {
                             charts.trend.options.scales.y1 = {
@@ -1498,24 +1902,24 @@
                                 }
                             };
                         }
-                        
+
                         console.log('收入数据点:', data.revenue.map(item => item.value || 0));
                     }
-                    
+
                     // 如果没有任何数据，创建示例数据
                     if (labels.length === 0 || datasets.length === 0) {
                         console.log('没有趋势数据，创建示例数据');
                         const today = new Date();
                         labels = [];
                         const sampleData = [];
-                        
+
                         for (let i = 6; i >= 0; i--) {
                             const date = new Date(today);
                             date.setDate(date.getDate() - i);
                             labels.push(date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }));
                             sampleData.push(Math.floor(Math.random() * 100) + 50);
                         }
-                        
+
                         datasets = [{
                             label: '活跃用户',
                             data: sampleData,
@@ -1530,25 +1934,25 @@
                             pointHoverRadius: 6
                         }];
                     }
-                    
+
                     // 更新图表数据
                     charts.trend.data.labels = labels;
                     charts.trend.data.datasets = datasets;
                     charts.trend.update('active');
-                    
+
                     console.log('✅ 趋势图表更新完成，标签数:', labels.length, '数据集数:', datasets.length);
                 }
-                
+
                 // 更新产品性能页面的产品销售趋势图表
                 if (charts.productTrend) {
                     try {
                         console.log('正在更新产品销售趋势图表，原始数据:', data);
-                        
+
                         // 使用趋势数据更新产品销售趋势图
                         const labels = [];
                         const salesData = [];
                         const revenueData = [];
-                        
+
                         // 如果有订单数据，使用订单数据作为销售趋势
                         if (data.orders && Array.isArray(data.orders)) {
                             console.log('处理订单数据:', data.orders);
@@ -1557,7 +1961,7 @@
                                 salesData.push(item.value || 0);
                             });
                         }
-                        
+
                         // 如果有收入数据，添加收入趋势
                         if (data.revenue && Array.isArray(data.revenue)) {
                             console.log('处理收入数据:', data.revenue);
@@ -1570,7 +1974,7 @@
                                 }
                             });
                         }
-                        
+
                         // 如果没有数据，创建示例数据以确保图表显示
                         if (labels.length === 0) {
                             console.log('没有趋势数据，创建示例数据');
@@ -1583,15 +1987,15 @@
                                 revenueData.push(Math.floor(Math.random() * 5000) + 1000);
                             }
                         }
-                        
+
                         console.log('图表标签:', labels);
                         console.log('销售数据:', salesData);
                         console.log('收入数据:', revenueData);
-                        
+
                         // 更新图表数据
                         charts.productTrend.data.labels = labels;
                         charts.productTrend.data.datasets = [];
-                        
+
                         if (salesData.length > 0) {
                             charts.productTrend.data.datasets.push({
                                 label: '销售量',
@@ -1606,7 +2010,7 @@
                                 pointRadius: 4
                             });
                         }
-                        
+
                         if (revenueData.length > 0) {
                             charts.productTrend.data.datasets.push({
                                 label: '收入趋势 (¥)',
@@ -1621,7 +2025,7 @@
                                 pointRadius: 4,
                                 yAxisID: 'y1'
                             });
-                            
+
                             // 添加第二个Y轴用于收入
                             charts.productTrend.options.scales.y1 = {
                                 type: 'linear',
@@ -1638,7 +2042,7 @@
                                 }
                             };
                         }
-                        
+
                         charts.productTrend.update('active');
                         console.log('✅ 产品销售趋势图表更新完成，数据集数量:', charts.productTrend.data.datasets.length);
                     } catch (productTrendError) {
@@ -1649,12 +2053,12 @@
                 console.error('❌ 更新趋势图表失败:', error);
             }
         }
-        
+
         // 显示错误消息
         function showErrorMessage(message) {
             // 检查是否已存在错误提示元素
             let errorElement = document.getElementById('error-message');
-            
+
             // 如果不存在，创建一个新的
             if (!errorElement) {
                 errorElement = document.createElement('div');
@@ -1665,7 +2069,7 @@
                 errorElement.style.right = '20px';
                 errorElement.style.zIndex = '9999';
                 errorElement.style.maxWidth = '400px';
-                
+
                 // 添加关闭按钮
                 const closeButton = document.createElement('button');
                 closeButton.type = 'button';
@@ -1673,16 +2077,16 @@
                 closeButton.setAttribute('data-bs-dismiss', 'alert');
                 closeButton.setAttribute('aria-label', '关闭');
                 errorElement.appendChild(closeButton);
-                
+
                 document.body.appendChild(errorElement);
             }
-            
+
             // 设置错误消息内容
             errorElement.innerHTML = `
                 <strong>错误!</strong> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
             `;
-            
+
             // 5秒后自动关闭
             setTimeout(() => {
                 if (errorElement && errorElement.parentNode) {
@@ -1692,4 +2096,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -126,6 +126,9 @@ router.post('/login', async (req, res) => {
         loginTracker(req, res, resolve);
       });
 
+      const { issueToken } = require('../middleware/jwtAuth');
+      const token = issueToken(req.session.user);
+      res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: String(process.env.TLS_ENABLED||'0')==='1' });
       // 检查是否为管理员，如果是则跳转到数据分析后台
       const { isAdmin } = require('../middleware/adminAuth');
       if (isAdmin(req.session.user)) {

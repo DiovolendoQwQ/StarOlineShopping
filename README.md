@@ -44,6 +44,11 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - **趋势分析**: 多维度数据趋势展示
 - **用户行为追踪**: 完整的用户行为数据收集
 - **管理员后台**: 专业的数据分析管理界面
+### 分布式与实时通信（新增）
+- 局域网 WebSocket 实时通道：`/ws`（客服）与 `/admin/ws`（管理员监控）
+- 自动发现并显示已连接客户端设备（在线会话列表）
+- 健康检查与自动恢复：`GET /health`；支持 `CLUSTER_ENABLED=1` 进程守护
+- 可选 TLS/SSL 加密通信（`TLS_ENABLED=1`），前端自动切换 `wss://`
 
 ### 响应式界面
 - 现代化的用户界面设计
@@ -65,6 +70,9 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - **Method-override** - HTTP 方法重写
 - **node-cron** - 定时任务调度
 - **uuid** - 唯一标识符生成
+- **ws** - WebSocket 服务
+- **jsonwebtoken** - JWT 身份验证
+- **cookie-parser** - Cookie 解析
 
 ### 前端技术
 - **HTML5** - 页面结构
@@ -74,6 +82,7 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 - **Chart.js** - 数据可视化图表库
 - **Bootstrap** - UI组件框架
 - **Font Awesome** - 图标库
+- 客服聊天前端模块：`public/js/app.js`（断线重试、离线队列、REST 回退）
 
 ### 开发工具
 - **dotenv** - 环境变量管理
@@ -125,6 +134,8 @@ STAR_Online_Shopping/
 ├── views/                 # EJS 模板文件
 │   └── analytics/         # 数据分析视图
 │       └── dashboard.ejs  # 数据分析面板
+├── scripts/
+│   └── start.ps1          # Windows 一键启动脚本
 └── uploads/               # 文件上传目录
 ```
 
@@ -214,7 +225,7 @@ STAR_Online_Shopping/
 
 3. **配置环境变量**
    
-   项目根目录已包含 `.env` 文件，默认配置如下：
+   项目根目录已包含 `.env` 文件，常用配置如下（可按需扩展）：
    ```env
    # 数据库配置 - 使用SQLite
    DB_PATH=./database/star_shopping.db
@@ -222,8 +233,23 @@ STAR_Online_Shopping/
    # 会话密钥，用于加密和验证会话
    SESSION_SECRET=your_secret_key
    
-   # 服务器运行端口
+   # JWT 身份验证
+   JWT_SECRET=your_jwt_secret
+   
+   # 服务器运行地址与端口
+   HOST=0.0.0.0
    PORT=3000
+   
+   # 局域网网卡名（可选，用于打印LAN地址，如 Wi-Fi）
+   WIFI_IFACE=
+   
+   # TLS/SSL（可选）
+   TLS_ENABLED=0
+   TLS_KEY_PATH=
+   TLS_CERT_PATH=
+   
+   # 自动恢复（可选）
+   CLUSTER_ENABLED=0
    ```
 
 4. **数据库迁移（可选）**
@@ -244,6 +270,10 @@ STAR_Online_Shopping/
    npm start
    # 或者使用 node 直接运行
    node app.js
+   ```
+   Windows 一键启动（同时打开首页与后台仪表盘）：
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts\start.ps1
    ```
 
 6. **访问应用**
@@ -291,6 +321,12 @@ STAR_Online_Shopping/
 2. 查看实时数据概览、用户行为分析、产品性能等
 3. 支持7天/30天/90天时间范围选择
 4. 可导出数据报告和图表
+#### 客服系统
+- 在仪表盘左侧点击“客服咨询”，直接在主内容区进行实时聊天
+- 客服页面也可通过 `http://localhost:3000/customer-service.html` 独立访问
+#### 服务器监控与错误日志
+- 服务器监控：实时查看 CPU、内存与在线会话
+- 错误日志：实时滚动显示后端 error/warn/info 级别日志
 
 ## 开发说明
 
@@ -316,6 +352,7 @@ npm start
 - **密码加密**：使用 bcrypt 对用户密码进行哈希加密
 - **会话管理**：使用 express-session 管理用户会话
 - **身份验证**：中间件验证用户登录状态
+- **JWT + RBAC**：分析后台 API 基于 JWT 管理员访问控制
 - **外键约束**：数据库启用外键约束保证数据完整性
 - **输入验证**：前后端双重验证用户输入
 
@@ -353,6 +390,12 @@ npm start
 - `GET /analytics/api/product-performance` - 产品性能分析API
 - `GET /analytics/api/trends` - 趋势分析API
 - `GET /analytics/api/advanced-user-behavior` - 高级用户行为分析API
+### 实时与系统接口（新增）
+- WebSocket 客服：`/ws`
+- WebSocket 管理员：`/admin/ws`
+- 健康检查：`GET /health`
+- 在线客户端：`GET /admin/api/clients`
+- 错误日志：`GET /admin/api/logs`
 
 ## 📋 版本信息
 
@@ -419,6 +462,16 @@ npm start
 - [ ] 支持多语言国际化
 - [ ] 移动端 APP 开发
 - [ ] 添加实时聊天客服
+  （已完成：内嵌客服聊天与 WebSocket 实时通道）
+
+## 常见问题
+- WebSocket 频繁断开或无法连接
+  - 仅保留一次 `/js/app.js` 引入，避免重复初始化导致连接竞争
+  - 确认服务端日志包含“WebSocket 客服模块已启用”，端口与协议匹配（启用 TLS 时使用 `https/wss`）
+  - 检查浏览器与防火墙策略，确保端口可访问
+  - 访问 `http://localhost:3000/health` 验证服务健康
+- 仪表盘客服不显示或显示在页面下方
+  - 已将“客服咨询”模块置于主内容容器同级，点击左侧标签即可显示；如仍异常，清理浏览器缓存后刷新
 - [ ] 数据分析报告导出功能
 - [ ] 用户画像分析
 - [ ] A/B测试系统
