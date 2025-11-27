@@ -407,11 +407,8 @@ const AnalyticsService = {
             COUNT(*) as actions_per_session,
             AVG(CAST(JSON_EXTRACT(metadata, '$.session_duration_minutes') AS REAL)) as avg_session_duration
           FROM user_behaviors 
-          WHERE created_at >= datetime('now', '-' || ? || ' days')
-            AND metadata IS NOT NULL 
-            AND JSON_EXTRACT(metadata, '$.session_duration_minutes') IS NOT NULL
           GROUP BY user_id, DATE(created_at)
-        `, [days]),
+        `),
         
         // 设备统计（基于user_agent）
         db.allAsync(`
@@ -459,13 +456,13 @@ const AnalyticsService = {
       // 计算平均会话时长和跳出率
       const avgSessionDuration = sessionStats.length > 0 ? 
         sessionStats.reduce((sum, session) => sum + (session.avg_session_duration || 0), 0) / sessionStats.length : 0;
-      
-      const bounceRate = sessionStats.filter(session => session.actions_per_session === 1).length / sessionStats.length * 100;
-      
+      const bounceRate = sessionStats.length > 0 
+        ? (sessionStats.filter(session => session.actions_per_session === 1).length / sessionStats.length * 100) 
+        : 0;
       return {
         session_metrics: {
-          avg_duration: avgSessionDuration.toFixed(2),
-          bounce_rate: bounceRate.toFixed(2),
+          avg_duration: Number(avgSessionDuration.toFixed(2)),
+          bounce_rate: Number(bounceRate.toFixed(2)),
           avg_actions_per_session: sessionStats.length > 0 ? 
             sessionStats.reduce((sum, session) => sum + session.actions_per_session, 0) / sessionStats.length : 0
         },

@@ -105,6 +105,34 @@ const orderController = {
       });
     }
   },
+  getOrderDetailPage: async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      const userId = req.session.userId;
+      const order = await db.getAsync(`SELECT * FROM orders WHERE id = ? AND user_id = ?`, [orderId, userId]);
+      if (!order) {
+        return res.status(404).send('订单不存在或无权访问');
+      }
+      const orderItems = await db.allAsync(
+        `SELECT oi.*, p.name, p.image 
+         FROM order_items oi
+         JOIN products p ON oi.product_id = p.id
+         WHERE oi.order_id = ?`,
+        [orderId]
+      );
+      res.render('orderDetail', {
+        order: {
+          id: order.id,
+          status: order.status,
+          total_amount: order.total_amount,
+          created_at: order.created_at
+        },
+        items: orderItems
+      });
+    } catch (error) {
+      res.status(500).send('获取订单页面失败');
+    }
+  },
   
   // 获取用户所有订单
   getUserOrders: async (req, res) => {
@@ -264,6 +292,35 @@ const orderController = {
       res.status(500).send('获取结账页面失败');
     }
   }
+  ,
+  getSimpleCheckoutPage: async (req, res) => {
+    try {
+      const userId = req.session.userId;
+      const cart = await db.getAsync(`SELECT * FROM carts WHERE user_id = ?`, [userId]);
+      if (!cart) return res.status(404).send('购物车为空');
+      const cartItems = await db.allAsync(
+        `SELECT ci.*, p.name, p.price, p.image 
+         FROM cart_items ci
+         JOIN products p ON ci.product_id = p.id
+         WHERE ci.cart_id = ?
+         ORDER BY ci.id DESC`,
+        [cart.id]
+      );
+      const items = (cartItems || []).slice(0, 2);
+      const totalAmount = items.reduce((t, it) => t + it.price * it.quantity, 0);
+      res.render('simpleCheckout', { items, totalAmount });
+    } catch (e) {
+      res.status(500).send('获取简单结算页面失败');
+    }
+  },
+  getSimpleCheckoutSuccess: async (req, res) => {
+    try {
+      res.render('simpleSuccess');
+    } catch (e) {
+      res.status(500).send('获取支付成功页面失败');
+    }
+  }
+  
 };
 
 module.exports = orderController;

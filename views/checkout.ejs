@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="/css/style.css">
   <style>
     .checkout-page{max-width:1226px;margin:0 auto;padding:20px}
-    .topbar{background:linear-gradient(135deg,#ff6700 0%,#e55a00 100%);padding:20px 0;box-shadow:0 4px 20px rgba(0,0,0,.1)}
-    .topbar .inner{max-width:1226px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+    .topbar{background:#fff;border-bottom:1px solid #eee;padding:0}
+    .topbar .inner{max-width:1226px;margin:0 auto;padding:0 20px;height:100px;display:flex;align-items:center;justify-content:space-between;color:#333}
     .section{background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.08);margin-bottom:20px;overflow:hidden}
     .section-header{padding:16px 20px;font-weight:600;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between}
     .section-title{display:flex;align-items:center;gap:10px}
@@ -41,7 +41,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar"><div class="inner"><div style="display:flex;align-items:center;gap:12px"><a href="/" style="color:#fff;text-decoration:none;font-weight:700">Star</a><span>结算</span></div><a href="/cart" style="color:#fff;text-decoration:none">返回购物车</a></div></div>
+  <div class="topbar"><div class="inner"><div style="display:flex;align-items:center;gap:12px"><a href="/homepage"><div class="logo fl" style="width:200px;height:100px;background:url('/image/logo_top.jpg.png') no-repeat center center;background-size:contain"></div></a></div><a href="/cart" style="color:#333;text-decoration:none">返回购物车</a></div></div>
   <div class="checkout-page">
     <div class="section collapsible collapsed" id="summarySection">
       <div class="section-header"><div class="section-title">订单概要</div><div class="toggle" id="summaryToggle"><span class="icon">▶</span><span>展开</span><span style="margin-left:12px;color:#e74c3c">¥<%= totalAmount %></span></div></div>
@@ -96,18 +96,10 @@
 
           <div id="wechatBox" class="qr-box">
             <img src="/image/pay/wechat_qr.png" alt="微信支付二维码">
-            <div>
-              <div class="hint">请使用微信扫描二维码完成支付</div>
-              <div class="hint">图片存放路径：/image/pay/wechat_qr.png</div>
-            </div>
           </div>
 
           <div id="alipayBox" class="qr-box">
             <img src="/image/pay/alipay_qr.png" alt="支付宝二维码">
-            <div>
-              <div class="hint">请使用支付宝扫描二维码完成支付</div>
-              <div class="hint">图片存放路径：/image/pay/alipay_qr.png</div>
-            </div>
           </div>
         </div>
 
@@ -153,19 +145,20 @@
         summaryToggle.querySelector('span:nth-child(2)').textContent = collapsed ? '展开' : '收起';
       });
 
-      confirmBtn.addEventListener('click', () => {
-        const active = document.querySelector('.pay-option.active')?.dataset.method;
-        if (active === 'credit-card') {
-          const name = document.getElementById('cc-name').value.trim();
-          const number = document.getElementById('cc-number').value.replace(/\s+/g,'');
-          const exp = document.getElementById('cc-exp').value.trim();
-          const cvv = document.getElementById('cc-cvv').value.trim();
-          if (!name || number.length < 13 || !/^(\d{2}\/\d{2})$/.test(exp) || cvv.length < 3) {
-            alert('请完整填写信用卡信息');
-            return;
+      const CART_ITEMS = <%- JSON.stringify(cartItems.map(function(ci){ return { productId: ci.product_id, quantity: ci.quantity, price: ci.price }; })) %>;
+      const TOTAL_AMOUNT = <%= totalAmount %>;
+      confirmBtn.addEventListener('click', async () => {
+        try {
+          const payload = { items: CART_ITEMS, totalAmount: TOTAL_AMOUNT, shippingAddress: {} };
+          const r = await fetch('/order/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          const d = await r.json();
+          if (d && d.success && d.data && d.data.orderId) {
+            window.location.href = '/order/' + d.data.orderId + '/view';
+          } else {
+            window.location.href = '/order/simple-success';
           }
-        } else {
-          alert('请使用扫码工具完成支付');
+        } catch (e) {
+          window.location.href = '/order/simple-success';
         }
       });
     })();

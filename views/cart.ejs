@@ -26,9 +26,9 @@
 
     /* 顶部导航栏 */
     .banner_x {
-      background: linear-gradient(135deg, #ff6700 0%, #e55a00 100%);
-      padding: 20px 0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 0;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -44,13 +44,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: white;
+      color: #333;
+      height: 100px;
     }
 
     .back-home-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
       padding: 10px 20px;
       border-radius: 25px;
       text-decoration: none;
@@ -63,11 +64,11 @@
     }
 
     .back-home-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      border-color: rgba(255, 255, 255, 0.5);
+      background: #f8f8f8;
+      border-color: #ccc;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      color: #333;
     }
 
     .back-home-btn::before {
@@ -82,15 +83,16 @@
     }
 
     .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #fff;
-      text-decoration: none;
+      width: 200px;
+      height: 100px;
+      background: url('/image/logo_top.jpg.png') no-repeat center center;
+      background-size: contain;
     }
 
     .cart-title {
       font-size: 24px;
       font-weight: 600;
+      color: #333;
     }
 
     .cart-tips {
@@ -658,10 +660,11 @@
       <div class="center">
         <div class="header-content">
           <div class="logo-section">
-            <a href="/" class="logo">Star</a>
+            <a href="/homepage">
+              <div class="logo fl"></div>
+            </a>
             <div class="cart-title">我的购物车</div>
           </div>
-          <div class="cart-tips">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</div>
           <a href="/homepage" class="back-home-btn">返回首页</a>
         </div>
       </div>

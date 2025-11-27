@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简单结算</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .topbar{background:#fff;border-bottom:1px solid #eee;height:100px}
+    .inner{max-width:1226px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;color:#333;height:100%}
+    .logo{width:200px;height:100px;background:url('/image/logo_top.jpg.png') no-repeat center center;background-size:contain}
+    .section{max-width:1226px;margin:20px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.08)}
+    .item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}
+    .item:last-child{border-bottom:none}
+    .name{color:#333}
+    .price{color:#e74c3c;font-weight:700}
+    .total{display:flex;justify-content:space-between;margin-top:12px;font-size:18px;font-weight:700;color:#e74c3c}
+    .actions{display:flex;justify-content:flex-end;margin-top:16px}
+    .btn{padding:12px 24px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn-primary{background:#ff6700;color:#fff}
+    .btn-primary:hover{background:#e55a00}
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="inner"><a href="/homepage"><div class="logo"></div></a><a href="/cart" style="color:#333;text-decoration:none">返回购物车</a></div></div>
+  <div class="section">
+    <% if (items && items.length) { %>
+      <% items.forEach(function(it){ %>
+        <div class="item">
+          <div class="name"><%= it.name %> × <%= it.quantity %></div>
+          <div class="price">¥<%= (it.price * it.quantity).toFixed(2) %></div>
+        </div>
+      <% }) %>
+      <div class="total"><span>合计</span><span>¥<%= totalAmount.toFixed(2) %></span></div>
+      <div class="actions"><button class="btn btn-primary" id="confirmPay">确认支付</button></div>
+    <% } else { %>
+      <div style="text-align:center;color:#666">暂无商品</div>
+    <% } %>
+  </div>
+  <script>
+    const ITEMS = <%- JSON.stringify((items||[]).map(function(it){ return { productId: it.product_id, quantity: it.quantity, price: it.price }; })) %>;
+    const TOTAL = <%= totalAmount %>;
+    document.getElementById('confirmPay')?.addEventListener('click', async function(){
+      try {
+        const payload = { items: ITEMS, totalAmount: TOTAL, shippingAddress: {} };
+        const r = await fetch('/order/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const d = await r.json();
+        if (d && d.success && d.data && d.data.orderId) {
+          window.location.href = '/order/' + d.data.orderId + '/view';
+        } else {
+          window.location.href = '/order/simple-success';
+        }
+      } catch (e) {
+        window.location.href = '/order/simple-success';
+      }
+    });
+  </script>
+</body>
+</html>
