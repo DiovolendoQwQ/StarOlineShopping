@@ -93,6 +93,7 @@ app.use((err, req, res, next) => { console.error(color('ERROR', `[${ts()}] 全�
 
 let WebSocketServer; try { WebSocketServer = require('ws').WebSocketServer; } catch (e) { WebSocketServer = null; }
 const sessions = new Map();
+const sessionHistory = new Map();
 let wss;
 let wssAdmin;
 let adminClients = new Set();
@@ -109,6 +110,8 @@ function replyActive(message) {
     try {
       ws.send(JSON.stringify({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() }));
       console.log(color('REPLY', `[${ts()}] 已回复 会话:${activeSessionId} 消息:${message}`));
+      if (!sessionHistory.has(activeSessionId)) sessionHistory.set(activeSessionId, []);
+      sessionHistory.get(activeSessionId).push({ sender: 'admin', content: message, time: ts() });
       broadcastAdmin({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() });
     } catch (e) {
       console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`));
@@ -142,6 +145,8 @@ function setupWebSockets() {
       if (msg.type === 'question') {
         console.log(color('QUESTION', `[${ts()}] 客服询问[WS] 会话:${sid} 分类:${cat}\nIP:${ip} UA:${ua}\n消息:${msg.message}`));
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
+        if (!sessionHistory.has(sid)) sessionHistory.set(sid, []);
+        sessionHistory.get(sid).push({ sender: 'user', content: msg.message, time: ts(), user: ws.user });
         setActiveSession(sid);
         broadcastAdmin({ type: 'clients', clients: listClients() });
         broadcastAdmin({ type: 'message', sessionId: sid, message: msg.message, user: ws.user, timestamp: ts(), category: cat });
@@ -343,6 +348,13 @@ startServer();
 app.get('/admin/api/clients', requireAdminJwt, (req, res) => {
   res.json({ ok: true, clients: listClients() });
 });
+
+app.get('/admin/api/chat/history/:sessionId', requireAdminJwt, (req, res) => {
+  const sid = req.params.sessionId;
+  const history = sessionHistory.get(sid) || [];
+  res.json({ ok: true, history });
+});
+
 app.get('/admin/api/logs', requireAdminJwt, (req, res) => {
   res.json({ ok: true, logs });
 });

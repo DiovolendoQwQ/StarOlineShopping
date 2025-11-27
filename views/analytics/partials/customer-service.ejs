@@ -1,188 +1,318 @@
 <div id="customer-service" class="section" style="display: none;">
     <style>
-        .cs-container {
-            max-width: 880px;
-            margin: 0;
-            padding: 0;
+        .cs-layout {
+            display: flex;
+            height: 600px;
+            background: #fff;
             border-radius: 12px;
             overflow: hidden;
-            background: #fff
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
         }
 
-        .cs-header {
+        /* Sidebar Styles */
+        .cs-sidebar {
+            width: 300px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .cs-sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #1e293b;
+            background: #fff;
+        }
+
+        .cs-session-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .cs-session-item {
+            padding: 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
             align-items: center;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #ff7a18, #ff3c00);
-            color: #fff
+            gap: 12px;
+            position: relative;
         }
 
-        .cs-title {
-            font-size: 16px;
-            font-weight: 600
+        .cs-session-item:hover {
+            background: #e2e8f0;
         }
 
-        .cs-status {
-            font-size: 12px;
-            opacity: .9
+        .cs-session-item.active {
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 4px solid #6366f1;
         }
 
-        .cs-status .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
+        .cs-session-avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            margin-right: 6px;
-            background: #22c55e
-        }
-
-        .cs-status.offline .dot {
-            background: #ef4444
-        }
-
-        .cs-body {
-            padding: 12px;
-            background: linear-gradient(180deg, #f7f8fc 0%, #ffffff 100%)
-        }
-
-        .cs-chat {
-            height: 420px;
-            overflow: auto;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 12px;
-            background: #f9fafb
-        }
-
-        .cs-msg-row {
-            display: flex;
-            align-items: flex-end;
-            margin: 8px 0
-        }
-
-        .cs-msg-row.me {
-            justify-content: flex-end
-        }
-
-        .cs-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #fde68a;
-            flex: 0 0 28px;
+            background: #e0e7ff;
+            color: #4f46e5;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #b45309;
-            font-weight: 700
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
         }
 
-        .cs-avatar.srv {
-            background: #bfdbfe;
-            color: #1d4ed8
-        }
-
-        .cs-bubble {
-            max-width: 68%;
-            padding: 8px 10px;
-            border-radius: 12px;
-            position: relative;
-            font-size: 14px;
-            line-height: 1.6;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
-        }
-
-        .cs-bubble.me {
-            background: #e8f5e9;
-            color: #1b5e20;
-            border-top-right-radius: 4px
-        }
-
-        .cs-bubble.srv {
-            background: #e3f2fd;
-            color: #0b3b7a;
-            border-top-left-radius: 4px
-        }
-
-        .cs-time {
-            font-size: 11px;
-            color: #999;
-            margin-top: 4px
-        }
-
-        .cs-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px
-        }
-
-        .cs-form input {
+        .cs-session-info {
             flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            background: #fff;
-            outline: none
+            min-width: 0;
         }
 
-        .cs-form button {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        .cs-session-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cs-session-preview {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        .cs-unread-badge {
+            background: #ef4444;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 999px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Main Chat Area Styles */
+        .cs-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            position: relative;
+        }
+
+        .cs-empty-state {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            background: #fff;
+            z-index: 10;
+        }
+
+        .cs-chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+        }
+
+        .cs-chat-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cs-chat-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .cs-chat-status {
+            font-size: 12px;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cs-chat-status.offline {
+            color: #94a3b8;
+        }
+
+        .cs-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cs-msg {
+            max-width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cs-msg.me {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .cs-msg.other {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .cs-msg-content {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .cs-msg.me .cs-msg-content {
+            background: #6366f1;
+            color: #fff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .cs-msg.other .cs-msg-content {
+            background: #fff;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .cs-msg-time {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .cs-input-area {
+            padding: 16px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            display: flex;
+            gap: 12px;
+        }
+
+        .cs-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .cs-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .cs-send-btn {
+            padding: 0 20px;
+            background: #6366f1;
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 600
+            transition: background 0.2s;
         }
 
-        .cs-form button:disabled {
-            opacity: .6;
-            cursor: not-allowed
+        .cs-send-btn:hover {
+            background: #4f46e5;
         }
 
-        .cs-toast {
-            position: fixed;
-            left: 50%;
-            bottom: 28px;
-            transform: translateX(-50%);
-            background: #111827;
-            color: #fff;
-            padding: 10px 16px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-            opacity: 0;
-            visibility: hidden;
-            transition: all .25s
-        }
-
-        .cs-toast.show {
-            opacity: 1;
-            visibility: visible
+        .cs-send-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
         }
     </style>
+
     <div class="card dashboard-card">
         <div class="card-header">
             <h5><i class="fas fa-comments me-2"></i>客服系统</h5>
         </div>
-        <div class="card-body">
-            <div class="cs-container">
-                <div class="cs-header">
-                    <div class="cs-title">客服咨询</div>
-                    <div class="cs-status" id="admin-cs-status">连接中...</div>
-                </div>
-                <div class="cs-body">
-                    <div style="margin-bottom:8px;font-size:12px;color:#6b7280">会话ID：<span
-                            id="admin-cs-session"></span></div>
-                    <div class="cs-chat" id="admin-cs-chat"></div>
-                    <div class="cs-form">
-                        <input id="admin-cs-input" type="text" placeholder="请输入您的问题，比如“我想退货”" />
-                        <button id="admin-cs-send" type="button">发送</button>
+        <div class="card-body p-0">
+            <div class="cs-layout">
+                <!-- Sidebar -->
+                <div class="cs-sidebar">
+                    <div class="cs-sidebar-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>会话列表</span>
+                            <span class="badge bg-primary rounded-pill" id="cs-total-active">0</span>
+                        </div>
                     </div>
-                    <div style="margin-top:10px;font-size:12px;color:#9ca3af">按 Enter 可快速发送</div>
+                    <div class="cs-session-list" id="cs-session-list">
+                        <!-- Session items will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Main Chat -->
+                <div class="cs-main">
+                    <!-- Empty State -->
+                    <div class="cs-empty-state" id="cs-empty-state">
+                        <i class="fas fa-comments fa-3x mb-3"></i>
+                        <h5>选择一个会话开始聊天</h5>
+                        <p>左侧列表显示当前在线的用户</p>
+                    </div>
+
+                    <!-- Chat Interface -->
+                    <div id="cs-chat-interface" style="display: none; flex-direction: column; height: 100%;">
+                        <div class="cs-chat-header">
+                            <div class="cs-chat-user">
+                                <div class="cs-session-avatar" id="cs-current-avatar">User</div>
+                                <div>
+                                    <div class="cs-chat-name" id="cs-current-name">用户名</div>
+                                    <div class="cs-chat-status" id="cs-current-status">
+                                        <i class="fas fa-circle" style="font-size: 8px;"></i>
+                                        <span>在线</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="font-size: 12px; color: #64748b;">
+                                ID: <span id="cs-current-id">...</span>
+                            </div>
+                        </div>
+
+                        <div class="cs-messages" id="cs-messages">
+                            <!-- Messages will be inserted here -->
+                        </div>
+
+                        <div class="cs-input-area">
+                            <input type="text" class="cs-input" id="cs-input" placeholder="输入消息..." autocomplete="off">
+                            <button class="cs-send-btn" id="cs-send-btn">发送</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="cs-toast" id="admin-cs-toast"></div>
 </div>

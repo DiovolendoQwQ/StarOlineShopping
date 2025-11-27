@@ -1435,4 +1435,205 @@
                 }
             }, 5000);
         }
+
+    // --- Admin Chat Implementation ---
+    const AdminChat = {
+        activeSessionId: null,
+        sessions: {},
+
+        init() {
+            this.cacheDOM();
+            this.bindEvents();
+            this.renderSidebar();
+        },
+
+        cacheDOM() {
+            this.sidebarList = document.getElementById('cs-session-list');
+            this.chatBody = document.getElementById('cs-messages');
+            this.input = document.getElementById('cs-input');
+            this.sendBtn = document.getElementById('cs-send-btn');
+            this.totalActiveBadge = document.getElementById('cs-total-active');
+            this.chatInterface = document.getElementById('cs-chat-interface');
+            this.emptyState = document.getElementById('cs-empty-state');
+            this.currentName = document.getElementById('cs-current-name');
+            this.currentId = document.getElementById('cs-current-id');
+            this.currentAvatar = document.getElementById('cs-current-avatar');
+            this.currentStatus = document.getElementById('cs-current-status');
+        },
+
+        bindEvents() {
+            if (this.sendBtn) {
+                const newBtn = this.sendBtn.cloneNode(true);
+                this.sendBtn.parentNode.replaceChild(newBtn, this.sendBtn);
+                this.sendBtn = newBtn;
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+            }
+            if (this.input) {
+                const newInput = this.input.cloneNode(true);
+                this.input.parentNode.replaceChild(newInput, this.input);
+                this.input = newInput;
+                this.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.sendMessage(); });
+            }
+        },
+
+        handleMessage(msg) {
+            if (msg.type === 'clients') {
+                this.updateSessionList(msg.clients);
+            } else if (msg.type === 'message' || msg.type === 'question') {
+                this.addMessage(msg.sessionId, msg, 'user');
+            } else if (msg.type === 'reply') {
+                this.addMessage(msg.sessionId, msg, 'admin');
+            }
+        },
+
+        updateSessionList(clients) {
+            if (!Array.isArray(clients)) return;
+            clients.forEach(c => {
+                if (!this.sessions[c.sessionId]) {
+                    this.sessions[c.sessionId] = {
+                        user: c.user || { username: 'Guest' },
+                        messages: [],
+                        unread: 0,
+                        lastActive: Date.now()
+                    };
+                } else {
+                    this.sessions[c.sessionId].user = c.user || this.sessions[c.sessionId].user;
+                }
+            });
+            this.renderSidebar();
+        },
+
+        addMessage(sid, msg, sender) {
+            if (!this.sessions[sid]) {
+                this.sessions[sid] = { user: msg.user || { username: 'Guest' }, messages: [], unread: 0, lastActive: Date.now() };
+            }
+            const session = this.sessions[sid];
+            session.messages.push({ content: msg.message, sender, time: msg.timestamp || new Date().toISOString() });
+            session.lastActive = Date.now();
+            if (this.activeSessionId === sid) {
+                this.appendChatBubble(msg.message, sender, msg.timestamp);
+                this.scrollToBottom();
+            } else {
+                session.unread++;
+                this.renderSidebar();
+            }
+        },
+
+        sendMessage() {
+            if (!this.activeSessionId) return;
+            const text = (this.input?.value || '').trim();
+            if (!text) return;
+            if (adminWs && adminWs.readyState === WebSocket.OPEN) {
+                adminWs.send(JSON.stringify({ type: 'reply', sessionId: this.activeSessionId, message: text }));
+                this.input.value = '';
+            }
+        },
+
+        selectSession(sid) {
+            this.activeSessionId = sid;
+            const session = this.sessions[sid];
+            if (session) {
+                session.unread = 0;
+                this.renderSidebar();
+                this.renderChat(session);
+                this.loadHistory(sid);
+            }
+        },
+
+        async loadHistory(sid) {
+            try {
+                const res = await fetch(`/admin/api/chat/history/${sid}`);
+                const data = await res.json();
+                if (data.ok && data.history) {
+                    const session = this.sessions[sid];
+                    session.messages = data.history.map(h => ({ content: h.content, sender: h.sender, time: h.time }));
+                    this.renderChat(session);
+                }
+            } catch (e) { console.error('Failed to load history', e); }
+        },
+
+        renderSidebar() {
+            if (!this.sidebarList) return;
+            this.sidebarList.innerHTML = '';
+            const sorted = Object.keys(this.sessions).sort((a, b) => this.sessions[b].lastActive - this.sessions[a].lastActive);
+            if (this.totalActiveBadge) this.totalActiveBadge.textContent = sorted.length;
+            sorted.forEach(sid => {
+                const s = this.sessions[sid];
+                const item = document.createElement('div');
+                item.className = `cs-session-item ${this.activeSessionId === sid ? 'active' : ''}`;
+                item.onclick = () => this.selectSession(sid);
+                const name = s.user.username || s.user.email || sid.slice(0,6);
+                const lastMsg = s.messages.length ? s.messages[s.messages.length - 1].content : '暂无消息';
+                const avatarText = (name || 'U').slice(0,1).toUpperCase();
+                item.innerHTML = `
+                    <div class="cs-session-avatar">${avatarText}</div>
+                    <div class="cs-session-info">
+                        <div class="cs-session-name">${name}</div>
+                        <div class="cs-session-preview">${lastMsg}</div>
+                    </div>
+                    ${s.unread>0?`<div class="cs-unread-badge">${s.unread}</div>`:''}
+                `;
+                this.sidebarList.appendChild(item);
+            });
+        },
+
+        renderChat(session) {
+            if (!this.chatBody) return;
+            if (this.emptyState) this.emptyState.style.display = 'none';
+            if (this.chatInterface) this.chatInterface.style.display = 'flex';
+            this.chatBody.innerHTML = '';
+            const display = session.user.username || session.user.email || this.activeSessionId;
+            if (this.currentName) this.currentName.textContent = display;
+            if (this.currentId) this.currentId.textContent = this.activeSessionId;
+            if (this.currentAvatar) this.currentAvatar.textContent = (display||'U').slice(0,1).toUpperCase();
+            session.messages.forEach(m => this.appendChatBubble(m.content, m.sender, m.time));
+            this.scrollToBottom();
+        },
+
+        appendChatBubble(text, sender, time) {
+            if (!this.chatBody) return;
+            const isMe = sender === 'admin';
+            const row = document.createElement('div');
+            row.className = `cs-msg ${isMe ? 'me' : 'other'}`;
+            const content = document.createElement('div');
+            content.className = 'cs-msg-content';
+            content.textContent = text;
+            const t = document.createElement('div');
+            t.className = 'cs-msg-time';
+            t.textContent = this.formatTime(time);
+            row.appendChild(content);
+            row.appendChild(t);
+            this.chatBody.appendChild(row);
+        },
+
+        formatTime(t) { if (!t) return ''; const d = new Date(t); return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); },
+        scrollToBottom() { if (this.chatBody) this.chatBody.scrollTop = this.chatBody.scrollHeight; }
+    };
+
+    // Overwrite existing functions
+    function connectAdminWs() {
+        const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+        adminWs = new WebSocket(`${proto}://${location.host}/admin/ws`);
+        adminWs.onmessage = function (ev) {
+            let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
+            
+            if (AdminChat) AdminChat.handleMessage(msg);
+
+            if (msg.type === 'metrics') updateMetrics(msg.metrics);
+            if (msg.type === 'clients') updateClients(msg.clients);
+            if (msg.type === 'log') { appendLog(msg.log); if (msg.log && msg.log.level === 'error') appendErrorLog(msg.log.message || 'ERROR'); }
+            if (msg.type === 'server_log') appendServerLog(msg.data || msg);
+            if (msg.type === 'error_log') appendErrorLog(msg.data);
+            if (msg.type === 'app_error') appendErrorLog(msg.data);
+            if (msg.type === 'log_init' && Array.isArray(msg.logs)) { msg.logs.forEach(appendLog); }
+        };
+        // Reconnection logic could be added here
+        adminWs.onclose = function() {
+            setTimeout(connectAdminWs, 3000);
+        };
+    }
+
+    function initializeCustomerService() {
+        AdminChat.init();
+    }
     </script>
