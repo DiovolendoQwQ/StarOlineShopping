@@ -23,8 +23,9 @@
         }
 
         .metric-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #fff;
+            color: #212529;
+            border: 1px solid #e5e7eb;
         }
 
         .chart-container {
@@ -69,8 +70,8 @@
             color: white;
         }
         .terminal-window {
-            background:#0c0c0c;
-            color:#0f0;
+            background:#fff;
+            color:#212529;
             font-family: 'Courier New', monospace;
             padding:12px;
             border-radius:10px;
@@ -79,40 +80,40 @@
             line-height:1.5;
         }
         .terminal-header{
-            background:#121212;
-            color:#9ff39f;
+            background:#f8f9fa;
+            color:#212529;
             font-family: 'Courier New', monospace;
             border-radius:10px 10px 0 0;
             padding:8px 12px;
             display:flex; align-items:center; gap:10px;
-            border:1px solid #00aa55;
+            border:1px solid #e5e7eb;
             border-bottom:none;
         }
         .terminal-dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
         .dot-red{ background:#ff5f56; }
         .dot-yellow{ background:#ffbd2e; }
         .dot-green{ background:#27c93f; }
-        .terminal-title{ flex:1; text-align:center; color:#9ff39f; }
-        .terminal-container{ border:1px solid #00aa55; border-top:none; border-radius:0 0 10px 10px; }
+        .terminal-title{ flex:1; text-align:center; color:#212529; }
+        .terminal-container{ border:1px solid #e5e7eb; border-top:none; border-radius:0 0 10px 10px; }
         .terminal-line { white-space: pre; }
         .log-line { white-space: pre; }
-        .t-method { color:#0f0; }
-        .t-path { color:#c9f7c9; }
+        .t-method { color:#0d6efd; }
+        .t-path { color:#6c757d; }
         .t-time { color:#9ca3af; }
         .t-size { color:#9ca3af; }
-        .t-status.ok { color:#10b981; }
-        .t-status.redir { color:#22d3ee; }
-        .t-status.warn { color:#f59e0b; }
-        .t-status.err { color:#ef4444; }
-        .terminal-cursor{ display:inline-block; width:8px; height:1em; background:#0f0; animation: blink 1s steps(1,end) infinite; vertical-align:baseline; }
+        .t-status.ok { color:#198754; }
+        .t-status.redir { color:#0dcaf0; }
+        .t-status.warn { color:#fd7e14; }
+        .t-status.err { color:#dc3545; }
+        .terminal-cursor{ display:inline-block; width:8px; height:1em; background:#333; animation: blink 1s steps(1,end) infinite; vertical-align:baseline; }
         @keyframes blink { 50% { opacity:0; } }
-        #server-monitor { background:#000; padding:12px; border-radius:12px; }
+        #server-monitor { background:#fff; padding:12px; border-radius:12px; }
         #server-monitor, #server-monitor .card, #server-monitor .card-body, #server-monitor .card-header {
-            background:#000; color:#e5ffe5; border-color:#00aa55;
+            background:#fff; color:#212529; border-color:#e5e7eb;
         }
-        #server-monitor .dashboard-card { border:1px solid #00aa55; box-shadow:none; }
-        #server-monitor .card-header h5 { color:#e5ffe5; }
-        #server-monitor small, #server-monitor .text-muted { color:#9ff39f !important; }
+        #server-monitor .dashboard-card { border:1px solid #e5e7eb; box-shadow:none; }
+        #server-monitor .card-header h5 { color:#212529; }
+        #server-monitor small, #server-monitor .text-muted { color:#6c757d !important; }
         .log-item-error { background:#ffe6e6; color:#cc0000; font-family:'Courier New', monospace; border-bottom:1px solid #f5b3b3; padding:8px 10px; }
     </style>
 </head>
@@ -164,7 +165,7 @@
                         <h2><i class="fas fa-chart-dashboard me-2"></i>
                             <%= title %>
                         </h2>
-                        <div class="btn-group" role="group">
+                        <div id="day-range-group" class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-primary" data-days="7">7天</button>
                             <button type="button" class="btn btn-outline-primary active" data-days="30">30天</button>
                             <button type="button" class="btn btn-outline-primary" data-days="90">90天</button>
@@ -780,12 +781,9 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="card dashboard-card" style="background:#000;">
+                        <div class="card dashboard-card" style="background:#fff;">
                             <div class="card-body" style="padding:0;">
                                 <div class="terminal-header">
-                                    <span class="terminal-dot dot-red"></span>
-                                    <span class="terminal-dot dot-yellow"></span>
-                                    <span class="terminal-dot dot-green"></span>
                                     <div class="terminal-title">终端</div>
                                 </div>
                                 <div class="terminal-container">
@@ -865,6 +863,8 @@
             const sections = document.querySelectorAll('.section');
             const dayButtons = document.querySelectorAll('[data-days]');
             const mainContainer = document.querySelector('.col-md-10 > .container-fluid.py-4');
+            const dayGroup = document.getElementById('day-range-group');
+            const hideSections = new Set(['server-monitor','error-logs','customer-service']);
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
@@ -880,6 +880,7 @@
                         section.style.display = section.id === targetSection ? 'block' : 'none';
                     });
                     if (mainContainer) mainContainer.style.display = 'block';
+                    if (dayGroup) dayGroup.style.display = hideSections.has(targetSection) ? 'none' : 'inline-flex';
                 });
             });
 
@@ -897,6 +898,7 @@
                 const targetSection = active.getAttribute('data-section');
                 sections.forEach(section => { section.style.display = section.id === targetSection ? 'block' : 'none'; });
                 if (mainContainer) mainContainer.style.display = 'block';
+                if (dayGroup) dayGroup.style.display = hideSections.has(targetSection) ? 'none' : 'inline-flex';
             }
         }
 
