@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>客服咨询</title>
   <link rel="stylesheet" href="./css/style.css" />
   <style>
@@ -29,6 +30,16 @@
     .cs-form button:disabled{opacity:.6;cursor:not-allowed}
     .cs-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:10px;box-shadow:0 10px 20px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:all .25s}
     .cs-toast.show{opacity:1;visibility:visible}
+
+    @media (max-width: 768px){
+      .cs-container{max-width:100%;margin:0;padding:0;border-radius:0;box-shadow:none}
+      .cs-header{padding:14px 16px}
+      .cs-title{font-size:16px}
+      .cs-body{padding:12px}
+      .cs-chat{height:60vh}
+      .cs-form{flex-direction:column}
+      .cs-form button{width:100%}
+    }
   </style>
   <script src="/js/app.js"></script>
   <script>

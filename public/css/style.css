@@ -44,8 +44,10 @@ header .top .right .gouwuche{margin:0 20px;background: #ff6700;width: 120px;text
 header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: translateY(-1px);box-shadow: 0 4px 8px rgba(255,103,0,0.3);}/*banner_x*/
 .banner_x {width: 100%;height: 100px;display: flex;align-items: center;justify-content: center;position: relative;}
 /* 中心内容容器 */
+
 .banner_x .center-content {
-	width: 1226px;
+	width: 100%;
+	max-width: 1226px;
 	display: flex;
 	align-items: center;
 	position: relative;
@@ -90,7 +92,7 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 .banner_x .icon-button .icon{width:18px;height:18px;margin-bottom:4px;color:currentColor}
 .banner_x .icon-button .label{font-size:12px;line-height:1}
 /*banner_y*/
-.banner_y{width:1226px;height:460px;position:relative;overflow:hidden;margin: 0 auto;}
+.banner_y{width:100%;max-width:1226px;height:460px;position:relative;overflow:hidden;margin: 0 auto;}
 .banner_y video{position:absolute;top:50%;left:50%;width:100%;height:100%;object-fit:cover;z-index:-1;transform:translate(-43%,-50%);}
 .banner_y .nav{width: 234px;height: 460px;background: rgb(12,12,19);}
 .banner_y .nav ul{padding: 20px 0;position:relative;}
@@ -234,39 +236,52 @@ header .top .right .gouwuche:hover{color:#fff;background: #e55a00;transform: tra
 
 /* 响应式设计 */
 @media (max-width: 1280px) {
-    .container, .danpin .main, .peijian .main .content {
+    .container, .danpin .main, .peijian .main .content, .sub_banner, .biaoti {
         width: 95%;
         max-width: 1226px;
+        margin-left: auto;
+        margin-right: auto;
     }
-    
     .banner_x, .banner_y {
-        width: 1226px;
+        width: 100%;
+        max-width: 1226px;
         margin: 0 auto;
     }
 }
 
 @media (max-width: 768px) {
-    .banner_x .nav ul li a {
-        padding: 0 8px;
-        font-size: 14px;
-    }
-    
-    .banner_x .search {
-        width: 250px;
-    }
-    
-    .banner_x .search .text {
-        width: 200px;
-    }
-    
-    .danpin .main .mingxing, .peijian .main .content .remen {
-        width: 48%;
-        margin-right: 2%;
-    }
-    
-    .danpin .main .mingxing:nth-of-type(2n), .peijian .main .content .remen:nth-of-type(2n) {
-        margin-right: 0;
-    }
+    .banner_x {height: auto; padding: 10px 12px;}
+    .banner_x .center-content {justify-content: space-between;}
+    .banner_x .logo {width: 140px; height: 60px;}
+    .banner_x .ad_top {display: none;}
+    .banner_x .search-cart-container {position: static; width: 100%; margin-top: 8px; gap: 8px; justify-content: space-between;}
+    .banner_x .user-buttons {gap: 6px;}
+    .banner_x .icon-button .label {display: none;}
+    .banner_x .search {width: 100%; height: auto; margin-top: 0;}
+    .banner_x .search form {width: 100%;}
+    .banner_x .search .text {width: calc(100% - 60px);}
+    .banner_x .search .submit {width: 60px;}
+
+    .banner_y {height: auto; max-width: 100%;}
+    .banner_y video {position: static; width: 100%; height: 180px; transform: none;}
+    .banner_y .nav {width: 100%; height: auto;}
+    .banner_y .nav ul {padding: 10px;}
+    .banner_y .nav ul li {width: 100%; min-height: 0; padding: 8px 12px;}
+    .banner_y .nav ul li .pop {position: static; width: 100%; height: auto; display: none; left: auto; top: auto; border-top: 1px solid #eee;}
+    .banner_y .nav ul li.open .pop {display: block;}
+    .banner_y .nav ul li .nav-categories {flex-wrap: wrap;}
+    .banner_y .nav ul li .nav-categories .nav-category {margin: 4px 8px 0 0; white-space: normal;}
+
+    .sub_banner, .biaoti, .danpin .main, .peijian .main .content {width: 100%; margin: 0 auto;}
+    .danpin .main .mingxing, .peijian .main .content .remen {width: 48%; margin-right: 2%;}
+    .danpin .main .mingxing:nth-of-type(2n), .peijian .main .content .remen:nth-of-type(2n) {margin-right: 0;}
+}
+
+@media (max-width: 480px) {
+    .banner_x .logo {width: 120px; height: 50px;}
+    .banner_x .cart-button {width: auto;}
+    .banner_y video {height: 140px;}
+    .danpin .main .mingxing, .peijian .main .content .remen {width: 100%; margin-right: 0;}
 }
 .peijian .main .content .remen .pingjia{width:234px;height: 15px;line-height: 15px;font-size: 12px;color:#aaa;text-align: center;}
 .peijian .main .content .remen .piao{width: 204px;height: 60px;font-size:12px;padding:10px 0px 0px 30px;background:#ff6700; position: absolute;display: none;}

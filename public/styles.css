@@ -260,6 +260,16 @@ body {
   text-decoration: underline;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  #login, #register { max-width: 100%; margin: 100px 12px 80px 12px; }
+  .header-container h1 { font-size: 22px; }
+}
+
+@media (max-width: 480px) {
+  #login, #register { margin: 90px 12px 80px 12px; padding: 20px; }
+}
+
 .login-form p,
 .register-form p {
   color: #666;
