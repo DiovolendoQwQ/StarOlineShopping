@@ -1,0 +1,188 @@
+<div id="customer-service" class="section" style="display: none;">
+    <style>
+        .cs-container {
+            max-width: 880px;
+            margin: 0;
+            padding: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff
+        }
+
+        .cs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #ff7a18, #ff3c00);
+            color: #fff
+        }
+
+        .cs-title {
+            font-size: 16px;
+            font-weight: 600
+        }
+
+        .cs-status {
+            font-size: 12px;
+            opacity: .9
+        }
+
+        .cs-status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            background: #22c55e
+        }
+
+        .cs-status.offline .dot {
+            background: #ef4444
+        }
+
+        .cs-body {
+            padding: 12px;
+            background: linear-gradient(180deg, #f7f8fc 0%, #ffffff 100%)
+        }
+
+        .cs-chat {
+            height: 420px;
+            overflow: auto;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 12px;
+            background: #f9fafb
+        }
+
+        .cs-msg-row {
+            display: flex;
+            align-items: flex-end;
+            margin: 8px 0
+        }
+
+        .cs-msg-row.me {
+            justify-content: flex-end
+        }
+
+        .cs-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #fde68a;
+            flex: 0 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b45309;
+            font-weight: 700
+        }
+
+        .cs-avatar.srv {
+            background: #bfdbfe;
+            color: #1d4ed8
+        }
+
+        .cs-bubble {
+            max-width: 68%;
+            padding: 8px 10px;
+            border-radius: 12px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
+        }
+
+        .cs-bubble.me {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border-top-right-radius: 4px
+        }
+
+        .cs-bubble.srv {
+            background: #e3f2fd;
+            color: #0b3b7a;
+            border-top-left-radius: 4px
+        }
+
+        .cs-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px
+        }
+
+        .cs-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px
+        }
+
+        .cs-form input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+            outline: none
+        }
+
+        .cs-form button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .cs-form button:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
+        .cs-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            background: #111827;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all .25s
+        }
+
+        .cs-toast.show {
+            opacity: 1;
+            visibility: visible
+        }
+    </style>
+    <div class="card dashboard-card">
+        <div class="card-header">
+            <h5><i class="fas fa-comments me-2"></i>客服系统</h5>
+        </div>
+        <div class="card-body">
+            <div class="cs-container">
+                <div class="cs-header">
+                    <div class="cs-title">客服咨询</div>
+                    <div class="cs-status" id="admin-cs-status">连接中...</div>
+                </div>
+                <div class="cs-body">
+                    <div style="margin-bottom:8px;font-size:12px;color:#6b7280">会话ID：<span
+                            id="admin-cs-session"></span></div>
+                    <div class="cs-chat" id="admin-cs-chat"></div>
+                    <div class="cs-form">
+                        <input id="admin-cs-input" type="text" placeholder="请输入您的问题，比如“我想退货”" />
+                        <button id="admin-cs-send" type="button">发送</button>
+                    </div>
+                    <div style="margin-top:10px;font-size:12px;color:#9ca3af">按 Enter 可快速发送</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cs-toast" id="admin-cs-toast"></div>
+</div>

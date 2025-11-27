@@ -1,0 +1,121 @@
+<div id="product-performance" class="section" style="display: none;">
+    <!-- 产品概览指标 -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-box fa-2x mb-2 text-primary"></i>
+                    <h4 id="total-products">0</h4>
+                    <p class="mb-0 text-muted">总产品数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-fire fa-2x mb-2 text-danger"></i>
+                    <h4 id="hot-products">0</h4>
+                    <p class="mb-0 text-muted">热门产品</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x mb-2 text-success"></i>
+                    <h4 id="trending-products">0</h4>
+                    <p class="mb-0 text-muted">趋势产品</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2 text-warning"></i>
+                    <h4 id="low-stock-products">0</h4>
+                    <p class="mb-0 text-muted">低库存产品</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品性能图表 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar me-2"></i>产品类别销售分布</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-star me-2"></i>产品评分分布</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ratingChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品排行表格 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card dashboard-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-trophy me-2"></i>热门产品排行</h5>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            id="sort-by-views">按浏览量</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            id="sort-by-sales">按销量</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            id="sort-by-revenue">按收入</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="productTable">
+                            <thead>
+                                <tr>
+                                    <th>排名</th>
+                                    <th>产品名称</th>
+                                    <th>类别</th>
+                                    <th>浏览量</th>
+                                    <th>购物车添加</th>
+                                    <th>购买量</th>
+                                    <th>转化率</th>
+                                    <th>收入</th>
+                                    <th>评分</th>
+                                    <th>库存</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 产品性能趋势 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-line me-2"></i>产品销售趋势</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="productTrendChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

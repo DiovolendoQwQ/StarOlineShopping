@@ -1,0 +1,50 @@
+<div id="server-monitor" class="section" style="display:none">
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card dashboard-card">
+        <div class="card-header">
+          <h5><i class="fas fa-microchip me-2"></i>CPU</h5>
+        </div>
+        <div class="card-body">
+          <h3 id="cpu-usage">0%</h3>
+          <small class="text-muted">实时CPU占用</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card dashboard-card">
+        <div class="card-header">
+          <h5><i class="fas fa-memory me-2"></i>内存</h5>
+        </div>
+        <div class="card-body">
+          <h4><span id="mem-free">0</span>/<span id="mem-total">0</span></h4>
+          <small class="text-muted">可用/总内存(GB)</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card dashboard-card">
+        <div class="card-header">
+          <h5><i class="fas fa-plug me-2"></i>客户端</h5>
+        </div>
+        <div class="card-body">
+          <div id="client-list" class="text-muted"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card dashboard-card" style="background:#fff;">
+        <div class="card-body" style="padding:0;">
+          <div class="terminal-header">
+            <div class="terminal-title">终端</div>
+          </div>
+          <div class="terminal-container">
+            <div id="terminal-window" class="terminal-window" aria-live="polite" aria-atomic="false"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

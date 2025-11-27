@@ -1,0 +1,1438 @@
+    <script>
+        // 全局变量
+        let currentDays = Number(document.body?.dataset?.days || 30);
+        let charts = {};
+        let sortBy = 'views';
+        let adminWs = null;
+        let overviewInterval = null;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeNavigation();
+            initializeCharts();
+            initializeEventListeners();
+            loadData();
+            connectAdminWs();
+            // --- 新增：自动刷新逻辑 (每 2 秒刷新一次) --- 
+            console.log('启动自动刷新机制...'); 
+            setInterval(async () => { 
+                try { 
+                    // 1. 获取最新的实时数据 
+                    const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); 
+                    if (res.ok) { 
+                        const json = await res.json(); 
+                        // 2. 更新界面上的数字 
+                        if (json.data) { 
+                            updateRealtimeOverview(json.data); 
+                            // 在控制台打印一下，让你知道它在工作 
+                            console.log('🔄 数据已自动刷新:', new Date().toLocaleTimeString()); 
+                            
+                            // 3. 可选：给总收入加个闪烁特效，提示用户数据变了 
+                            const revenueEl = document.getElementById('total-revenue'); 
+                            if (revenueEl) { 
+                                revenueEl.style.color = '#4ade80'; // 变绿一下 
+                                setTimeout(() => { revenueEl.style.color = ''; }, 500); 
+                            } 
+                        } 
+                    } 
+                } catch (err) { 
+                    console.error('自动刷新失败:', err); 
+                } 
+            }, 2000); // 2000毫秒 = 2秒 
+            // -------------------------------------------
+            initializeCustomerService();
+            if (document.getElementById('admin-cs-session')) { document.getElementById('admin-cs-session').textContent = window.CustomerService.sessionId(); }
+        });
+
+        // 初始化导航
+        function initializeNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            const dayButtons = document.querySelectorAll('[data-days]');
+            const mainContainer = document.querySelector('.col-md-10 > .container-fluid.py-4');
+            const dayGroup = document.getElementById('day-range-group');
+            const hideSections = new Set(['server-monitor','error-logs','customer-service']);
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetSection = this.getAttribute('data-section');
+
+                    // 更新导航状态
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 显示对应部分
+                    sections.forEach(section => {
+                        section.style.display = section.id === targetSection ? 'block' : 'none';
+                    });
+                    if (mainContainer) mainContainer.style.display = 'block';
+                    if (dayGroup) dayGroup.style.display = hideSections.has(targetSection) ? 'none' : 'inline-flex';
+                });
+            });
+
+            dayButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    dayButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentDays = parseInt(this.getAttribute('data-days'));
+                    loadData();
+                });
+            });
+
+            const active = document.querySelector('.nav-link.active');
+            if (active) {
+                const targetSection = active.getAttribute('data-section');
+                sections.forEach(section => { section.style.display = section.id === targetSection ? 'block' : 'none'; });
+                if (mainContainer) mainContainer.style.display = 'block';
+                if (dayGroup) dayGroup.style.display = hideSections.has(targetSection) ? 'none' : 'inline-flex';
+            }
+        }
+
+        function initializeCustomerService() {
+            const statusEl = document.getElementById('admin-cs-status');
+            const chatEl = document.getElementById('admin-cs-chat');
+            const inputEl = document.getElementById('admin-cs-input');
+            const sendBtn = document.getElementById('admin-cs-send');
+            const toastEl = document.getElementById('admin-cs-toast');
+            if (!chatEl || !inputEl || !sendBtn) return;
+            function fmtTime() { return new Date().toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit' }); }
+            function showToast(text) { toastEl.textContent = text; toastEl.classList.add('show'); setTimeout(() => { toastEl.classList.remove('show'); }, 2000); }
+            function addMsg(text, who) {
+                const row = document.createElement('div');
+                row.className = 'cs-msg-row ' + (who === 'me' ? 'me' : 'srv');
+                const avatar = document.createElement('div');
+                avatar.className = 'cs-avatar ' + (who === 'me' ? 'me' : 'srv');
+                avatar.textContent = who === 'me' ? '我' : '客';
+                const bubble = document.createElement('div');
+                bubble.className = 'cs-bubble ' + (who === 'me' ? 'me' : 'srv');
+                bubble.innerHTML = '<div>' + text + '</div><div class="cs-time">' + fmtTime() + '</div>';
+                if (who === 'me') { row.appendChild(bubble); row.appendChild(avatar); } else { row.appendChild(avatar); row.appendChild(bubble); }
+                chatEl.appendChild(row);
+                chatEl.scrollTop = chatEl.scrollHeight;
+            }
+            function doSend() {
+                const text = (inputEl.value || '').trim();
+                if (!text) return;
+                addMsg(text, 'me');
+                inputEl.value = '';
+                window.CustomerService.sendQuestion(text);
+            }
+            document.addEventListener('cs:status', function (ev) {
+                const d = ev.detail || {};
+                if (statusEl) { statusEl.classList.toggle('offline', !d.connected); statusEl.innerHTML = (d.connected ? '<span class="dot"></span>已连接' : '<span class="dot"></span>未连接，自动重试中...'); }
+                if (sendBtn) sendBtn.disabled = false;
+            });
+            document.addEventListener('cs:message', function (ev) {
+                const msg = ev.detail || {};
+                if (msg.type === 'reply') { addMsg(msg.message || '客服回复', 'srv'); }
+                if (msg.type === 'ack') { showToast('已收到，我们会尽快回复'); }
+            });
+            sendBtn.addEventListener('click', doSend);
+            inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doSend(); } });
+            try { window.CustomerService.connect(); } catch (_) { }
+        }
+
+        function connectAdminWs() {
+            const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            adminWs = new WebSocket(`${proto}://${location.host}/admin/ws`);
+            adminWs.onmessage = function (ev) {
+                let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
+                console.log('收到WS消息:', msg);
+                if (msg.type === 'metrics') updateMetrics(msg.metrics);
+                if (msg.type === 'clients') updateClients(msg.clients);
+                if (msg.type === 'log') { appendLog(msg.log); if (msg.log && msg.log.level === 'error') appendErrorLog(msg.log.message || 'ERROR'); }
+                if (msg.type === 'server_log') appendServerLog(msg.data || msg);
+                if (msg.type === 'error_log') appendErrorLog(msg.data);
+                if (msg.type === 'app_error') appendErrorLog(msg.data);
+                if (msg.type === 'log_init' && Array.isArray(msg.logs)) { msg.logs.forEach(appendLog); }
+            };
+        }
+
+        function gb(n) { return (n / 1024 / 1024 / 1024).toFixed(2); }
+        function currentNumber(el) { const m = String(el?.textContent || '').match(/[\d.]+/); return m ? parseFloat(m[0]) : 0; }
+        function setDisplayText(el, value) { const id = el.id || ''; if (id === 'total-revenue') { el.textContent = '¥' + Number(value).toFixed(2); } else if (id === 'avg-order-value') { el.textContent = Number(value).toFixed(2); } else { el.textContent = Math.round(Number(value)); } }
+        function animateValue(id, start, end, duration) { const el = document.getElementById(id); if (!el) return; if (start === undefined || start === null) start = currentNumber(el); const s = Number(start) || 0; const e = Number(end) || 0; if (s === e) { setDisplayText(el, e); return; } const t0 = performance.now(); const run = (now) => { const p = Math.min((now - t0) / duration, 1); const val = s + (e - s) * p; setDisplayText(el, val); if (p < 1) requestAnimationFrame(run); }; requestAnimationFrame(run); }
+        async function refreshRealtimeData() { try { const resp = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const data = await resp.json(); updateRealtimeOverview(data.data); } catch (e) { console.error('实时概览刷新失败', e && e.message ? e.message : e); if (overviewInterval) { clearInterval(overviewInterval); overviewInterval = null; } } }
+        function startAutoRefresh() { try { if (overviewInterval) clearInterval(overviewInterval); refreshRealtimeData(); overviewInterval = setInterval(async () => { try { const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (res.ok) { const json = await res.json(); updateRealtimeOverview(json.data); } } catch (e) { console.error('自动刷新失败:', e); } }, 3000); window.addEventListener('beforeunload', function () { if (overviewInterval) { try { clearInterval(overviewInterval); } catch (_) { } overviewInterval = null; } }); } catch (_) { }
+        }
+        function updateMetrics(m) {
+            const cpuEl = document.getElementById('cpu-usage');
+            const freeEl = document.getElementById('mem-free');
+            const totalEl = document.getElementById('mem-total');
+            if (cpuEl) cpuEl.textContent = `${m.cpu}%`;
+            if (freeEl) freeEl.textContent = gb(m.memory.free);
+            if (totalEl) totalEl.textContent = gb(m.memory.total);
+        }
+        function updateClients(list) {
+            const el = document.getElementById('client-list');
+            if (!el) return;
+            el.innerHTML = '';
+            const count = Array.isArray(list) ? list.length : 0;
+            const t = document.createElement('div');
+            t.textContent = `在线会话: ${count}`;
+            el.appendChild(t);
+            if (count > 0) {
+                const ul = document.createElement('ul');
+                list.forEach(c => { const li = document.createElement('li'); li.textContent = c.sessionId; ul.appendChild(li); });
+                el.appendChild(ul);
+            }
+        }
+        function appendLog(log) {
+            const term = document.getElementById('terminal-window');
+            if (!term) return;
+            const rawMsg = (log.message || '');
+            const rawPath = (log.path || log.url || log.uri || log.route || '');
+            if ((rawMsg && rawMsg.includes('@vite')) || (rawPath && rawPath.includes('@vite'))) return;
+            const cursorId = 'terminal-cursor';
+            let cursor = document.getElementById(cursorId);
+            if (cursor && cursor.parentElement) { try { cursor.parentElement.removeChild(cursor); } catch (_) {} }
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            const method = String((log.method || log.httpMethod || log.m || '')).toUpperCase();
+            const path = rawPath;
+            const statusNum = parseInt((log.status || log.statusCode || ''), 10) || (function(){ const m=(log.message||'').match(/\b(\d{3})\b/); return m?parseInt(m[1],10):0; })();
+            const msValRaw = (log.ms ?? log.responseTime ?? log.duration ?? (function(){ const m=(log.message||'').match(/([\d.]+)\s*ms/); return m?m[1]:''; })());
+            const msVal = msValRaw ? Number(msValRaw) : '';
+            const sizeVal = (log.length ?? log.contentLength ?? log.size ?? (function(){ const m=(log.message||'').match(/-\s*(\d+)/); return m?m[1]:''; })());
+            const sMethod = document.createElement('span'); sMethod.className = 't-method'; sMethod.textContent = method?`[${method}]`:'';
+            const sPath = document.createElement('span'); sPath.className = 't-path'; sPath.textContent = path?` ${path}`:'';
+            const sStatus = document.createElement('span'); sStatus.className = 't-status ' + (statusNum>=500?'err':statusNum>=400?'warn':statusNum>=300?'redir':'ok'); sStatus.textContent = statusNum?` ${statusNum}`:'';
+            const sTime = document.createElement('span'); sTime.className = 't-time'; sTime.textContent = msVal!==''?` ${msVal} ms`:'';
+            const sSize = document.createElement('span'); sSize.className = 't-size'; sSize.textContent = sizeVal?` - ${sizeVal}`:'';
+            if (!method && !path && !statusNum && msVal==='') { line.textContent = (log.message || JSON.stringify(log)); }
+            else { line.appendChild(sMethod); line.appendChild(sPath); line.appendChild(sStatus); line.appendChild(sTime); line.appendChild(sSize); }
+            term.appendChild(line);
+            cursor = document.createElement('span'); cursor.id = cursorId; cursor.className = 'terminal-cursor';
+            term.appendChild(cursor);
+            term.scrollTop = term.scrollHeight;
+        }
+
+        function appendServerLog(data) {
+            const term = document.getElementById('terminal-window');
+            if (!term) return;
+            const rawPath = data.url || data.path || '';
+            if (rawPath.includes('@vite')) return;
+            const cursorId = 'terminal-cursor';
+            let cursor = document.getElementById(cursorId);
+            if (cursor && cursor.parentElement) { try { cursor.parentElement.removeChild(cursor); } catch (_) {} }
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            const method = String((data.method||'')).toUpperCase();
+            const path = rawPath;
+            const statusNum = Number(data.status||0);
+            const msVal = Number((data.time!==undefined?data.time:''));
+            const sMethod = document.createElement('span'); sMethod.className = 't-method'; sMethod.textContent = method?`[${method}]`:'';
+            const sPath = document.createElement('span'); sPath.className = 't-path'; sPath.textContent = path?` ${path}`:'';
+            const sStatus = document.createElement('span'); sStatus.className = 't-status ' + (statusNum>=500?'err':statusNum>=400?'warn':statusNum>=300?'redir':'ok'); sStatus.textContent = statusNum?` ${statusNum}`:'';
+            const sTime = document.createElement('span'); sTime.className = 't-time'; sTime.textContent = (msVal||msVal===0)?` ${msVal} ms`:'';
+            line.appendChild(sMethod); line.appendChild(sPath); line.appendChild(sStatus); line.appendChild(sTime);
+            term.appendChild(line);
+            cursor = document.createElement('span'); cursor.id = cursorId; cursor.className = 'terminal-cursor';
+            term.appendChild(cursor);
+            term.scrollTop = term.scrollHeight;
+            if (statusNum >= 400) {
+                const msg = `[${method}] ${path} ${statusNum} ${msVal} ms`;
+                appendErrorLog(msg);
+            }
+        }
+
+        function appendErrorLog(message) {
+            const list = document.getElementById('log-list');
+            if (!list) return console.error('找不到 log-list 容器');
+            const item = document.createElement('div');
+            item.className = 'alert alert-danger d-flex align-items-center mb-2';
+            item.style.padding = '8px 12px';
+            item.innerHTML = `
+                <i class="fas fa-times-circle me-2"></i>
+                <div>
+                    <small class="text-muted" style="display:block; font-size:0.8em">${new Date().toLocaleTimeString()}</small>
+                    <span style="font-family:monospace; word-break:break-all;">${message}</span>
+                </div>
+            `;
+            list.prepend(item);
+        }
+
+        // 初始化事件监听器
+        function initializeEventListeners() {
+            // 产品排序按钮
+            document.getElementById('sort-by-views')?.addEventListener('click', () => {
+                sortBy = 'views';
+                loadProductData();
+            });
+            document.getElementById('sort-by-sales')?.addEventListener('click', () => {
+                sortBy = 'sales';
+                loadProductData();
+            });
+            document.getElementById('sort-by-revenue')?.addEventListener('click', () => {
+                sortBy = 'revenue';
+                loadProductData();
+            });
+        }
+
+        // 初始化图表
+        function initializeCharts() {
+            // 行为类型分布饼图
+            if (document.getElementById('behaviorChart')) {
+                const behaviorCtx = document.getElementById('behaviorChart').getContext('2d');
+                charts.behavior = new Chart(behaviorCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 转化漏斗图
+            if (document.getElementById('conversionChart')) {
+                const funnelCtx = document.getElementById('conversionChart').getContext('2d');
+                charts.funnel = new Chart(funnelCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['浏览', '加购物车', '购买'],
+                        datasets: [{
+                            label: '用户数量',
+                            data: [],
+                            backgroundColor: ['#36A2EB', '#FFCE56', '#4BC0C0']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 收入趋势图
+            if (document.getElementById('revenueChart')) {
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                charts.revenue = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: '收入',
+                            data: [],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 用户活跃度时间分布图
+            if (document.getElementById('hourlyActivityChart')) {
+                const hourlyCtx = document.getElementById('hourlyActivityChart').getContext('2d');
+                charts.hourlyActivity = new Chart(hourlyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+                        datasets: [{
+                            label: '活跃用户数',
+                            data: [],
+                            backgroundColor: '#17a2b8'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 用户细分图
+            if (document.getElementById('userSegmentChart')) {
+                const segmentCtx = document.getElementById('userSegmentChart').getContext('2d');
+                charts.userSegment = new Chart(segmentCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['新用户', '活跃用户', '沉睡用户', '流失用户'],
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ['#28a745', '#17a2b8', '#ffc107', '#dc3545']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 产品类别销售分布图
+            if (document.getElementById('categoryChart')) {
+                const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+                charts.category = new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            data: [],
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 产品评分分布图
+            if (document.getElementById('ratingChart')) {
+                const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+                charts.rating = new Chart(ratingCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['1星', '2星', '3星', '4星', '5星'],
+                        datasets: [{
+                            label: '产品数量',
+                            data: [],
+                            backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#28a745', '#20c997']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 产品销售趋势图
+            if (document.getElementById('productTrendChart')) {
+                const productTrendCtx = document.getElementById('productTrendChart').getContext('2d');
+                charts.productTrend = new Chart(productTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: []
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '日期'
+                                },
+                                grid: {
+                                    display: true,
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            },
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '销售量'
+                                },
+                                grid: {
+                                    display: true,
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 趋势图
+            if (document.getElementById('trendChart')) {
+                const trendCtx = document.getElementById('trendChart').getContext('2d');
+                charts.trend = new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: []
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                borderWidth: 1,
+                                cornerRadius: 6,
+                                displayColors: true
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: '日期',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    display: true,
+                                    color: 'rgba(0, 0, 0, 0.1)',
+                                    lineWidth: 1
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    },
+                                    maxRotation: 45
+                                }
+                            },
+                            y: {
+                                display: true,
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '数量',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    display: true,
+                                    color: 'rgba(0, 0, 0, 0.1)',
+                                    lineWidth: 1
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            }
+                        },
+                        elements: {
+                            line: {
+                                tension: 0.4
+                            },
+                            point: {
+                                radius: 4,
+                                hoverRadius: 6,
+                                borderWidth: 2
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // 加载数据
+        async function loadData() {
+            console.log('开始加载数据，天数:', currentDays);
+
+            try {
+                // 加载实时概览数据
+                console.log('正在加载实时概览数据...');
+                const realtimeResponse = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`);
+                if (!realtimeResponse.ok) {
+                    throw new Error(`实时概览API请求失败: ${realtimeResponse.status} ${realtimeResponse.statusText}`);
+                }
+                const realtimeData = await realtimeResponse.json();
+                console.log('实时概览数据:', realtimeData);
+                updateRealtimeOverview(realtimeData.data);
+                console.log('✅ 实时概览数据加载完成');
+
+                // 加载概览数据
+                console.log('正在加载概览数据...');
+                const overviewResponse = await fetch(`/analytics/api/overview?days=${currentDays}`);
+                if (!overviewResponse.ok) {
+                    throw new Error(`概览API请求失败: ${overviewResponse.status} ${overviewResponse.statusText}`);
+                }
+                const overviewData = await overviewResponse.json();
+                console.log('概览数据:', overviewData);
+                updateOverview(overviewData.data);
+                console.log('✅ 概览数据加载完成');
+
+                // 加载高级用户行为数据
+                console.log('正在加载高级用户行为数据...');
+                const advancedBehaviorResponse = await fetch(`/analytics/api/advanced-user-behavior?days=${currentDays}`);
+                if (!advancedBehaviorResponse.ok) {
+                    throw new Error(`高级用户行为API请求失败: ${advancedBehaviorResponse.status} ${advancedBehaviorResponse.statusText}`);
+                }
+                const advancedBehaviorData = await advancedBehaviorResponse.json();
+                console.log('高级用户行为数据:', advancedBehaviorData);
+                updateAdvancedBehaviorCharts(advancedBehaviorData.data);
+                console.log('✅ 高级用户行为数据加载完成');
+
+                // 加载用户行为数据
+                console.log('正在加载用户行为数据...');
+                const behaviorResponse = await fetch(`/analytics/api/user-behavior?days=${currentDays}`);
+                if (!behaviorResponse.ok) {
+                    throw new Error(`用户行为API请求失败: ${behaviorResponse.status} ${behaviorResponse.statusText}`);
+                }
+                const behaviorData = await behaviorResponse.json();
+                console.log('用户行为数据:', behaviorData);
+                updateBehaviorCharts(behaviorData.data);
+                console.log('✅ 用户行为数据加载完成');
+
+                // 加载产品性能数据
+                console.log('正在加载产品性能数据...');
+                await loadProductData();
+                console.log('✅ 产品性能数据加载完成');
+
+                // 加载趋势数据
+                console.log('正在加载趋势数据...');
+                const trendResponse = await fetch(`/analytics/api/trends?days=${currentDays}`);
+                if (!trendResponse.ok) {
+                    throw new Error(`趋势API请求失败: ${trendResponse.status} ${trendResponse.statusText}`);
+                }
+                const trendData = await trendResponse.json();
+                console.log('趋势数据:', trendData);
+                updateTrendChart(trendData.data);
+                console.log('✅ 趋势数据加载完成');
+
+                console.log('🎉 所有数据加载完成');
+
+            } catch (error) {
+                console.error('❌ 加载数据失败:', error);
+                // 显示错误提示
+                showErrorMessage('数据加载失败: ' + error.message);
+            }
+        }
+
+        // 加载产品数据
+        async function loadProductData() {
+            try {
+                console.log('正在加载产品性能数据...');
+                const productResponse = await fetch(`/analytics/api/product-performance?days=${currentDays}&sortBy=${sortBy}`);
+                if (!productResponse.ok) {
+                    throw new Error(`产品性能API请求失败: ${productResponse.status} ${productResponse.statusText}`);
+                }
+                const productData = await productResponse.json();
+                console.log('产品性能数据:', productData);
+
+                if (!productData.data || !Array.isArray(productData.data)) {
+                    throw new Error('产品性能数据格式不正确');
+                }
+
+                updateProductTable(productData.data);
+                updateProductCharts(productData.data);
+                return true;
+            } catch (error) {
+                console.error('❌ 加载产品数据失败:', error);
+                showErrorMessage('产品数据加载失败: ' + error.message);
+                return false;
+            }
+        }
+
+        // 更新实时概览数据
+        function updateRealtimeOverview(data) {
+            try {
+                console.log('正在更新实时概览数据:', data);
+                if (data) {
+                    // 使用正确的数据结构字段
+                    const totalUsersEl = document.getElementById('total-users');
+                    const dailyActiveUsersEl = document.getElementById('daily-active-users');
+                    const totalOrdersEl = document.getElementById('total-orders');
+                    const totalRevenueEl = document.getElementById('total-revenue');
+                    const avgOrderValueEl = document.getElementById('avg-order-value');
+                    const totalViewsEl = document.getElementById('total-views');
+
+                    if (totalUsersEl) animateValue('total-users', currentNumber(totalUsersEl), Number(data.users?.total || 0), 1000);
+                    if (dailyActiveUsersEl) animateValue('daily-active-users', currentNumber(dailyActiveUsersEl), Number(data.users?.daily_active || 0), 1000);
+                    if (totalOrdersEl) animateValue('total-orders', currentNumber(totalOrdersEl), Number(data.orders?.total || 0), 1000);
+                    if (totalRevenueEl) animateValue('total-revenue', currentNumber(totalRevenueEl), Number(data.orders?.total_revenue || 0), 1000);
+                    if (avgOrderValueEl) animateValue('avg-order-value', currentNumber(avgOrderValueEl), Number(data.orders?.avg_value || 0), 1000);
+                    if (totalViewsEl) totalViewsEl.textContent = data.products?.total_views || 0;
+                    const conversionEl = document.getElementById('conversion-rate');
+                    if (conversionEl && data.conversion_rates) {
+                        conversionEl.textContent = (data.conversion_rates.viewToPurchase || 0) + '%';
+                    }
+
+                    // 如果有会话指标数据
+                    if (data.session_metrics) {
+                        const avgSessionDurationEl = document.getElementById('avg-session-duration');
+                        const bounceRateEl = document.getElementById('bounce-rate');
+                        if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics?.avg_duration || 0).toFixed(1);
+                        if (bounceRateEl) bounceRateEl.textContent = `${(data.session_metrics?.bounce_rate || 0).toFixed(1)}%`;
+                    }
+
+                    // 更新收入趋势图
+                    if (charts.revenue && data.revenue_trend && Array.isArray(data.revenue_trend)) {
+                        try {
+                            charts.revenue.data.labels = data.revenue_trend.map(item => item.date);
+                            charts.revenue.data.datasets[0].data = data.revenue_trend.map(item => item.daily_revenue || item.revenue || item.value || 0);
+                            charts.revenue.update();
+                            console.log('✅ 收入趋势图更新完成，数据点数:', data.revenue_trend.length);
+                        } catch (revenueError) {
+                            console.error('❌ 更新收入趋势图失败:', revenueError);
+                        }
+                    } else {
+                        console.warn('⚠️ 收入趋势图数据缺失或格式不正确:', data.revenue_trend);
+                    }
+                    console.log('✅ 实时概览数据更新完成');
+                } else {
+                    console.warn('⚠️ 实时概览数据为空');
+                }
+            } catch (error) {
+                console.error('❌ 更新实时概览数据失败:', error);
+                showErrorMessage('实时概览数据更新失败: ' + error.message);
+            }
+        }
+
+        // 更新概览数据
+        function updateOverview(data) {
+            if (data && data.users) {
+                // 这些数据可能已经在实时概览中更新了
+            }
+        }
+
+        // 更新高级用户行为数据
+        function updateAdvancedBehaviorCharts(data) {
+            try {
+                console.log('正在更新高级用户行为数据:', data);
+                if (data) {
+                    // 更新会话指标
+                    if (data.session_metrics) {
+                        const avgSessionDurationEl = document.getElementById('avg-session-duration');
+                        const bounceRateEl = document.getElementById('bounce-rate');
+                        const avgActionsPerSessionEl = document.getElementById('avg-actions-per-session');
+
+                        if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics.avg_duration || 0) + ' 分钟';
+                        if (bounceRateEl) bounceRateEl.textContent = `${(data.session_metrics.bounce_rate || 0)}%`;
+                        if (avgActionsPerSessionEl) avgActionsPerSessionEl.textContent = (data.session_metrics.avg_actions_per_session || 0).toFixed(1);
+                        console.log('✅ 会话指标更新完成');
+                    } else {
+                        console.warn('⚠️ 会话指标数据缺失');
+                    }
+
+                    // 更新用户活跃度时间分布图
+                    if (charts.hourlyActivity && data.hourly_activity) {
+                        try {
+                            const hourlyData = new Array(24).fill(0);
+                            data.hourly_activity.forEach(item => {
+                                const hour = parseInt(item.hour);
+                                if (!isNaN(hour) && hour >= 0 && hour < 24) {
+                                    hourlyData[hour] = item.actions || 0;
+                                }
+                            });
+                            charts.hourlyActivity.data.datasets[0].data = hourlyData;
+                            charts.hourlyActivity.update();
+                            console.log('✅ 用户活跃度时间分布图更新完成');
+                        } catch (chartError) {
+                            console.error('❌ 更新用户活跃度时间分布图失败:', chartError);
+                        }
+                    } else {
+                        console.warn('⚠️ 用户活跃度时间分布图数据或图表对象缺失');
+                    }
+
+                    // 更新设备分布图
+                    if (charts.userSegment && data.device_distribution) {
+                        try {
+                            const deviceLabels = data.device_distribution.map(item => item.device_type || '未知设备');
+                            const deviceData = data.device_distribution.map(item => item.users || 0);
+                            charts.userSegment.data.labels = deviceLabels;
+                            charts.userSegment.data.datasets[0].data = deviceData;
+                            charts.userSegment.update();
+                            console.log('✅ 设备分布图更新完成');
+                        } catch (chartError) {
+                            console.error('❌ 更新设备分布图失败:', chartError);
+                        }
+                    } else {
+                        console.warn('⚠️ 设备分布图数据或图表对象缺失');
+                    }
+
+                    // 更新用户路径列表
+                    if (data.user_paths) {
+                        try {
+                            updateUserPaths(data.user_paths);
+                            console.log('✅ 用户路径列表更新完成');
+                        } catch (pathError) {
+                            console.error('❌ 更新用户路径列表失败:', pathError);
+                        }
+                    } else {
+                        console.warn('⚠️ 用户路径数据缺失');
+                    }
+
+                    console.log('✅ 高级用户行为数据更新完成');
+                } else {
+                    console.warn('⚠️ 高级用户行为数据为空');
+                }
+            } catch (error) {
+                console.error('❌ 更新高级用户行为数据失败:', error);
+                showErrorMessage('高级用户行为数据更新失败: ' + error.message);
+            }
+        }
+
+        // 更新用户路径
+        function updateUserPaths(paths) {
+            const pathsList = document.getElementById('user-paths-list');
+            if (pathsList) {
+                pathsList.innerHTML = '';
+
+                // 处理用户路径数据，按用户分组显示最近的行为序列
+                const userGroups = {};
+                paths.forEach(path => {
+                    if (!userGroups[path.user_id]) {
+                        userGroups[path.user_id] = [];
+                    }
+                    userGroups[path.user_id].push(path);
+                });
+
+                // 显示前5个用户的行为路径
+                Object.keys(userGroups).slice(0, 5).forEach((userId, index) => {
+                    const userPaths = userGroups[userId].slice(0, 5); // 每个用户显示最多5个行为
+                    const pathElement = document.createElement('div');
+                    pathElement.className = 'mb-2 p-2 bg-dark rounded';
+
+                    const pathSequence = userPaths.map(p => p.action_type).join(' → ');
+                    pathElement.innerHTML = `
+                        <small class="text-muted">用户 #${userId}</small>
+                        <div class="text-light">${pathSequence}</div>
+                        <small class="text-info">${userPaths.length} 个行为</small>
+                    `;
+                    pathsList.appendChild(pathElement);
+                });
+            }
+        }
+
+        // 更新行为图表
+        function updateBehaviorCharts(data) {
+            try {
+                console.log('正在更新用户行为图表和指标...', data);
+
+                // 更新用户行为概览指标
+                try {
+                    const totalClicksEl = document.getElementById('total-clicks');
+                    const cartAddsEl = document.getElementById('cart-additions');
+                    const wishlistAddsEl = document.getElementById('wishlist-additions');
+                    const sharesEl = document.getElementById('shares');
+
+                    // 从actionStats中提取各种行为的统计数据
+                    let totalClicks = 0;
+                    let cartAdditions = 0;
+                    let wishlistAdditions = 0;
+                    let shares = 0;
+
+                    if (data.actionStats && Array.isArray(data.actionStats)) {
+                        data.actionStats.forEach(stat => {
+                            const actionType = stat.action_type;
+                            const count = stat.count || 0;
+
+                            // 统计点击数（包括浏览、产品查看等）
+                            if (actionType === 'view' || actionType === 'product_view' || actionType === 'click') {
+                                totalClicks += count;
+                            }
+                            // 统计加购次数
+                            else if (actionType === 'add_to_cart') {
+                                cartAdditions += count;
+                            }
+                            // 统计收藏次数
+                            else if (actionType === 'wishlist' || actionType === 'favorite' || actionType === 'add_to_wishlist') {
+                                wishlistAdditions += count;
+                            }
+                            // 统计分享次数
+                            else if (actionType === 'share') {
+                                shares += count;
+                            }
+                        });
+                    }
+
+                    // 如果没有从actionStats获取到数据，尝试从rawConversionData获取
+                    if (totalClicks === 0 && data.rawConversionData) {
+                        totalClicks = data.rawConversionData.views || 0;
+                        cartAdditions = data.rawConversionData.cart_adds || 0;
+                    }
+
+                    // 更新DOM元素
+                    if (totalClicksEl) totalClicksEl.textContent = totalClicks;
+                    if (cartAddsEl) cartAddsEl.textContent = cartAdditions;
+                    if (wishlistAddsEl) wishlistAddsEl.textContent = wishlistAdditions;
+                    if (sharesEl) sharesEl.textContent = shares;
+
+                    console.log('✅ 用户行为概览指标更新完成:', {
+                        totalClicks,
+                        cartAdditions,
+                        wishlistAdditions,
+                        shares
+                    });
+                } catch (metricsError) {
+                    console.error('❌ 更新用户行为概览指标失败:', metricsError);
+                }
+
+                // 更新行为分布图表
+                if (data.actionStats && charts.behavior) {
+                    try {
+                        charts.behavior.data.labels = data.actionStats.map(item => item.action_type);
+                        charts.behavior.data.datasets[0].data = data.actionStats.map(item => item.count);
+                        charts.behavior.update();
+                        console.log('✅ 行为分布图表更新完成');
+                    } catch (chartError) {
+                        console.error('❌ 更新行为分布图表失败:', chartError);
+                    }
+                }
+
+                // 更新转化漏斗图表
+                if (data.rawConversionData && charts.funnel) {
+                    try {
+                        charts.funnel.data.datasets[0].data = [
+                            data.rawConversionData.views,
+                            data.rawConversionData.cart_adds,
+                            data.rawConversionData.purchases
+                        ];
+                        charts.funnel.update();
+                        console.log('✅ 转化漏斗图表更新完成');
+                    } catch (funnelError) {
+                        console.error('❌ 更新转化漏斗图表失败:', funnelError);
+                    }
+                }
+
+                console.log('✅ 用户行为图表和指标更新完成');
+            } catch (error) {
+                console.error('❌ 更新用户行为图表失败:', error);
+                showErrorMessage('用户行为图表更新失败: ' + error.message);
+            }
+        }
+
+        // 更新产品表格
+        function updateProductTable(data) {
+            try {
+                console.log('正在更新产品表格，数据长度:', data ? data.length : 0);
+                const tbody = document.querySelector('#productTable tbody');
+                if (!tbody) {
+                    console.error('❌ 找不到产品表格tbody元素');
+                    return;
+                }
+
+                tbody.innerHTML = '';
+
+                if (!data || !Array.isArray(data)) {
+                    console.warn('⚠️ 产品数据为空或格式不正确');
+                    const row = tbody.insertRow();
+                    row.innerHTML = '<td colspan="10" class="text-center text-muted">暂无产品数据</td>';
+                    return;
+                }
+
+                data.forEach((product, index) => {
+                    try {
+                        // 从产品名称推断类别
+                        let category = '未分类';
+                        const name = product.name || '';
+                        if (name.includes('手机')) category = '手机';
+                        else if (name.includes('电脑') || name.includes('笔记本')) category = '电脑';
+                        else if (name.includes('耳机')) category = '耳机';
+                        else if (name.includes('充电器')) category = '充电器';
+                        else if (name.includes('音响')) category = '音响';
+                        else if (name.includes('平板')) category = '平板';
+                        else if (name.includes('数据线')) category = '数据线';
+                        else if (name.includes('键盘')) category = '键盘';
+                        else if (name.includes('鼠标')) category = '鼠标';
+                        else if (name.includes('显示器')) category = '显示器';
+
+                        const row = tbody.insertRow();
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${product.name || '未知产品'}</td>
+                            <td>${product.category || category}</td>
+                            <td>${product.views || 0}</td>
+                            <td>${product.cart_adds || 0}</td>
+                            <td>${product.purchases || 0}</td>
+                            <td>${parseFloat(product.conversion_rate || 0).toFixed(2)}%</td>
+                            <td>¥${parseFloat(product.revenue || 0).toFixed(2)}</td>
+                            <td>${parseFloat(product.avg_preference_score || 0).toFixed(1)}</td>
+                            <td>${product.stock || 0}</td>
+                        `;
+                    } catch (rowError) {
+                        console.error(`❌ 创建产品表格行失败 (索引 ${index}):`, rowError, product);
+                    }
+                });
+
+                console.log(`✅ 产品表格更新完成，共 ${data.length} 行`);
+            } catch (error) {
+                console.error('❌ 更新产品表格失败:', error);
+                showErrorMessage('产品表格更新失败: ' + error.message);
+            }
+        }
+
+        // 更新产品图表
+        function updateProductCharts(data) {
+            try {
+                console.log('正在更新产品图表，数据长度:', data ? data.length : 0);
+
+                if (!data || !Array.isArray(data)) {
+                    console.warn('⚠️ 产品图表数据为空或格式不正确');
+                    return;
+                }
+
+                // 更新产品概览指标
+                try {
+                    const totalProductsEl = document.getElementById('total-products');
+                    const hotProductsEl = document.getElementById('hot-products');
+                    const trendingProductsEl = document.getElementById('trending-products');
+                    const lowStockProductsEl = document.getElementById('low-stock-products');
+
+                    if (totalProductsEl) totalProductsEl.textContent = data.length || 0;
+                    if (hotProductsEl) hotProductsEl.textContent = data.filter(p => (p.views || 0) > 100).length || 0;
+
+                    // 使用composite_score作为趋势指标的替代
+                    const trendingCount = data.filter(p => (p.composite_score || 0) > 50).length || 0;
+                    if (trendingProductsEl) trendingProductsEl.textContent = trendingCount;
+
+                    if (lowStockProductsEl) lowStockProductsEl.textContent = data.filter(p => (p.stock || 0) < 10).length || 0;
+
+                    console.log('✅ 产品概览指标更新完成');
+                } catch (metricsError) {
+                    console.error('❌ 更新产品概览指标失败:', metricsError);
+                }
+
+                // 更新产品类别分布图
+                if (charts.category) {
+                    try {
+                        const categoryData = {};
+                        data.forEach(product => {
+                            // 从产品名称推断类别
+                            let category = '未分类';
+                            const name = product.name || '';
+                            if (name.includes('手机')) category = '手机';
+                            else if (name.includes('电脑') || name.includes('笔记本')) category = '电脑';
+                            else if (name.includes('耳机')) category = '耳机';
+                            else if (name.includes('充电器')) category = '充电器';
+                            else if (name.includes('音响')) category = '音响';
+                            else if (name.includes('平板')) category = '平板';
+                            else if (name.includes('数据线')) category = '数据线';
+                            else if (name.includes('键盘')) category = '键盘';
+                            else if (name.includes('鼠标')) category = '鼠标';
+                            else if (name.includes('显示器')) category = '显示器';
+
+                            const finalCategory = product.category || category;
+                            categoryData[finalCategory] = (categoryData[finalCategory] || 0) + (product.revenue || 0);
+                        });
+
+                        charts.category.data.labels = Object.keys(categoryData);
+                        charts.category.data.datasets[0].data = Object.values(categoryData);
+                        charts.category.update();
+                        console.log('✅ 产品类别分布图更新完成');
+                    } catch (categoryError) {
+                        console.error('❌ 更新产品类别分布图失败:', categoryError);
+                    }
+                } else {
+                    console.warn('⚠️ 产品类别分布图对象不存在');
+                }
+
+                // 更新产品评分分布图 - 使用avg_preference_score替代rating
+                if (charts.rating) {
+                    try {
+                        const ratingData = [0, 0, 0, 0, 0];
+                        data.forEach(product => {
+                            // 将avg_preference_score转换为1-5的评分
+                            const score = product.avg_preference_score || 0;
+                            const rating = Math.min(Math.max(Math.floor(score * 5), 1), 5);
+                            if (rating >= 1 && rating <= 5) {
+                                ratingData[rating - 1]++;
+                            }
+                        });
+
+                        charts.rating.data.datasets[0].data = ratingData;
+                        charts.rating.update();
+                        console.log('✅ 产品评分分布图更新完成');
+                    } catch (ratingError) {
+                        console.error('❌ 更新产品评分分布图失败:', ratingError);
+                    }
+                } else {
+                    console.warn('⚠️ 产品评分分布图对象不存在');
+                }
+
+                console.log('✅ 产品图表更新完成');
+            } catch (error) {
+                console.error('❌ 更新产品图表失败:', error);
+                showErrorMessage('产品图表更新失败: ' + error.message);
+            }
+        }
+
+        // 更新趋势图表
+        function updateTrendChart(data) {
+            try {
+                console.log('正在更新趋势图表，数据:', data);
+
+                // 更新趋势分析页面的图表
+                if (charts.trend) {
+                    let labels = [];
+                    let datasets = [];
+
+                    // 处理活跃用户数据
+                    if (data.active_users && Array.isArray(data.active_users) && data.active_users.length > 0) {
+                        labels = data.active_users.map(item => {
+                            // 格式化日期显示
+                            const date = new Date(item.date);
+                            return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                        });
+
+                        datasets.push({
+                            label: '活跃用户',
+                            data: data.active_users.map(item => item.value || 0),
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#36A2EB',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        });
+
+                        console.log('活跃用户数据点:', data.active_users.map(item => item.value || 0));
+                    }
+
+                    // 处理订单数据
+                    if (data.orders && Array.isArray(data.orders) && data.orders.length > 0) {
+                        // 如果还没有标签，使用订单数据的日期
+                        if (labels.length === 0) {
+                            labels = data.orders.map(item => {
+                                const date = new Date(item.date);
+                                return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                            });
+                        }
+
+                        datasets.push({
+                            label: '订单数',
+                            data: data.orders.map(item => item.value || 0),
+                            borderColor: '#FF6384',
+                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                            fill: false,
+                            tension: 0.4,
+                            pointBackgroundColor: '#FF6384',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        });
+
+                        console.log('订单数据点:', data.orders.map(item => item.value || 0));
+                    }
+
+                    // 处理收入数据
+                    if (data.revenue && Array.isArray(data.revenue) && data.revenue.length > 0) {
+                        // 如果还没有标签，使用收入数据的日期
+                        if (labels.length === 0) {
+                            labels = data.revenue.map(item => {
+                                const date = new Date(item.date);
+                                return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                            });
+                        }
+
+                        datasets.push({
+                            label: '收入 (¥)',
+                            data: data.revenue.map(item => item.value || 0),
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            fill: false,
+                            tension: 0.4,
+                            pointBackgroundColor: '#28a745',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            yAxisID: 'y1'
+                        });
+
+                        // 添加第二个Y轴用于收入
+                        if (!charts.trend.options.scales.y1) {
+                            charts.trend.options.scales.y1 = {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '收入 (¥)',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    drawOnChartArea: false,
+                                    color: 'rgba(40, 167, 69, 0.1)'
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            };
+                        }
+
+                        console.log('收入数据点:', data.revenue.map(item => item.value || 0));
+                    }
+
+                    // 如果没有任何数据，创建示例数据
+                    if (labels.length === 0 || datasets.length === 0) {
+                        console.log('没有趋势数据，创建示例数据');
+                        const today = new Date();
+                        labels = [];
+                        const sampleData = [];
+
+                        for (let i = 6; i >= 0; i--) {
+                            const date = new Date(today);
+                            date.setDate(date.getDate() - i);
+                            labels.push(date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }));
+                            sampleData.push(Math.floor(Math.random() * 100) + 50);
+                        }
+
+                        datasets = [{
+                            label: '活跃用户',
+                            data: sampleData,
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#36A2EB',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }];
+                    }
+
+                    // 更新图表数据
+                    charts.trend.data.labels = labels;
+                    charts.trend.data.datasets = datasets;
+                    charts.trend.update('active');
+
+                    console.log('✅ 趋势图表更新完成，标签数:', labels.length, '数据集数:', datasets.length);
+                }
+
+                // 更新产品性能页面的产品销售趋势图表
+                if (charts.productTrend) {
+                    try {
+                        console.log('正在更新产品销售趋势图表，原始数据:', data);
+
+                        // 使用趋势数据更新产品销售趋势图
+                        const labels = [];
+                        const salesData = [];
+                        const revenueData = [];
+
+                        // 如果有订单数据，使用订单数据作为销售趋势
+                        if (data.orders && Array.isArray(data.orders)) {
+                            console.log('处理订单数据:', data.orders);
+                            data.orders.forEach(item => {
+                                labels.push(item.date);
+                                salesData.push(item.value || 0);
+                            });
+                        }
+
+                        // 如果有收入数据，添加收入趋势
+                        if (data.revenue && Array.isArray(data.revenue)) {
+                            console.log('处理收入数据:', data.revenue);
+                            data.revenue.forEach((item, index) => {
+                                if (index < labels.length) {
+                                    revenueData.push(item.value || 0);
+                                } else if (labels.length === 0) {
+                                    labels.push(item.date);
+                                    revenueData.push(item.value || 0);
+                                }
+                            });
+                        }
+
+                        // 如果没有数据，创建示例数据以确保图表显示
+                        if (labels.length === 0) {
+                            console.log('没有趋势数据，创建示例数据');
+                            const today = new Date();
+                            for (let i = 6; i >= 0; i--) {
+                                const date = new Date(today);
+                                date.setDate(date.getDate() - i);
+                                labels.push(date.toISOString().split('T')[0]);
+                                salesData.push(Math.floor(Math.random() * 50) + 10);
+                                revenueData.push(Math.floor(Math.random() * 5000) + 1000);
+                            }
+                        }
+
+                        console.log('图表标签:', labels);
+                        console.log('销售数据:', salesData);
+                        console.log('收入数据:', revenueData);
+
+                        // 更新图表数据
+                        charts.productTrend.data.labels = labels;
+                        charts.productTrend.data.datasets = [];
+
+                        if (salesData.length > 0) {
+                            charts.productTrend.data.datasets.push({
+                                label: '销售量',
+                                data: salesData,
+                                borderColor: '#28a745',
+                                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                                fill: false,
+                                tension: 0.4,
+                                pointBackgroundColor: '#28a745',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4
+                            });
+                        }
+
+                        if (revenueData.length > 0) {
+                            charts.productTrend.data.datasets.push({
+                                label: '收入趋势 (¥)',
+                                data: revenueData,
+                                borderColor: '#007bff',
+                                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                fill: false,
+                                tension: 0.4,
+                                pointBackgroundColor: '#007bff',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4,
+                                yAxisID: 'y1'
+                            });
+
+                            // 添加第二个Y轴用于收入
+                            charts.productTrend.options.scales.y1 = {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '收入 (¥)'
+                                },
+                                grid: {
+                                    drawOnChartArea: false,
+                                    color: 'rgba(0, 123, 255, 0.1)'
+                                }
+                            };
+                        }
+
+                        charts.productTrend.update('active');
+                        console.log('✅ 产品销售趋势图表更新完成，数据集数量:', charts.productTrend.data.datasets.length);
+                    } catch (productTrendError) {
+                        console.error('❌ 更新产品销售趋势图表失败:', productTrendError);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ 更新趋势图表失败:', error);
+            }
+        }
+
+        // 显示错误消息
+        function showErrorMessage(message) {
+            // 检查是否已存在错误提示元素
+            let errorElement = document.getElementById('error-message');
+
+            // 如果不存在，创建一个新的
+            if (!errorElement) {
+                errorElement = document.createElement('div');
+                errorElement.id = 'error-message';
+                errorElement.className = 'alert alert-danger alert-dismissible fade show';
+                errorElement.style.position = 'fixed';
+                errorElement.style.top = '20px';
+                errorElement.style.right = '20px';
+                errorElement.style.zIndex = '9999';
+                errorElement.style.maxWidth = '400px';
+
+                // 添加关闭按钮
+                const closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.className = 'btn-close';
+                closeButton.setAttribute('data-bs-dismiss', 'alert');
+                closeButton.setAttribute('aria-label', '关闭');
+                errorElement.appendChild(closeButton);
+
+                document.body.appendChild(errorElement);
+            }
+
+            // 设置错误消息内容
+            errorElement.innerHTML = `
+                <strong>错误!</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+            `;
+
+            // 5秒后自动关闭
+            setTimeout(() => {
+                if (errorElement && errorElement.parentNode) {
+                    errorElement.parentNode.removeChild(errorElement);
+                }
+            }, 5000);
+        }
+    </script>

@@ -1,0 +1,105 @@
+<div id="user-behavior" class="section" style="display: none;">
+    <!-- 用户行为概览 -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-mouse-pointer fa-2x mb-2 text-primary"></i>
+                    <h4 id="total-clicks">0</h4>
+                    <p class="mb-0 text-muted">总点击数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-basket fa-2x mb-2 text-warning"></i>
+                    <h4 id="cart-additions">0</h4>
+                    <p class="mb-0 text-muted">加购次数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-heart fa-2x mb-2 text-danger"></i>
+                    <h4 id="wishlist-additions">0</h4>
+                    <p class="mb-0 text-muted">收藏次数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-share fa-2x mb-2 text-info"></i>
+                    <h4 id="shares">0</h4>
+                    <p class="mb-0 text-muted">分享次数</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表区域 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-pie me-2"></i>行为类型分布</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="behaviorChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-funnel-dollar me-2"></i>转化漏斗</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="conversionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户活跃度时间分布 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock me-2"></i>用户活跃度时间分布</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="hourlyActivityChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户路径分析 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-route me-2"></i>热门用户路径</h5>
+                </div>
+                <div class="card-body">
+                    <div id="user-paths-list">
+                        <!-- 动态加载用户路径数据 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <h5><i class="fas fa-users me-2"></i>用户细分</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userSegmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -38,7 +38,7 @@ app.use((req, res, next) => {
       const ms = Number((process.hrtime.bigint() - start) / 1000000n);
       const len = res.getHeader('Content-Length') || '';
       broadcastAdmin({ type: 'server_log', data: { method: req.method, url: req.originalUrl, status: res.statusCode, time: ms, length: len } });
-    } catch (_) {}
+    } catch (_) { }
   });
   next();
 });
@@ -99,7 +99,24 @@ let adminClients = new Set();
 let activeSessionId = null;
 const WS_PING_INTERVAL_MS = 30000;
 function setActiveSession(sid) { activeSessionId = sid; console.log(color('INFO', `[${ts()}] 当前会话已设置为: ${sid}，直接输入消息即可回复该会话。`)); }
-function replyActive(message) { if (!activeSessionId) { console.error(color('ERROR', `[${ts()}] 未设置当前会话。使用 'use <sessionId>' 或 'reply <sessionId> <message>'。`)); return; } const ws = sessions.get(activeSessionId); if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() })); console.log(color('REPLY', `[${ts()}] 已回复 会话:${activeSessionId} 消息:${message}`)); } catch (e) { console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`)); } } else { console.error(color('ERROR', `[${ts()}] 会话不可用或未连接: ${activeSessionId}`)); } }
+function replyActive(message) {
+  if (!activeSessionId) {
+    console.error(color('ERROR', `[${ts()}] 未设置当前会话。使用 'use <sessionId>' 或 'reply <sessionId> <message>'。`));
+    return;
+  }
+  const ws = sessions.get(activeSessionId);
+  if (ws && ws.readyState === 1) {
+    try {
+      ws.send(JSON.stringify({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() }));
+      console.log(color('REPLY', `[${ts()}] 已回复 会话:${activeSessionId} 消息:${message}`));
+      broadcastAdmin({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() });
+    } catch (e) {
+      console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`));
+    }
+  } else {
+    console.error(color('ERROR', `[${ts()}] 会话不可用或未连接: ${activeSessionId}`));
+  }
+}
 function setupWebSockets() {
   if (!WebSocketServer) return;
   wss = new WebSocketServer({ noServer: true });
@@ -116,7 +133,8 @@ function setupWebSockets() {
       if (!sessions.has(sid)) sessions.set(sid, ws);
       const cat = classify(msg.message || ''); csStats[cat]++;
       if (msg.type === 'init') {
-        console.log(color('INFO', `[${ts()}] 会话建立 WS 会话:${sid} IP:${ip} UA:${ua}`));
+        ws.user = msg.user || {};
+        console.log(color('INFO', `[${ts()}] 会话建立 WS 会话:${sid} 用户:${JSON.stringify(ws.user)}`));
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
         broadcastAdmin({ type: 'clients', clients: listClients() });
         return;
@@ -126,6 +144,7 @@ function setupWebSockets() {
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
         setActiveSession(sid);
         broadcastAdmin({ type: 'clients', clients: listClients() });
+        broadcastAdmin({ type: 'message', sessionId: sid, message: msg.message, user: ws.user, timestamp: ts(), category: cat });
         return;
       }
       console.log(color('INFO', `[${ts()}] WS消息 会话:${sid} 类型:${msg.type}`));
@@ -157,6 +176,19 @@ function setupWebSockets() {
     adminClients.add(ws);
     try { ws.send(JSON.stringify({ type: 'clients', clients: listClients() })); } catch (_) { }
     try { ws.send(JSON.stringify({ type: 'log_init', logs: logs.slice(-100) })); } catch (_) { }
+    ws.on('message', (data) => {
+      try {
+        const msg = JSON.parse(data);
+        if (msg.type === 'reply' && msg.sessionId && msg.message) {
+          const clientWs = sessions.get(msg.sessionId);
+          if (clientWs && clientWs.readyState === 1) {
+            clientWs.send(JSON.stringify({ type: 'reply', sessionId: msg.sessionId, message: msg.message, timestamp: ts() }));
+            console.log(color('REPLY', `[${ts()}] Admin回复 会话:${msg.sessionId} 消息:${msg.message}`));
+            broadcastAdmin({ type: 'reply', sessionId: msg.sessionId, message: msg.message, timestamp: ts() });
+          }
+        }
+      } catch (e) { console.error('Admin message error:', e); }
+    });
     ws.on('close', () => { adminClients.delete(ws); });
     ws.on('error', () => { adminClients.delete(ws); });
   });
@@ -273,7 +305,11 @@ function listClients() {
   const res = [];
   for (const [sid, ws] of sessions.entries()) {
     try {
-      res.push({ sessionId: sid });
+      res.push({
+        sessionId: sid,
+        user: ws.user || { username: 'Guest' },
+        connectedAt: ws.connectedAt || null
+      });
     } catch (_) { }
   }
   return res;
