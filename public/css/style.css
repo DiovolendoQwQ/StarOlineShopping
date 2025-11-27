@@ -185,6 +185,11 @@ header .top .right .gouwuche:hover {
   background: #f8f8f8;
   transition: all 0.3s ease;
 }
+ .banner_x .wdgwc {
+    font-size: 1.5rem; /* 根据需要调整 */
+    line-height: 1.2;
+  }
+
 .banner_x .search .submit .sousuo {
   letter-spacing: 1px;
   text-align: center;
@@ -684,6 +689,7 @@ header .top .right .gouwuche:hover {
   border-radius: 4px;
 }
 .peijian .main .content .remen .tu a img {
+
   margin: 10px 42px 20px 42px;
 }
 .peijian .main .content .remen .miaoshu {
