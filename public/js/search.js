@@ -13,11 +13,22 @@ class SearchManager {
     }
 
     init() {
-        // 等待DOM加载完成
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.setupSearch());
-        } else {
+        // Wait for components to be loaded if they are being loaded dynamically
+        if (document.querySelector('.search form')) {
             this.setupSearch();
+        } else {
+            document.addEventListener('components:loaded', () => this.setupSearch());
+            // Fallback if components are already loaded or not used
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (!this.searchForm) this.setupSearch();
+                });
+            } else {
+                // setTimeout to allow async renders to finish if any
+                setTimeout(() => {
+                    if (!this.searchForm) this.setupSearch();
+                }, 100);
+            }
         }
     }
 
@@ -26,7 +37,7 @@ class SearchManager {
         this.searchForm = document.querySelector('.search form');
         this.searchInput = document.querySelector('.search .shuru');
         this.searchButton = document.querySelector('.search .sousuo');
-        
+
         if (!this.searchForm || !this.searchInput || !this.searchButton) {
             console.warn('搜索元素未找到');
             return;
@@ -34,7 +45,7 @@ class SearchManager {
 
         // 创建搜索结果容器
         this.createResultsContainer();
-        
+
         // 绑定事件
         this.bindEvents();
     }
@@ -58,7 +69,7 @@ class SearchManager {
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: none;
         `;
-        
+
         // 创建搜索建议容器
         this.suggestionsContainer = document.createElement('div');
         this.suggestionsContainer.className = 'search-suggestions';
@@ -77,7 +88,7 @@ class SearchManager {
             display: none;
             margin-top: 1px;
         `;
-        
+
         // 创建热门搜索容器
         this.hotSearchContainer = document.createElement('div');
         this.hotSearchContainer.className = 'hot-searches';
@@ -96,7 +107,7 @@ class SearchManager {
             display: none;
             margin-top: 1px;
         `;
-        
+
         // 将容器添加到搜索表单的父元素
         const searchContainer = this.searchForm.parentElement;
         searchContainer.style.position = 'relative';
@@ -121,12 +132,12 @@ class SearchManager {
         // 输入时实时搜索和建议
         this.searchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim();
-            
+
             // 清除之前的定时器
             if (this.searchTimeout) {
                 clearTimeout(this.searchTimeout);
             }
-            
+
             if (query.length >= 2) {
                 // 延迟搜索，避免频繁请求
                 this.searchTimeout = setTimeout(() => {
@@ -159,7 +170,7 @@ class SearchManager {
 
         // 点击外部隐藏结果
         document.addEventListener('click', (e) => {
-            if (!this.searchForm.contains(e.target) && 
+            if (!this.searchForm.contains(e.target) &&
                 !this.resultsContainer.contains(e.target) &&
                 !this.suggestionsContainer.contains(e.target) &&
                 !this.hotSearchContainer.contains(e.target)) {
@@ -175,7 +186,7 @@ class SearchManager {
 
     async performSearch(query = null) {
         const searchQuery = query || this.searchInput.value.trim();
-        
+
         if (!searchQuery) {
             this.hideResults();
             return;
@@ -184,17 +195,17 @@ class SearchManager {
         try {
             // 显示加载状态
             this.showLoading();
-            
+
             // 调用搜索API
             const response = await fetch(`/products/all?keyword=${encodeURIComponent(searchQuery)}&format=json`);
-            
+
             if (!response.ok) {
                 throw new Error('搜索请求失败');
             }
-            
+
             const products = await response.json();
             this.displayResults(products, searchQuery);
-            
+
         } catch (error) {
             console.error('搜索失败:', error);
             this.showError('搜索失败，请稍后重试');
@@ -252,7 +263,7 @@ class SearchManager {
                     </div>
                 </div>
             `).join('');
-            
+
             this.resultsContainer.innerHTML = `
                 <div class="search-results-header" style="padding: 10px 12px; background: #f8f8f8; border-bottom: 1px solid #e0e0e0; font-size: 12px; color: #666;">
                     找到 ${products.length} 个相关商品
@@ -273,7 +284,7 @@ class SearchManager {
                 ` : ''}
             `;
         }
-        
+
         this.resultsContainer.style.display = 'block';
     }
 
@@ -310,7 +321,7 @@ class SearchManager {
         try {
             const response = await fetch(`/products/api/suggestions?q=${encodeURIComponent(query)}&limit=5`);
             const suggestions = await response.json();
-            
+
             if (suggestions.length > 0) {
                 this.displaySuggestions(suggestions, query);
             } else {
@@ -327,7 +338,7 @@ class SearchManager {
         try {
             const response = await fetch('/products/api/hot-searches?limit=8');
             const hotSearches = await response.json();
-            
+
             if (hotSearches.length > 0) {
                 this.displayHotSearches(hotSearches);
             }
@@ -353,12 +364,12 @@ class SearchManager {
                 <span style="color: #333; font-size: 14px; line-height: 1.4;">${this.highlightQuery(this.escapeHtml(suggestion), query)}</span>
             </div>
         `).join('');
-        
+
         this.suggestionsContainer.innerHTML = suggestionsHtml;
         this.suggestionsContainer.style.display = 'block';
         this.hideResults();
         this.hideHotSearches();
-        
+
         // 绑定点击事件
         this.suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -395,12 +406,12 @@ class SearchManager {
                 </div>
             </div>
         `;
-        
+
         this.hotSearchContainer.innerHTML = hotSearchesHtml;
         this.hotSearchContainer.style.display = 'block';
         this.hideResults();
         this.hideSuggestions();
-        
+
         // 绑定点击事件
         this.hotSearchContainer.querySelectorAll('.hot-search-tag').forEach(tag => {
             tag.addEventListener('click', () => {
@@ -416,7 +427,7 @@ class SearchManager {
         // 获取当前可见的导航项
         let items = [];
         let containerType = '';
-        
+
         if (this.suggestionsContainer.style.display === 'block') {
             items = this.suggestionsContainer.querySelectorAll('.suggestion-item');
             containerType = 'suggestions';
@@ -427,7 +438,7 @@ class SearchManager {
             items = this.hotSearchContainer.querySelectorAll('.hot-search-tag');
             containerType = 'hotSearches';
         }
-        
+
         if (items.length === 0) return;
 
         let currentIndex = this.currentSuggestionIndex;
@@ -461,9 +472,9 @@ class SearchManager {
         items.forEach(item => {
             item.style.backgroundColor = containerType === 'hotSearches' ? '#f8f9fa' : 'white';
         });
-        
+
         this.currentSuggestionIndex = index;
-        
+
         // 设置新的选中状态
         if (index >= 0 && items[index]) {
             items[index].style.backgroundColor = '#e3f2fd';
@@ -473,7 +484,7 @@ class SearchManager {
 
     handleNavigationItemSelect(item, containerType) {
         let searchTerm = '';
-        
+
         switch (containerType) {
             case 'suggestions':
                 searchTerm = item.querySelector('span').textContent.replace(/\s+/g, ' ').trim();
@@ -485,7 +496,7 @@ class SearchManager {
                 searchTerm = item.textContent.trim();
                 break;
         }
-        
+
         if (searchTerm) {
             this.searchInput.value = searchTerm;
             this.hideAllContainers();

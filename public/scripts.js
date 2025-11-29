@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 添加按钮事件监听器的函数
 function addButtonEventListeners() {
+  if (window.__shop_buttons_bound__) return;
   // 为所有"立即购买"按钮添加事件
   const buyButtons = document.querySelectorAll('.buy-now-btn');
   buyButtons.forEach(button => {
@@ -51,6 +52,7 @@ function addButtonEventListeners() {
       }
     });
   });
+  window.__shop_buttons_bound__ = true;
 }
 
 // 添加商品到购物车的函数
@@ -68,17 +70,17 @@ async function addToCart(productId, quantity = 1) {
     });
 
     if (response.ok) {
-      alert('商品已成功添加到购物车！');
+      if (window.showCartNotification) window.showCartNotification(); else alert('商品已成功添加到购物车！');
     } else if (response.status === 401) {
-      alert('请先登录后再添加商品到购物车');
+      if (window.showErrorNotification) window.showErrorNotification('请先登录后再添加商品到购物车'); else alert('请先登录后再添加商品到购物车');
       window.location.href = '/login.html';
     } else {
       const error = await response.text();
-      alert('添加到购物车失败：' + error);
+      if (window.showErrorNotification) window.showErrorNotification('添加到购物车失败：' + error); else alert('添加到购物车失败：' + error);
     }
   } catch (error) {
     console.error('添加到购物车时发生错误:', error);
-  alert('网络错误，请稍后重试');
+  if (window.showErrorNotification) window.showErrorNotification('网络错误，请稍后重试'); else alert('网络错误，请稍后重试');
   }
 }
 

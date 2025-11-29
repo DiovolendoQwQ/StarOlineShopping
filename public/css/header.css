@@ -1,0 +1,164 @@
+/* banner_x (Header Main) */
+.banner_x {
+  width: 1226px;
+  height: 100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Left Side: Logo & Ad */
+.banner_x .center-content {
+  float: left;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.banner_x .logo {
+  background: url('../image/logo_top.jpg.png') no-repeat center center;
+  width: 200px;
+  height: 100px;
+  background-size: contain;
+  display: block;
+  margin-right: 20px;
+}
+
+.banner_x .ad_top {
+  background: url('../image/ad.gif') no-repeat center center; /* Assuming ad.gif based on typical patterns, or keep empty if just placeholder */
+  width: 180px;
+  height: 100px;
+  display: block;
+}
+
+/* Right Side: Search & Cart & User */
+.banner_x .search-cart-container {
+  float: right;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Search Box */
+.banner_x .search {
+  width: 296px;
+  height: 50px;
+}
+
+.banner_x .search form {
+  width: 296px;
+  height: 50px;
+  position: relative;
+}
+
+.banner_x .search .text {
+  width: 246px;
+  height: 50px;
+  float: left;
+}
+
+.banner_x .search .text .shuru {
+  width: 246px;
+  height: 50px;
+  border: 1px solid #e0e0e0;
+  border-right: none;
+  padding: 0 10px;
+  outline: none;
+  font-size: 14px;
+  line-height: 48px;
+  box-sizing: border-box;
+}
+
+.banner_x .search .submit {
+  width: 50px;
+  height: 50px;
+  float: left;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.banner_x .search .submit:hover {
+  background: #ff6700;
+  border-color: #ff6700;
+}
+
+.banner_x .search .submit:hover .sousuo {
+  color: #fff;
+}
+
+.banner_x .search .submit .sousuo {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #616161;
+  cursor: pointer;
+}
+
+/* User Buttons */
+.banner_x .user-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.banner_x .icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #757575;
+  font-size: 12px;
+  padding: 0 5px;
+  transition: color 0.2s;
+}
+
+.banner_x .icon-button:hover {
+  color: #ff6700;
+}
+
+.banner_x .icon-button .icon {
+  margin-bottom: 2px;
+}
+
+/* Cart Button */
+.banner_x .cart-button {
+  margin-left: 10px;
+}
+
+.banner_x .cart-button .cart-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 40px;
+  background: #ff6700;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.banner_x .cart-button .cart-link:hover {
+  background: #f25807;
+}
+
+.banner_x .cart-button .cart-icon {
+  margin-right: 5px;
+  color: #fff;
+}
+
+/* Clear float */
+.banner_x::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Search results (Keep existing styles) */
+.search-results { position: absolute; top: 50px; left: 0; width: 246px; background: #fff; border: 1px solid #ff6700; border-top: none; z-index: 100; display: none; }
+.search-suggestions, .hot-searches { position: absolute; top: 52px; left: 0; width: 246px; background: #fff; border: 1px solid #ff6700; z-index: 101; display: none; }
+.hot-searches { z-index: 102; }
