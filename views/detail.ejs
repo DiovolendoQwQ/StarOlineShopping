@@ -7,554 +7,14 @@
     <%= product.name %> - StarShopping
   </title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      font-size: 14px;
-      color: #333;
-      line-height: 1.6;
-      background: #f8f9fa;
-    }
-
-    header,
-    footer {
-      padding: 10px 0;
-      background: #fff;
-      font-size: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .w {
-      width: 1200px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .top ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-    }
-
-    .top ul li {
-      margin: 0 8px;
-    }
-
-    .top ul li a {
-      text-decoration: none;
-      color: #333;
-      transition: color 0.3s ease;
-    }
-
-    .top ul li a:hover {
-      color: #f60;
-    }
-
-
-
-    /* 返回按钮（置于 logo 下方） */
-    .back-button {
-      position: static;
-      background: #f60;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
-      transition: all 0.3s ease;
-      margin-top: 8px;
-      display: inline-block;
-    }
-
-    .back-button:hover {
-      background: #e65c00;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.4);
-    }
-
-    /* 购物车动画和弹窗 */
-    .cart-notification {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      padding: 40px;
-      text-align: center;
-      z-index: 10000;
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-width: 400px;
-      width: 90%;
-    }
-
-    .cart-notification.show {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .cart-notification .icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      color: #fff;
-      animation: bounce 0.6s ease;
-    }
-
-    @keyframes bounce {
-
-      0%,
-      20%,
-      53%,
-      80%,
-      100% {
-        transform: translate3d(0, 0, 0);
-      }
-
-      40%,
-      43% {
-        transform: translate3d(0, -20px, 0);
-      }
-
-      70% {
-        transform: translate3d(0, -10px, 0);
-      }
-
-      90% {
-        transform: translate3d(0, -4px, 0);
-      }
-    }
-
-    .cart-notification h3 {
-      margin: 0 0 10px;
-      font-size: 24px;
-      color: #333;
-      font-weight: 600;
-    }
-
-    .cart-notification p {
-      margin: 0 0 30px;
-      color: #666;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .cart-notification .buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-    }
-
-    .cart-notification button {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      min-width: 120px;
-    }
-
-    .cart-notification .btn-primary {
-      background: #f60;
-      color: #fff;
-    }
-
-    .cart-notification .btn-primary:hover {
-      background: #e65c00;
-      transform: translateY(-2px);
-    }
-
-    .cart-notification .btn-secondary {
-      background: #f8f9fa;
-      color: #666;
-      border: 1px solid #ddd;
-    }
-
-    .cart-notification .btn-secondary:hover {
-      background: #e9ecef;
-      color: #333;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* 加入购物车按钮动画 */
-    .add-to-cart-btn {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .add-to-cart-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .add-to-cart-btn.clicked::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .loading-spinner {
-      display: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #ffffff;
-      border-top: 2px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .add-to-cart-btn.loading::after {
-      content: '';
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #ffffff;
-      border-top: 2px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 8px;
-    }
-
-    .add-to-cart-btn.loading {
-      pointer-events: none;
-    }
-
-    /* 产品详情区 */
-    .product-container {
-      width: 1200px;
-      margin: 80px auto 30px;
-      display: flex;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-      min-height: 600px;
-    }
-
-    .picture-container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-      background: #fafafa;
-    }
-
-    .picture-container img {
-      max-width: 100%;
-      max-height: 500px;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      transition: transform 0.3s ease;
-    }
-
-    .picture-container img:hover {
-      transform: scale(1.05);
-    }
-
-    .detail-container {
-      flex: 1;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .detail-container h1 {
-      font-size: 28px;
-      margin-bottom: 16px;
-      font-weight: 600;
-      color: #222;
-      line-height: 1.3;
-    }
-
-    .detail-container .description {
-      margin-bottom: 24px;
-      font-size: 15px;
-      color: #666;
-      line-height: 1.6;
-      padding: 16px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      border-left: 4px solid #f60;
-    }
-
-    .detail-container .price {
-      font-size: 32px;
-      color: #f60;
-      margin-bottom: 32px;
-      font-weight: 700;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .detail-container .price::before {
-      content: '¥';
-      font-size: 20px;
-      margin-right: 4px;
-    }
-
-    .detail-container .actions {
-      display: flex;
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .detail-container .actions input {
-      padding: 14px 28px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      min-width: 140px;
-    }
-
-    .detail-container .actions input:first-child {
-      background: #fff;
-      color: #f60;
-      border: 2px solid #f60;
-    }
-
-    .detail-container .actions input:first-child:hover {
-      background: #f60;
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.3);
-    }
-
-    .detail-container .actions input:last-child {
-      background: #f60;
-      color: #fff;
-      border: 2px solid #f60;
-    }
-
-    .detail-container .actions input:last-child:hover {
-      background: #e65c00;
-      border-color: #e65c00;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(230, 92, 0, 0.4);
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 30px 0;
-      font-size: 12px;
-      color: #999;
-      text-align: center;
-      line-height: 1.8;
-      background: #fff;
-      border-top: 1px solid #eee;
-    }
-
-    footer a {
-      color: #999;
-      text-decoration: none;
-      margin: 0 5px;
-      transition: color 0.3s ease;
-    }
-
-    footer a:hover {
-      color: #f60;
-    }
-
-    /* 响应式设计 */
-    @media (max-width: 1240px) {
-
-      .w,
-      .product-container {
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .product-container {
-        flex-direction: column;
-        margin: 20px auto;
-      }
-
-      .picture-container,
-      .detail-container {
-        padding: 20px;
-      }
-
-      .detail-container h1 {
-        font-size: 24px;
-      }
-
-      .detail-container .price {
-        font-size: 28px;
-      }
-
-      .detail-container .actions {
-        flex-direction: column;
-      }
-
-      .nav ul {
-        flex-wrap: wrap;
-      }
-
-      .nav ul li {
-        margin: 5px 10px;
-      }
-    }
-
-    .tb-card{background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
-    .product-container{gap:24px}
-    .gallery{width:460px;display:flex;gap:12px;flex-direction:column}
-    .ship-info{background:#fff;border:1px solid #eee;border-radius:8px;padding:12px;color:#4a4a4a;font-size:13px;line-height:1.8}
-    .ship-info .row{display:flex;flex-wrap:wrap;gap:8px}
-    .ship-info .row span{white-space:nowrap}
-    .gallery .thumbs{width:68px;display:flex;flex-direction:column;gap:8px}
-    .gallery .thumbs img{width:68px;height:68px;object-fit:cover;border:1px solid #eee;border-radius:6px;cursor:pointer}
-    .gallery .main-pic{background:#fff;border:1px solid #eee;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:16px;width:420px}
-    .gallery .main-pic{position:relative}
-    .gallery .main-pic img{max-width:100%;max-height:420px}
-
-    .zoom-lens{position:absolute;border:2px solid rgba(255,102,0,.6);width:200px;height:200px;background:rgba(255,255,255,.35);border-radius:8px;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .12s ease;will-change:transform}
-    .zoom-lens.show{opacity:1;visibility:visible}
-    .zoom-overlay{position:fixed;width:560px;height:560px;background:#fff;border:1px solid #eee;border-radius:8px;background-repeat:no-repeat;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .12s ease;will-change:background-position;box-shadow:0 12px 32px rgba(0,0,0,.18);z-index:10000}
-    .zoom-overlay.show{opacity:1;visibility:visible}
-
-    .detail-container{padding:20px 40px}
-    .tb-pricebox{background:#fffaf2;border:1px solid #ffe8cc;border-radius:8px;padding:16px;margin:12px 0}
-    .tb-price{font-size:28px;color:#ff5000;font-weight:700}
-    .tb-stock{font-size:12px;color:#666;margin-top:8px}
-
-    .tb-sku-row{display:flex;align-items:center;margin:12px 0}
-    .tb-sku-title{width:60px;color:#999}
-    .tb-sku-options{display:flex;gap:8px}
-    .tb-sku-option{padding:8px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer}
-    .tb-sku-option.selected{border-color:#ff6a00;color:#ff6a00;background:#fff2e8}
-
-    .tb-quantity{display:flex;align-items:center;gap:8px}
-    .qty-btn{width:28px;height:28px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer}
-    #buyQty{width:50px;height:28px;text-align:center;border:1px solid #ddd;border-radius:4px}
-
-    .tb-actions{display:flex;gap:12px;margin-top:16px}
-    .buy-btn{padding:12px 24px;background:#ff6a00;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(255,106,0,.3)}
-    .buy-btn:hover{background:#ff5000}
-    .cart-btn{padding:12px 24px;background:#ffecec;color:#ff6a00;border:1px solid #ffb199;border-radius:6px;font-size:14px;cursor:pointer}
-    .cart-btn:hover{background:#ffd7d7}
-
-    .tb-service{display:flex;gap:16px;font-size:12px;color:#666;margin-top:10px}
-    .extra-info{margin-top:16px;background:#fff;border:1px solid #eee;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px}
-    .extra-info .info-row{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:#444}
-    .extra-info .info-title{min-width:48px;color:#999}
-    .extra-info .info-content{flex:1}
-    .image-tabs{width:1200px;margin:20px auto;background:#fff;border:1px solid #eee;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
-    .image-tabs .tabs-nav{display:flex;gap:24px;padding:0 16px}
-    .image-tabs .tab{padding:16px 0;cursor:pointer;color:#333;position:relative;font-size:16px}
-    .image-tabs .tab.active{color:#ff6700;font-weight:700}
-    .image-tabs .tab.active::after{content:'';position:absolute;left:0;bottom:-1px;width:100%;height:2px;background:#ff6700;border-radius:2px}
-    .image-tabs .tab-content{border-top:1px solid #eee;padding:16px}
-    .image-tabs .tab-panel{display:none}
-    .image-tabs .tab-panel.active{display:block}
-    .spec-table{width:100%;border:1px solid #eee;border-radius:8px;overflow:hidden;border-spacing:0;border-collapse:separate;background:#fff}
-    .spec-table td{padding:12px 16px;border-top:1px solid #eee;font-size:14px;color:#333}
-    .spec-table tr:first-child td{border-top:none}
-    .spec-table td.title{width:120px;color:#666;background:#f7f9fc}
-    .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:#f7f9fc;border-radius:8px;padding:16px;margin-bottom:12px}
-    .spec-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:12px;text-align:center}
-    .spec-card .t{font-size:16px;font-weight:700;color:#333;margin-bottom:6px}
-    .spec-card .s{font-size:12px;color:#666}
-    .reviews-section{display:flex;flex-direction:column;gap:16px}
-    .review-card{display:flex;gap:12px;padding:16px;border:1px solid #eee;border-radius:10px;background:#fff}
-    .review-card:nth-child(even){background:#f7f9fc}
-    .review-avatar{width:40px;height:40px;flex:0 0 40px;border-radius:50%;overflow:hidden;background:#f0f0f0}
-    .review-avatar img{width:100%;height:100%;object-fit:cover}
-    .review-body{flex:1;display:flex;flex-direction:column;gap:8px}
-    .review-header{display:flex;align-items:center;gap:8px}
-    .review-name{font-weight:700;color:#333}
-    .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 6px;border-radius:12px;font-size:12px}
-    .badge.rating{background:#fff0e6;color:#ff6a00}
-    .review-meta{display:flex;flex-wrap:wrap;gap:12px;color:#999;font-size:12px}
-    .review-content{color:#444;font-size:14px;line-height:1.8}
-    .review-images{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .review-images img{width:100%;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-    @media (max-width:768px){.review-images{grid-template-columns:repeat(3,1fr)}}
-    .product-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px;align-items:stretch}
-    .detail-image{width:100%;aspect-ratio:4/3;border-radius:12px;border:1px solid #eee;box-shadow:0 6px 18px rgba(0,0,0,.08);object-fit:cover;background:#fafafa;transition:transform .2s ease,box-shadow .2s ease}
-    .detail-image:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.12)}
-    @media (max-width:768px){.product-images{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
-    .spec-grid-table{display:grid;border:1px solid #eee;border-radius:8px;overflow:hidden;background:#fff}
-    .spec-grid-table .row{display:grid;grid-template-columns:160px 1fr}
-    .spec-grid-table .cell{padding:12px 16px;border-top:1px solid #eee;font-size:14px;color:#333}
-    .spec-grid-table .row:nth-child(even){background:#f7f9fc}
-    .spec-grid-table .row:first-child .cell{border-top:none;font-weight:700;background:#f7f9fc}
-    .spec-grid-table .cell.title{color:#666}
-    @media (max-width:768px){.spec-grid-table .row{grid-template-columns:120px 1fr}}
-  </style>
+  <link rel="stylesheet" type="text/css" href="/css/detail.css">
 </head>
 
 <body>
   <div class="banner_x">
     <div class="center-content">
-      <div class="logo-stack" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-right:12px;">
+      <div class="logo-stack"
+        style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-right:12px;">
         <a href="/homepage">
           <div class="logo"></div>
         </a>
@@ -568,18 +28,28 @@
     <div class="search-cart-container">
       <div class="user-buttons">
         <a href="javascript:void(0)" id="logout-link" class="icon-button" title="登出">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z"></path></svg>
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor"
+              d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z">
+            </path>
+          </svg>
           <span class="label">登出</span>
         </a>
         <a href="/profile.html" class="icon-button" title="个人中心">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z"></path></svg>
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor"
+              d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z">
+            </path>
+          </svg>
           <span class="label">个人中心</span>
         </a>
       </div>
       <div class="cart-button">
         <a href="/cart" class="cart-link">
           <svg class="cart-icon" viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor" d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+            <path fill="currentColor"
+              d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+            </path>
           </svg>
           <span class="cart-text">购物车</span>
         </a>
@@ -594,15 +64,18 @@
           </div>
           <div class="clear"></div>
         </form>
-        <div class="search-results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-top: none; max-height: 400px; overflow-y: auto; z-index: 10000; margin-top: 1px; box-shadow: rgba(0,0,0,0.1) 0 4px 6px; display: none;"></div>
-        <div class="search-suggestions" style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; z-index: 10001; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;"></div>
-        <div class="hot-searches" style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; z-index: 10002; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;"></div>
+        <div class="search-results"
+          style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-top: none; max-height: 400px; overflow-y: auto; z-index: 10000; margin-top: 1px; box-shadow: rgba(0,0,0,0.1) 0 4px 6px; display: none;">
+        </div>
+        <div class="search-suggestions"
+          style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; z-index: 10001; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;">
+        </div>
+        <div class="hot-searches"
+          style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; z-index: 10002; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;">
+        </div>
       </div>
     </div>
   </div>
-
-  
-  
 
 
 
@@ -626,23 +99,31 @@
         <!-- 数据库字段: product.image -->
         <% if (product && product.image) { %>
           <img id="mainImage" src="<%= product.image %>" alt="<%= product.name || '商品' %>">
-        <% } else { %>
-          <img id="mainImage" src="/image/default.png" alt="<%= product && product.name || '商品' %>">
-        <% } %>
+          <% } else { %>
+            <img id="mainImage" src="/image/default.png" alt="<%= product && product.name || '商品' %>">
+            <% } %>
       </div>
-      
+
     </div>
     <div class="detail-container">
       <!-- 数据库字段: product.name -->
-      <h1 id="product-title"><%= product && product.name ? product.name : '未命名商品' %></h1>
+      <h1 id="product-title">
+        <%= product && product.name ? product.name : '未命名商品' %>
+      </h1>
       <!-- 数据库字段: product.description -->
-      <div class="description" id="product-description"><%= (product && product.description) ? product.description : '' %></div>
+      <div class="description" id="product-description">
+        <%= (product && product.description) ? product.description : '' %>
+      </div>
       <div class="tb-pricebox">
         <!-- 数据库字段: product.price -->
-        <div class="tb-price" id="product-price">¥<%= (product && typeof product.price !== 'undefined') ? product.price : '' %></div>
-        <% if (typeof product.stock !== 'undefined') { %>
-          <div class="tb-stock"><%= product.stock > 0 ? '现货' : '缺货' %> | 库存：<%= product.stock %></div>
-        <% } %>
+        <div class="tb-price" id="product-price">¥<%= (product && typeof product.price !=='undefined' ) ? product.price
+            : '' %>
+        </div>
+        <% if (typeof product.stock !=='undefined' ) { %>
+          <div class="tb-stock">
+            <%= product.stock> 0 ? '现货' : '缺货' %> | 库存：<%= product.stock %>
+          </div>
+          <% } %>
       </div>
       <div class="tb-sku">
         <div class="tb-sku-row">
@@ -654,22 +135,22 @@
         <!-- 可选动态块: product.shipping_html -->
         <% if (product && product.shipping_html) { %>
           <div class="ship-info" id="shipping-info"><%- product.shipping_html %></div>
-        <% } %>
-        <!-- 可选动态块: product.extra_info_html -->
-        <% if (product && product.extra_info_html) { %>
-          <div class="extra-info" id="extra-info"><%- product.extra_info_html %></div>
-        <% } %>
-        <div class="tb-sku-row">
-          <div class="tb-sku-title">数量</div>
-          <div class="tb-quantity">
-            <button class="qty-btn minus" type="button">-</button>
-            <input type="number" id="buyQty" min="1" value="1">
-            <button class="qty-btn plus" type="button">+</button>
-            <% if (typeof product.stock !== 'undefined') { %>
-              <span class="tb-qty-stock">库存 <%= product.stock %> 件</span>
-            <% } %>
-          </div>
-        </div>
+          <% } %>
+            <!-- 可选动态块: product.extra_info_html -->
+            <% if (product && product.extra_info_html) { %>
+              <div class="extra-info" id="extra-info"><%- product.extra_info_html %></div>
+              <% } %>
+                <div class="tb-sku-row">
+                  <div class="tb-sku-title">数量</div>
+                  <div class="tb-quantity">
+                    <button class="qty-btn minus" type="button">-</button>
+                    <input type="number" id="buyQty" min="1" value="1">
+                    <button class="qty-btn plus" type="button">+</button>
+                    <% if (typeof product.stock !=='undefined' ) { %>
+                      <span class="tb-qty-stock">库存 <%= product.stock %> 件</span>
+                      <% } %>
+                  </div>
+                </div>
       </div>
       <div class="tb-actions">
         <button class="buy-btn" data-product-id="<%= product.id %>">立即购买</button>
@@ -702,27 +183,36 @@
                 </div>
                 <div class="review-body">
                   <div class="review-header">
-                    <span class="review-name"><%= rv.author || '匿名用户' %></span>
-                    <% if (rv.rating) { %><span class="badge rating">★<%= Array(rv.rating).fill('').join('★') %></span><% } %>
+                    <span class="review-name">
+                      <%= rv.author || '匿名用户' %>
+                    </span>
+                    <% if (rv.rating) { %><span class="badge rating">★<%= Array(rv.rating).fill('').join('★') %></span>
+                      <% } %>
                   </div>
                   <div class="review-meta">
-                    <% if (rv.created_at) { %><span><%= rv.created_at %></span><% } %>
-                    <% if (rv.sku_info) { %><span>已购：<%= rv.sku_info %></span><% } %>
+                    <% if (rv.created_at) { %><span>
+                        <%= rv.created_at %>
+                      </span>
+                      <% } %>
+                        <% if (rv.sku_info) { %><span>已购：<%= rv.sku_info %></span>
+                          <% } %>
                   </div>
-                  <div class="review-content"><%= rv.content || '' %></div>
+                  <div class="review-content">
+                    <%= rv.content || '' %>
+                  </div>
                   <% if (rv.images && rv.images.length) { %>
                     <div class="review-images">
                       <% rv.images.forEach(function(img){ %>
                         <img src="<%= img %>">
-                      <% }) %>
+                        <% }) %>
                     </div>
-                  <% } %>
+                    <% } %>
                 </div>
               </div>
-            <% }) %>
-          <% } else { %>
-            <div class="reviews-empty">暂无评价</div>
-          <% } %>
+              <% }) %>
+                <% } else { %>
+                  <div class="reviews-empty">暂无评价</div>
+                  <% } %>
         </div>
       </div>
       <div class="tab-panel">
@@ -732,346 +222,69 @@
             <tbody>
               <% Object.keys(product.specs).forEach(function(k){ %>
                 <tr>
-                  <td class="title"><%= k %></td>
-                  <td colspan="3"><%= product.specs[k] %></td>
+                  <td class="title">
+                    <%= k %>
+                  </td>
+                  <td colspan="3">
+                    <%= product.specs[k] %>
+                  </td>
                 </tr>
-              <% }) %>
+                <% }) %>
             </tbody>
           </table>
-        <% } else if (product && product.specs_json) { %>
-          <pre class="spec-json" id="product-specs-json"><%= product.specs_json %></pre>
-        <% } else { %>
-          <div class="spec-empty">暂无参数信息</div>
-        <% } %>
+          <% } else if (product && product.specs_json) { %>
+            <pre class="spec-json" id="product-specs-json"><%= product.specs_json %></pre>
+            <% } else { %>
+              <div class="spec-empty">暂无参数信息</div>
+              <% } %>
       </div>
       <div class="tab-panel">
         <!-- 数据库字段: product.detail_html -->
         <% if (product && product.detail_images && product.detail_images.length) { %>
           <div class="product-images">
             <% product.detail_images.forEach(function(img, idx){ %>
-              <img src="<%= img %>" alt="<%= (product.name || '商品') %> 详情图 <%= idx + 1 %>" class="detail-image" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/image/default.png'">
-            <% }) %>
+              <img src="<%= img %>" alt="<%= (product.name || '商品') %> 详情图 <%= idx + 1 %>" class="detail-image"
+                loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/image/default.png'">
+              <% }) %>
           </div>
-        <% } %>
-        <% if (product && product.detail_html) { %>
-          <div id="product-detail-html"><%- product.detail_html %></div>
-        <% } else if (!(product && product.detail_images && product.detail_images.length)) { %>
-          <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">暂无图文详情</div>
-        <% } %>
-        <!-- 可选动态块: product.price_notice_html -->
-        <% if (product && product.price_notice_html) { %>
-          <div class="price-notice" id="price-notice"><%- product.price_notice_html %></div>
-        <% } %>
+          <% } %>
+            <% if (product && product.detail_html) { %>
+              <div id="product-detail-html"><%- product.detail_html %></div>
+              <% } else if (!(product && product.detail_images && product.detail_images.length)) { %>
+                <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">暂无图文详情
+                </div>
+                <% } %>
+                  <!-- 可选动态块: product.price_notice_html -->
+                  <% if (product && product.price_notice_html) { %>
+                    <div class="price-notice" id="price-notice"><%- product.price_notice_html %></div>
+                    <% } %>
       </div>
       <div class="tab-panel">
         <!-- 数据库字段: relatedProducts[] (后端传入) -->
-        <% if (typeof relatedProducts !== 'undefined' && relatedProducts && relatedProducts.length) { %>
+        <% if (typeof relatedProducts !=='undefined' && relatedProducts && relatedProducts.length) { %>
           <div id="related-products" style="display:flex;gap:12px;flex-wrap:wrap">
             <% relatedProducts.forEach(function(rp){ %>
-              <a href="/product/<%= rp.id %>" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333">
+              <a href="/product/<%= rp.id %>"
+                style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333">
                 <% if (rp.image) { %>
                   <img src="<%= rp.image %>" style="width:48px;height:48px;border-radius:6px">
-                <% } %>
-                <span><%= rp.name || '商品' %></span>
+                  <% } %>
+                    <span>
+                      <%= rp.name || '商品' %>
+                    </span>
               </a>
-            <% }) %>
+              <% }) %>
           </div>
-        <% } else { %>
-          <div class="related-empty" style="display:flex;gap:12px;flex-wrap:wrap;color:#6c7a89">暂无推荐</div>
-        <% } %>
+          <% } else { %>
+            <div class="related-empty" style="display:flex;gap:12px;flex-wrap:wrap;color:#6c7a89">暂无推荐</div>
+            <% } %>
       </div>
     </div>
   </div>
 
   <!-- footer -->
 
-  <script>
-    // 显示购物车通知弹窗
-    function showCartNotification() {
-      const overlay = document.getElementById('overlay');
-      const notification = document.getElementById('cartNotification');
-
-      overlay.classList.add('show');
-      notification.classList.add('show');
-
-      // 3秒后自动关闭
-      setTimeout(() => {
-        closeNotification();
-      }, 3000);
-    }
-
-    // 关闭通知弹窗
-    function closeNotification() {
-      const overlay = document.getElementById('overlay');
-      const notification = document.getElementById('cartNotification');
-
-      overlay.classList.remove('show');
-      notification.classList.remove('show');
-    }
-
-    // 显示错误通知
-    function showErrorNotification(message) {
-      const notification = document.getElementById('cartNotification');
-      const icon = notification.querySelector('.icon');
-      const title = notification.querySelector('h3');
-      const text = notification.querySelector('p');
-
-      // 修改为错误样式
-      icon.innerHTML = '✕';
-      icon.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-      title.textContent = '添加失败';
-      text.textContent = message;
-
-      showCartNotification();
-
-      // 恢复原样式
-      setTimeout(() => {
-        icon.innerHTML = '✓';
-        icon.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-        title.textContent = '添加成功！';
-        text.textContent = '商品已成功添加到购物车';
-      }, 3000);
-    }
-
-    // 添加商品到购物车的函数
-    async function addToCart(productId, quantity = 1) {
-      const button = document.querySelector('.add-to-cart-btn');
-      const spinner = document.querySelector('.loading-spinner');
-
-      try {
-        // 添加点击动画效果
-        button.classList.add('clicked');
-        button.classList.add('loading');
-
-        // 移除点击动画
-        setTimeout(() => {
-          button.classList.remove('clicked');
-        }, 600);
-
-        const response = await fetch('/cart/add', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            productId: productId,
-            quantity: quantity
-          })
-        });
-
-        button.classList.remove('loading');
-
-        if (response.ok) {
-          showCartNotification();
-        } else if (response.status === 401) {
-          showErrorNotification('请先登录后再添加商品到购物车');
-          setTimeout(() => {
-            window.location.href = '/login.html';
-          }, 2000);
-        } else {
-          const error = await response.text();
-          showErrorNotification('添加到购物车失败：' + error);
-        }
-      } catch (error) {
-        button.classList.remove('loading');
-        console.error('添加到购物车时发生错误:', error);
-        showErrorNotification('网络错误，请稍后重试');
-      }
-    }
-
-    // 页面加载完成后添加事件监听器
-    document.addEventListener('DOMContentLoaded', function () {
-      const addToCartButton = document.querySelector('.add-to-cart-btn');
-      const overlay = document.getElementById('overlay');
-
-      if (addToCartButton) {
-        addToCartButton.addEventListener('click', function () {
-          const productId = this.getAttribute('data-product-id');
-          const qtyInput = document.getElementById('buyQty');
-          const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value || '1', 10)) : 1;
-          if (productId) {
-            addToCart(productId, qty);
-          }
-        });
-      }
-      const buyNowButton = document.querySelector('.buy-btn');
-      if (buyNowButton) {
-        buyNowButton.addEventListener('click', async function () {
-          const productId = this.getAttribute('data-product-id');
-          const qtyInput = document.getElementById('buyQty');
-          const qty = qtyInput ? Math.max(1, parseInt(qtyInput.value || '1', 10)) : 1;
-          try {
-            await addToCart(productId, qty);
-            window.location.href = '/cart';
-          } catch (e) {}
-        });
-      }
-      const qtyInput = document.getElementById('buyQty');
-      const minusBtn = document.querySelector('.qty-btn.minus');
-      const plusBtn = document.querySelector('.qty-btn.plus');
-      if (qtyInput && minusBtn && plusBtn) {
-        minusBtn.addEventListener('click', function () {
-          qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) - 1);
-        });
-        plusBtn.addEventListener('click', function () {
-          qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) + 1);
-        });
-      }
-      const thumb = document.querySelector('.gallery .thumbs img');
-      const main = document.getElementById('mainImage');
-      if (thumb && main) {
-        thumb.addEventListener('click', function(){ main.src = this.src; });
-      }
-
-      // 点击遮罩层关闭弹窗
-      if (overlay) {
-        overlay.addEventListener('click', closeNotification);
-      }
-
-      // ESC键关闭弹窗
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-          closeNotification();
-        }
-      });
-
-      const mainPic = document.querySelector('.gallery .main-pic');
-      const mainImg = document.getElementById('mainImage');
-      if (mainPic && mainImg) {
-        const lens = document.createElement('div');
-        lens.className = 'zoom-lens';
-        mainPic.appendChild(lens);
-        const overlay = document.createElement('div');
-        overlay.id = 'zoomOverlay';
-        overlay.className = 'zoom-overlay';
-        document.body.appendChild(overlay);
-        const zoom = 2.2;
-        lens.style.left = '0px';
-        lens.style.top = '0px';
-        let picRect, imgRect, minX, minY, maxX, maxY, lensW, lensH, overlayW, overlayH;
-        const placeOverlay = () => {
-          const rect = mainPic.getBoundingClientRect();
-          const margin = 20;
-          let left = rect.right + margin;
-          if (left + overlay.offsetWidth > window.innerWidth - 12) left = rect.left - overlay.offsetWidth - margin;
-          let top = rect.top;
-          if (top + overlay.offsetHeight > window.innerHeight - 12) top = Math.max(12, window.innerHeight - overlay.offsetHeight - 12);
-          overlay.style.left = left + 'px';
-          overlay.style.top = top + 'px';
-        };
-        const setBg = () => {
-          if (!mainImg.src) return;
-          imgRect = mainImg.getBoundingClientRect();
-          overlay.style.backgroundImage = 'url(' + mainImg.src + ')';
-          overlay.style.backgroundSize = (imgRect.width * zoom) + 'px ' + (imgRect.height * zoom) + 'px';
-          picRect = mainPic.getBoundingClientRect();
-          lensW = lens.offsetWidth; lensH = lens.offsetHeight; overlayW = overlay.clientWidth; overlayH = overlay.clientHeight;
-          minX = imgRect.left - picRect.left;
-          minY = imgRect.top - picRect.top;
-          maxX = minX + imgRect.width - lensW;
-          maxY = minY + imgRect.height - lensH;
-        };
-        setBg();
-        placeOverlay();
-        mainImg.addEventListener('load', () => { setBg(); placeOverlay(); });
-        window.addEventListener('resize', () => { setBg(); placeOverlay(); });
-        let targetX = minX || 0, targetY = minY || 0;
-        let running = false;
-        const render = () => {
-          lens.style.transform = 'translate3d(' + targetX + 'px,' + targetY + 'px,0)';
-          const cxRel = (targetX - minX) + lensW / 2;
-          const cyRel = (targetY - minY) + lensH / 2;
-          const bgX = cxRel * zoom - overlayW / 2;
-          const bgY = cyRel * zoom - overlayH / 2;
-          overlay.style.backgroundPosition = '-' + bgX + 'px -' + bgY + 'px';
-        };
-        const loop = () => { if (!running) return; render(); requestAnimationFrame(loop); };
-        const move = (e) => {
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-          let x = clientX - picRect.left - lensW / 2;
-          let y = clientY - picRect.top - lensH / 2;
-          if (x < minX) x = minX;
-          if (y < minY) y = minY;
-          if (x > maxX) x = maxX;
-          if (y > maxY) y = maxY;
-          targetX = x; targetY = y;
-        };
-        const show = () => { lens.classList.add('show'); overlay.classList.add('show'); placeOverlay(); };
-        const hide = () => { lens.classList.remove('show'); overlay.classList.remove('show'); running = false; };
-        mainPic.addEventListener('mousemove', move, { passive: true });
-        mainPic.addEventListener('mouseenter', show);
-        mainPic.addEventListener('mouseleave', hide);
-        mainPic.addEventListener('touchmove', move, { passive: true });
-        mainPic.addEventListener('touchstart', show, { passive: true });
-        mainPic.addEventListener('touchend', hide);
-        mainPic.addEventListener('mouseenter', () => { running = true; requestAnimationFrame(loop); });
-        mainPic.addEventListener('touchstart', () => { running = true; requestAnimationFrame(loop); }, { passive: true });
-      }
-      const tabs = document.querySelectorAll('.image-tabs .tabs-nav .tab');
-      const panels = document.querySelectorAll('.image-tabs .tab-panel');
-      if (tabs.length && panels.length) {
-        tabs.forEach(function(tab, idx){
-          tab.addEventListener('click', function(){
-            tabs.forEach(function(t){ t.classList.remove('active'); });
-            panels.forEach(function(p){ p.classList.remove('active'); });
-            tab.classList.add('active');
-            panels[idx].classList.add('active');
-          });
-        });
-      }
-
-      const specsPre = document.getElementById('product-specs-json');
-      if (specsPre) {
-        const text = (specsPre.textContent || '').trim();
-        let json;
-        try { json = JSON.parse(text || '{}'); } catch (e) { json = null; }
-        if (json && (Array.isArray(json) ? json.length > 0 : Object.keys(json).length > 0)) {
-          const entries = Array.isArray(json) ? json.map(function(it){ return { k: String(it.name || it.key || ''), v: String(it.value || it.val || '') }; }) : Object.keys(json).map(function(k){ return { k: String(k), v: String(json[k]) }; });
-          const rowsTarget = entries.length % 2 === 0 ? entries.length : entries.length + 1;
-          const table = document.createElement('div');
-          table.className = 'spec-grid-table';
-          const header = document.createElement('div');
-          header.className = 'row';
-          header.innerHTML = '<div class="cell title">参数名称</div><div class="cell">参数值</div>';
-          table.appendChild(header);
-          entries.forEach(function(item){
-            const row = document.createElement('div');
-            row.className = 'row';
-            const name = document.createElement('div');
-            name.className = 'cell title';
-            const value = document.createElement('div');
-            value.className = 'cell';
-            const esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g,function(ch){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch] || ch;}); };
-            name.innerHTML = esc(item.k);
-            value.innerHTML = esc(item.v);
-            row.appendChild(name);
-            row.appendChild(value);
-            table.appendChild(row);
-          });
-          while (table.querySelectorAll('.row').length - 1 < rowsTarget) {
-            const row = document.createElement('div');
-            row.className = 'row';
-            row.innerHTML = '<div class="cell title">&nbsp;</div><div class="cell">&nbsp;</div>';
-            table.appendChild(row);
-          }
-          specsPre.replaceWith(table);
-          const count = table.querySelectorAll('.row').length - 1;
-          if (count % 2 !== 0) {
-            const row = document.createElement('div');
-            row.className = 'row';
-            row.innerHTML = '<div class="cell title">&nbsp;</div><div class="cell">&nbsp;</div>';
-            table.appendChild(row);
-          }
-        } else {
-          const empty = document.createElement('div');
-          empty.className = 'spec-empty';
-          empty.textContent = '暂无参数信息';
-          specsPre.replaceWith(empty);
-        }
-      }
-    });
-  </script>
+  <script src="/js/detail.js"></script>
 </body>
 
 </html>
