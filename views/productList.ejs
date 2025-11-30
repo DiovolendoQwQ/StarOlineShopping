@@ -88,8 +88,8 @@
         }
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
             margin-bottom: 40px;
             padding: 0 4px;
         }
@@ -144,12 +144,9 @@
             opacity: 1;
         }
         
-        .product-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
+        .image-link { display:block; position: relative; }
+        .image-wrap { position:relative; width:100%; padding-top:66%; overflow:hidden; border-bottom:1px solid rgba(0,0,0,0.06); }
+        .product-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition: transform 0.4s ease; }
         
         .product-card:hover .product-image {
             transform: scale(1.05);
@@ -216,14 +213,8 @@
         .product-link:hover::before {
             left: 100%;
         }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
+        .pagination { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:32px; flex-wrap:wrap; }
+        .page-info { text-align:center; color:#666; font-size:13px; margin-top:8px; }
         
         .pagination a {
             padding: 12px 20px;
@@ -369,8 +360,10 @@
                                 匹配度: <%= Math.round(product.relevanceScore * 100) %>%
                             </div>
                         <% } %>
-                        <a href="/product/<%= product.id %>" class="image-link" style="display:block">
-                            <img src="<%= (product.name && (product.name.includes('云海昼夜适用oppoa1手机壳') || product.name.includes('oppoA1pro'))) ? '/image/tp122.png' : (product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default.png') %>" alt="<%= product.name %>" class="product-image">
+                        <a href="/product/<%= product.id %>" class="image-link">
+                            <div class="image-wrap">
+                                <img src="<%= (product.name && (product.name.includes('云海昼夜适用oppoa1手机壳') || product.name.includes('oppoA1pro'))) ? '/image/tp122.png' : (product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/image/default.png') %>" alt="<%= product.name %>" class="product-image" loading="lazy">
+                            </div>
                         </a>
                         <div class="product-info">
                             <h3 class="product-name"><%= product.name %></h3>
@@ -390,21 +383,21 @@
             </div>
 
             <div class="pagination">
-                <% if (page > 1) { %>
-                    <a href="/products/all?page=<%= page - 1 %>&keyword=<%= keyword %>">上一页</a>
-                <% } else { %>
-                    <a href="#" class="disabled">上一页</a>
-                <% } %>
-                
-                <span class="current-page">
-                    第 <%= page %> 页
-                </span>
-                
-                <% if (page < totalPages) { %>
-                    <a href="/products/all?page=<%= page + 1 %>&keyword=<%= keyword %>">下一页</a>
-                <% } else { %>
-                    <a href="#" class="disabled">下一页</a>
-                <% } %>
+                <% const qk = keyword ? `&keyword=${encodeURIComponent(keyword)}` : '' %>
+                <a href="/products/all?page=1<%= qk %>" class="<%= page===1?'disabled':'' %>">首页</a>
+                <a href="/products/all?page=<%= Math.max(1, page-1) %><%= qk %>" class="<%= page===1?'disabled':'' %>">上一页</a>
+                <% (pagesToShow || []).forEach(p => { %>
+                    <% if (p.p) { %>
+                        <a href="/products/all?page=<%= p.p %><%= qk %>" class="<%= p.active?'current-page':'' %>"><%= p.label %></a>
+                    <% } else { %>
+                        <a href="#" class="disabled"><%= p.label %></a>
+                    <% } %>
+                <% }) %>
+                <a href="/products/all?page=<%= Math.min(totalPages, page+1) %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">下一页</a>
+                <a href="/products/all?page=<%= totalPages %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">末页</a>
+            </div>
+            <div class="page-info">
+                共 <%= totalPages %> 页，当前第 <%= page %> 页；显示第 <%= startItem %>-<%= endItem %> 个结果（每页 <%= limit %> 个）
             </div>
         <% } else { %>
             <div class="no-results">

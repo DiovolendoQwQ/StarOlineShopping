@@ -154,12 +154,14 @@ router.post('/login', async (req, res) => {
 // 登出路由
 router.post('/logout', (req, res) => {
   try {
+    const uid = req.session && req.session.userId;
     req.session.destroy((err) => {
       if (err) {
         console.error('登出失败:', err);
         return res.status(500).json({ error: 'logout_failed' });
       }
       res.clearCookie('connect.sid');
+      (async () => { try { if (uid) { const db = require('../config/database'); await db.runAsync(`UPDATE cs_sessions SET status='ended', online=0, ended_at=CURRENT_TIMESTAMP WHERE user_id=? AND status='active'`, [String(uid)]); } } catch (e) {} })();
       return res.json({ ok: true, redirect: '/login.html' });
     });
   } catch (error) {

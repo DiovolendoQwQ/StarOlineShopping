@@ -44,8 +44,9 @@ function dedupeProducts(list) {
 // 获取商品列表（支持分页与模糊搜索）- 返回HTML页面
 router.get('/all', async (req, res) => {
   const { page = 1, keyword = '' } = req.query;
-  const limit = 10;
-  const offset = (page - 1) * limit;
+  const limit = parseInt(req.query.pageSize || 12);
+  const pageNum = Math.max(1, parseInt(page));
+  const offset = (pageNum - 1) * limit;
 
   try {
     let products, totalCount;
@@ -73,10 +74,25 @@ router.get('/all', async (req, res) => {
         [limit, offset]
       );
       products = dedupeProducts(products);
-      totalCount = products.length;
     }
     
-    const totalPages = Math.ceil(totalCount / limit);
+    const totalPages = Math.max(1, Math.ceil(totalCount / limit));
+    const startItem = totalCount === 0 ? 0 : offset + 1;
+    const endItem = Math.min(offset + (products ? products.length : 0), totalCount);
+    function buildPages(curr, total) {
+      const pages = [];
+      const add = (p, label) => pages.push({ p, label: label || String(p), active: p === curr });
+      if (total <= 7) { for (let i = 1; i <= total; i++) add(i); return pages; }
+      add(1);
+      if (curr > 3) pages.push({ p: null, label: '…', active: false });
+      const start = Math.max(2, curr - 2);
+      const stop = Math.min(total - 1, curr + 2);
+      for (let i = start; i <= stop; i++) add(i);
+      if (curr < total - 2) pages.push({ p: null, label: '…', active: false });
+      add(total);
+      return pages;
+    }
+    const pagesToShow = buildPages(pageNum, totalPages);
 
     // 检查是否是API请求（通过Accept头或查询参数）
     if (req.headers.accept && req.headers.accept.includes('application/json') || req.query.format === 'json') {
@@ -90,10 +106,14 @@ router.get('/all', async (req, res) => {
     // 统一图片路径，页面渲染使用 imageUrl 字段
     res.render('productList', {
       products,
-      page: parseInt(page),
+      page: pageNum,
       keyword,
       totalPages,
-      totalCount
+      totalCount,
+      limit,
+      startItem,
+      endItem,
+      pagesToShow
     });
   } catch (err) {
     console.error("获取商品失败:", err);

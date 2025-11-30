@@ -1422,7 +1422,6 @@
                 document.body.appendChild(errorElement);
             }
 
-            // 设置错误消息内容
             errorElement.innerHTML = `
                 <strong>错误!</strong> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
@@ -1434,6 +1433,36 @@
                     errorElement.parentNode.removeChild(errorElement);
                 }
             }, 5000);
+        }
+
+        function showInfo(message) {
+            let infoElement = document.getElementById('info-message');
+            if (!infoElement) {
+                infoElement = document.createElement('div');
+                infoElement.id = 'info-message';
+                infoElement.className = 'alert alert-info alert-dismissible fade show';
+                infoElement.style.position = 'fixed';
+                infoElement.style.top = '20px';
+                infoElement.style.right = '20px';
+                infoElement.style.zIndex = '9999';
+                infoElement.style.maxWidth = '400px';
+                const closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.className = 'btn-close';
+                closeButton.setAttribute('data-bs-dismiss', 'alert');
+                closeButton.setAttribute('aria-label', '关闭');
+                infoElement.appendChild(closeButton);
+                document.body.appendChild(infoElement);
+            }
+            infoElement.innerHTML = `
+                <strong>通知</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+            `;
+            setTimeout(() => {
+                if (infoElement && infoElement.parentNode) {
+                    infoElement.parentNode.removeChild(infoElement);
+                }
+            }, 3000);
         }
 
     // --- Admin Chat Implementation ---
@@ -1479,25 +1508,45 @@
         handleMessage(msg) {
             if (msg.type === 'clients') {
                 this.updateSessionList(msg.clients);
+            } else if (msg.type === 'sessions') {
+                this.updateSessionList(msg.sessions);
             } else if (msg.type === 'message' || msg.type === 'question') {
                 this.addMessage(msg.sessionId, msg, 'user');
             } else if (msg.type === 'reply') {
                 this.addMessage(msg.sessionId, msg, 'admin');
+            } else if (msg.type === 'session_ended') {
+                const sid = msg.sessionId;
+                if (sid && this.sessions[sid]) {
+                    delete this.sessions[sid];
+                    if (this.activeSessionId === sid) {
+                        this.activeSessionId = null;
+                        if (this.emptyState) this.emptyState.style.display = 'block';
+                        if (this.chatInterface) this.chatInterface.style.display = 'none';
+                    }
+                    this.renderSidebar();
+                    showInfo(`会话 ${sid} 已结束`);
+                }
             }
         },
 
         updateSessionList(clients) {
             if (!Array.isArray(clients)) return;
+            const incoming = new Set(clients.map(c => c.sessionId));
+            Object.keys(this.sessions).forEach(sid => { if (!incoming.has(sid)) delete this.sessions[sid]; });
             clients.forEach(c => {
                 if (!this.sessions[c.sessionId]) {
                     this.sessions[c.sessionId] = {
                         user: c.user || { username: 'Guest' },
                         messages: [],
                         unread: 0,
-                        lastActive: Date.now()
+                        lastActive: Date.now(),
+                        status: c.status || 'active',
+                        online: Number(c.online || 0)
                     };
                 } else {
                     this.sessions[c.sessionId].user = c.user || this.sessions[c.sessionId].user;
+                    this.sessions[c.sessionId].status = c.status || this.sessions[c.sessionId].status;
+                    this.sessions[c.sessionId].online = Number(c.online || this.sessions[c.sessionId].online || 0);
                 }
             });
             this.renderSidebar();
@@ -1568,7 +1617,7 @@
                 item.innerHTML = `
                     <div class="cs-session-avatar">${avatarText}</div>
                     <div class="cs-session-info">
-                        <div class="cs-session-name">${name}</div>
+                        <div class="cs-session-name">${name} ${s.online?'<span style="color:#22c55e;">●</span>':'<span style="color:#ef4444;">●</span>'}</div>
                         <div class="cs-session-preview">${lastMsg}</div>
                     </div>
                     ${s.unread>0?`<div class="cs-unread-badge">${s.unread}</div>`:''}
@@ -1586,6 +1635,19 @@
             if (this.currentName) this.currentName.textContent = display;
             if (this.currentId) this.currentId.textContent = this.activeSessionId;
             if (this.currentAvatar) this.currentAvatar.textContent = (display||'U').slice(0,1).toUpperCase();
+            let controls = document.getElementById('cs-chat-controls');
+            if (!controls && this.chatBody && this.chatBody.parentNode) {
+                controls = document.createElement('div');
+                controls.id = 'cs-chat-controls';
+                controls.style.textAlign = 'right';
+                const endBtn = document.createElement('button');
+                endBtn.id = 'cs-end-session';
+                endBtn.className = 'btn btn-sm btn-outline-danger';
+                endBtn.textContent = '结束会话';
+                endBtn.onclick = () => { if (adminWs && this.activeSessionId) adminWs.send(JSON.stringify({ type: 'end_session', sessionId: this.activeSessionId })); };
+                controls.appendChild(endBtn);
+                this.chatBody.parentNode.insertBefore(controls, this.chatBody);
+            }
             session.messages.forEach(m => this.appendChatBubble(m.content, m.sender, m.time));
             this.scrollToBottom();
         },

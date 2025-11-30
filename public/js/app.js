@@ -1,10 +1,14 @@
 (() => {
   const STATE = { ws: null, connected: false, reconnectAttempts: 0, sessionId: null };
   const QUEUE_KEY = 'cs_offline_queue';
+  const SID_KEY = 'cs_session_id';
   const MAX_RETRY = 24;
 
   function now() { return new Date().toISOString(); }
   function uuid() { try { return crypto.randomUUID(); } catch (_) { return `${Date.now()}-${Math.random().toString(16).slice(2)}`; } }
+  function loadSid() { try { return localStorage.getItem(SID_KEY) || null; } catch (_) { return null; } }
+  function saveSid(id) { try { localStorage.setItem(SID_KEY, id); } catch (_) { } }
+  function clearSid() { try { localStorage.removeItem(SID_KEY); } catch (_) { } }
   function loadQueue() { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch (_) { return []; } }
   function saveQueue(q) { try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); } catch (_) { } }
   function enqueue(item) { const q = loadQueue(); q.push(item); saveQueue(q); }
@@ -24,7 +28,8 @@
 
   async function connect() {
     if (STATE.connected || STATE.ws) return;
-    STATE.sessionId = STATE.sessionId || uuid();
+    STATE.sessionId = STATE.sessionId || loadSid() || uuid();
+    saveSid(STATE.sessionId);
 
     const user = await getUserInfo();
     const userInfo = user ? {
@@ -54,6 +59,10 @@
       let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
       const evt = new CustomEvent('cs:message', { detail: msg });
       document.dispatchEvent(evt);
+      if (msg.type === 'session_ended' && msg.sessionId && msg.sessionId === STATE.sessionId) {
+        clearSid();
+        STATE.sessionId = null;
+      }
     };
     ws.onclose = (ev) => {
       STATE.connected = false;
@@ -101,7 +110,7 @@
       const ok = send({ type: 'question', message: text, userAgent: navigator.userAgent });
       if (!ok) { await sendViaRest(text); }
     },
-    sessionId: () => STATE.sessionId || (STATE.sessionId = uuid())
+    sessionId: () => { if (!STATE.sessionId) { STATE.sessionId = loadSid() || uuid(); saveSid(STATE.sessionId); } return STATE.sessionId; }
   };
 
   document.addEventListener('DOMContentLoaded', () => connect());

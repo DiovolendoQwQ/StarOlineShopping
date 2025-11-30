@@ -85,6 +85,7 @@ app.post('/api/customer-service/inquiry', (req, res) => {
   const ws = sessions.get(sessionId);
   if (ws && ws.readyState === 1) { try { ws.send(JSON.stringify({ type: 'ack', sessionId, timestamp: ts() })); } catch (_) { } }
   if (ws) { setActiveSession(sessionId); }
+  (async () => { try { const row = await db.getAsync(`SELECT status FROM cs_sessions WHERE session_id=?`, [sessionId]); if (row && row.status === 'ended') { return; } await db.runAsync(`INSERT OR IGNORE INTO cs_sessions(session_id, status, online, user_agent, created_at, last_active_at) VALUES(?, 'active', 0, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`, [sessionId, ua]); await db.runAsync(`UPDATE cs_sessions SET last_active_at=CURRENT_TIMESTAMP WHERE session_id=? AND status!='ended'`, [sessionId]); await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'user', ?, CURRENT_TIMESTAMP)`, [sessionId, message]); const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); broadcastAdmin({ type: 'sessions', sessions: rows }); } catch (_) { } })();
   res.json(resp);
 });
 
@@ -99,6 +100,7 @@ let wssAdmin;
 let adminClients = new Set();
 let activeSessionId = null;
 const WS_PING_INTERVAL_MS = 30000;
+const CS_IDLE_TIMEOUT_MS = Number(process.env.CS_IDLE_TIMEOUT_MS || 1800000);
 function setActiveSession(sid) { activeSessionId = sid; console.log(color('INFO', `[${ts()}] 当前会话已设置为: ${sid}，直接输入消息即可回复该会话。`)); }
 function replyActive(message) {
   if (!activeSessionId) {
@@ -124,40 +126,60 @@ function setupWebSockets() {
   if (!WebSocketServer) return;
   wss = new WebSocketServer({ noServer: true });
   wss.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
-  wss.on('connection', (ws, req) => {
+  wss.on('connection', async (ws, req) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const ua = req.headers['user-agent'] || 'unknown';
     try { console.log(color('INFO', `[${ts()}] WS连接建立 IP:${ip} UA:${ua}`)); } catch (_) { }
     ws.isAlive = true;
     ws.on('pong', () => { ws.isAlive = true; });
-    ws.on('message', (data) => {
+    ws.connectedAt = ts();
+    ws.on('message', async (data) => {
       let msg; try { msg = JSON.parse(typeof data === 'string' ? data : String(data instanceof Buffer ? data.toString() : data)); } catch (e) { msg = { type: 'raw', data: (data instanceof Buffer ? data.toString() : String(data)) }; }
       const sid = msg.sessionId || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      ws.sessionId = sid;
       if (!sessions.has(sid)) sessions.set(sid, ws);
       const cat = classify(msg.message || ''); csStats[cat]++;
+      try {
+        await db.runAsync(`INSERT OR IGNORE INTO cs_sessions(session_id, user_id, username, email, status, online, user_agent, created_at, last_active_at) VALUES(?,?,?,?, 'active', 1, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`, [sid, (msg.user && (msg.user.userId || msg.user.user_id)) || null, (msg.user && msg.user.username) || null, (msg.user && msg.user.email) || null, ua]);
+        await db.runAsync(`UPDATE cs_sessions SET online=1, user_id=COALESCE(?, user_id), username=COALESCE(?, username), email=COALESCE(?, email), user_agent=COALESCE(?, user_agent), last_active_at=CURRENT_TIMESTAMP WHERE session_id=? AND status!='ended'`, [(msg.user && (msg.user.userId || msg.user.user_id)) || null, (msg.user && msg.user.username) || null, (msg.user && msg.user.email) || null, ua, sid]);
+      } catch (_) { }
       if (msg.type === 'init') {
+        try { const row = await db.getAsync(`SELECT status FROM cs_sessions WHERE session_id=?`, [sid]); if (row && row.status === 'ended') { try { ws.send(JSON.stringify({ type: 'session_ended', sessionId: sid, timestamp: ts() })); } catch (_) {} return; } } catch (_) {}
         ws.user = msg.user || {};
         console.log(color('INFO', `[${ts()}] 会话建立 WS 会话:${sid} 用户:${JSON.stringify(ws.user)}`));
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
-        broadcastAdmin({ type: 'clients', clients: listClients() });
+        if (!sessionHistory.has(sid)) sessionHistory.set(sid, []);
+        sessionHistory.get(sid).push({ sender: 'system', content: 'session_started', time: ts(), user: ws.user });
+        try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'system', 'session_started', CURRENT_TIMESTAMP)`, [sid]); } catch (_) { }
+        try { const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); broadcastAdmin({ type: 'sessions', sessions: rows }); } catch (_) { }
         return;
       }
       if (msg.type === 'question') {
+        try { const row = await db.getAsync(`SELECT status FROM cs_sessions WHERE session_id=?`, [sid]); if (row && row.status === 'ended') { return; } } catch (_) {}
         console.log(color('QUESTION', `[${ts()}] 客服询问[WS] 会话:${sid} 分类:${cat}\nIP:${ip} UA:${ua}\n消息:${msg.message}`));
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
         if (!sessionHistory.has(sid)) sessionHistory.set(sid, []);
         sessionHistory.get(sid).push({ sender: 'user', content: msg.message, time: ts(), user: ws.user });
+        try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'user', ?, CURRENT_TIMESTAMP)`, [sid, msg.message]); await db.runAsync(`UPDATE cs_sessions SET last_active_at=CURRENT_TIMESTAMP WHERE session_id=?`, [sid]); } catch (_) { }
         setActiveSession(sid);
-        broadcastAdmin({ type: 'clients', clients: listClients() });
+        try { const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); broadcastAdmin({ type: 'sessions', sessions: rows }); } catch (_) { }
         broadcastAdmin({ type: 'message', sessionId: sid, message: msg.message, user: ws.user, timestamp: ts(), category: cat });
         return;
       }
       console.log(color('INFO', `[${ts()}] WS消息 会话:${sid} 类型:${msg.type}`));
     });
-    ws.on('close', (code, reason) => {
-      for (const [sid, s] of sessions.entries()) { if (s === ws) sessions.delete(sid); }
+    ws.on('close', async (code, reason) => {
+      let closedSid = ws.sessionId || null;
+      if (!closedSid) {
+        for (const [sid, s] of sessions.entries()) { if (s === ws) { closedSid = sid; sessions.delete(sid); break; } }
+      } else {
+        sessions.delete(closedSid);
+      }
       console.log(color('INFO', `[${ts()}] WS连接关闭 IP:${ip} code:${code} reason:${reason}`));
-      broadcastAdmin({ type: 'clients', clients: listClients() });
+      if (closedSid) {
+        try { await db.runAsync(`UPDATE cs_sessions SET online=0, last_active_at=CURRENT_TIMESTAMP WHERE session_id=? AND status='active'`, [closedSid]); } catch (_) { }
+        try { const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); broadcastAdmin({ type: 'sessions', sessions: rows }); } catch (_) { }
+      }
     });
     ws.on('error', (err) => {
       console.error(color('ERROR', `[${ts()}] WS错误: ${err.message}`));
@@ -179,7 +201,7 @@ function setupWebSockets() {
   wssAdmin.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wssAdmin.on('connection', (ws) => {
     adminClients.add(ws);
-    try { ws.send(JSON.stringify({ type: 'clients', clients: listClients() })); } catch (_) { }
+    (async () => { try { const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); ws.send(JSON.stringify({ type: 'sessions', sessions: rows })); } catch (_) { } })();
     try { ws.send(JSON.stringify({ type: 'log_init', logs: logs.slice(-100) })); } catch (_) { }
     ws.on('message', (data) => {
       try {
@@ -191,6 +213,21 @@ function setupWebSockets() {
             console.log(color('REPLY', `[${ts()}] Admin回复 会话:${msg.sessionId} 消息:${msg.message}`));
             broadcastAdmin({ type: 'reply', sessionId: msg.sessionId, message: msg.message, timestamp: ts() });
           }
+          (async () => { try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'admin', ?, CURRENT_TIMESTAMP)`, [msg.sessionId, msg.message]); await db.runAsync(`UPDATE cs_sessions SET last_active_at=CURRENT_TIMESTAMP WHERE session_id=?`, [msg.sessionId]); } catch (_) { } })();
+        }
+        if (msg.type === 'end_session' && msg.sessionId) {
+          (async () => {
+            try {
+              await db.runAsync(`UPDATE cs_sessions SET status='ended', online=0, ended_at=CURRENT_TIMESTAMP WHERE session_id=?`, [msg.sessionId]);
+              const clientWs = sessions.get(msg.sessionId);
+              if (clientWs && clientWs.readyState === 1) {
+                clientWs.send(JSON.stringify({ type: 'session_ended', sessionId: msg.sessionId, timestamp: ts() }));
+              }
+              broadcastAdmin({ type: 'session_ended', sessionId: msg.sessionId, endedAt: ts() });
+              const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`);
+              broadcastAdmin({ type: 'sessions', sessions: rows });
+            } catch (e) { }
+          })();
         }
       } catch (e) { console.error('Admin message error:', e); }
     });
@@ -345,8 +382,11 @@ app.get('/health', (req, res) => {
 });
 
 startServer();
-app.get('/admin/api/clients', requireAdminJwt, (req, res) => {
-  res.json({ ok: true, clients: listClients() });
+app.get('/admin/api/clients', requireAdminJwt, async (req, res) => {
+  try {
+    const rows = await db.allAsync(`SELECT session_id AS sessionId, username, email, status, online, last_active_at AS lastActive FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`);
+    res.json({ ok: true, clients: rows });
+  } catch (e) { res.json({ ok: false, error: 'db_error' }); }
 });
 
 app.get('/admin/api/chat/history/:sessionId', requireAdminJwt, (req, res) => {
@@ -358,3 +398,25 @@ app.get('/admin/api/chat/history/:sessionId', requireAdminJwt, (req, res) => {
 app.get('/admin/api/logs', requireAdminJwt, (req, res) => {
   res.json({ ok: true, logs });
 });
+
+app.get('/api/customer-service/history/:sessionId', async (req, res) => {
+  const sid = req.params.sessionId;
+  try {
+    const rows = await db.allAsync(`SELECT sender, content, time FROM cs_messages WHERE session_id=? ORDER BY time ASC`, [sid]);
+    res.json({ ok: true, history: rows });
+  } catch (e) { res.status(500).json({ ok: false }); }
+});
+
+setInterval(async () => {
+  try {
+    const cutoff = Date.now() - CS_IDLE_TIMEOUT_MS;
+    const isoCut = new Date(cutoff).toISOString();
+    const idleSessions = await db.allAsync(`SELECT session_id FROM cs_sessions WHERE status='active' AND online=0 AND last_active_at IS NOT NULL AND last_active_at < ?`, [isoCut]);
+    for (const s of idleSessions) {
+      await db.runAsync(`UPDATE cs_sessions SET status='ended', ended_at=CURRENT_TIMESTAMP WHERE session_id=?`, [s.session_id]);
+      broadcastAdmin({ type: 'session_ended', sessionId: s.session_id, endedAt: ts() });
+    }
+    const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`);
+    broadcastAdmin({ type: 'sessions', sessions: rows });
+  } catch (_) { }
+}, 30000);

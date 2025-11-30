@@ -247,6 +247,41 @@ db.serialize(() => {
     }
   });
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS cs_sessions (
+      session_id TEXT PRIMARY KEY,
+      user_id TEXT,
+      username TEXT,
+      email TEXT,
+      status TEXT NOT NULL DEFAULT 'active',
+      online INTEGER NOT NULL DEFAULT 0,
+      user_agent TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      last_active_at DATETIME,
+      ended_at DATETIME
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 cs_sessions 表失败:', err.message);
+    else console.log('✅ cs_sessions 表已创建或已存在');
+  });
+  db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_status ON cs_sessions(status);`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_last_active ON cs_sessions(last_active_at);`);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS cs_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id TEXT NOT NULL,
+      sender TEXT NOT NULL,
+      content TEXT NOT NULL,
+      time DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(session_id) REFERENCES cs_sessions(session_id)
+    );
+  `, (err) => {
+    if (err) console.error('❌ 创建 cs_messages 表失败:', err.message);
+    else console.log('✅ cs_messages 表已创建或已存在');
+  });
+  db.run(`CREATE INDEX IF NOT EXISTS idx_cs_messages_session_time ON cs_messages(session_id, time);`);
+
   // 索引：提升昵称查询/更新性能
   db.run(`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`, (err) => {
     if (err) console.error('❌ 创建 idx_users_username 失败:', err.message);

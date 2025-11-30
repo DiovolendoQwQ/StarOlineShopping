@@ -1,0 +1,36 @@
+:root{--bg1:#091226;--bg2:#0c1630;--bg3:#0f1a3a;--glass:#ffffff55;--glassDeep:#ffffff70;--primary:#4f46e5;--accent:#3b82f6;--accent2:#a855f7;--green:#22c55e;--red:#ef4444}
+html,body{height:100%}
+body{background:radial-gradient(1200px circle at 20% 10%,var(--bg3),var(--bg2) 40%,var(--bg1));color:#111827;overflow-x:hidden}
+.sky-bg{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.sky-layer{position:absolute;inset:0;pointer-events:none;transform:translateZ(0)}
+#sky-stars,#sky-meteors{position:absolute;inset:0;width:100%;height:100%}
+.cs-container{max-width:960px;margin:64px auto;padding:0;border-radius:12px;overflow:hidden;background:var(--glass);backdrop-filter:blur(12px);box-shadow:0 24px 60px rgba(0,0,0,.25),inset 0 1px 40px rgba(255,255,255,.25);animation:floatIn .8s ease-out both}
+.cs-header{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:linear-gradient(135deg,#ffffff,#eef2ff);color:#0f172a}
+.cs-title{font-size:18px;font-weight:600;letter-spacing:.5px}
+.cs-status{font-size:12px;opacity:.9}
+.cs-status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--green)}
+.cs-status.offline .dot{background:var(--red)}
+.cs-body{padding:18px;background:linear-gradient(180deg,#ffffff99 0%,#ffffff88 100%)}
+.cs-chat{height:54vh;min-height:380px;overflow:auto;border:1px solid #e5e7eb;border-radius:12px;padding:16px;background:#ffffffa0;box-shadow:inset 0 12px 24px rgba(0,0,0,.08);will-change:scroll-position}
+.cs-msg-row{display:flex;align-items:flex-end;margin:10px 0}
+.cs-msg-row.me{justify-content:flex-end}
+.cs-avatar{width:34px;height:34px;border-radius:50%;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 0 12px rgba(79,70,229,.35),0 0 24px rgba(59,130,246,.25)}
+.cs-avatar.me{background:#fff3cd;color:#7c2d12}
+.cs-avatar.srv{background:#dbeafe;color:#1d4ed8}
+.cs-bubble{max-width:70%;padding:10px 12px;border-radius:12px;position:relative;font-size:14px;line-height:1.6;box-shadow:0 6px 18px rgba(0,0,0,.12);background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.95));border:1px solid #e5e7eb;color:#0f172a}
+.cs-bubble.me{background:linear-gradient(135deg,#eef2ff,#ffffff);border-top-right-radius:6px}
+.cs-bubble.srv{background:linear-gradient(135deg,#e0f2fe,#ffffff);border-top-left-radius:6px}
+.cs-time{font-size:11px;color:#6b7280;margin-top:4px}
+.cs-form{display:flex;gap:10px;margin-top:14px}
+.cs-form input{flex:1;padding:12px 14px;border:1px solid #d1d5db;border-radius:10px;background:#ffffff;outline:none;color:#111827;transition:all .25s;box-shadow:inset 0 0 0 rgba(124,140,255,0)}
+.cs-form input:focus{box-shadow:0 0 0 3px rgba(99,102,241,.25),inset 0 0 16px rgba(99,102,241,.15),0 0 18px rgba(99,102,241,.25);border-color:#6366f1;background:#ffffff}
+.cs-form button{position:relative;padding:12px 18px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:600;letter-spacing:.3px;transition:transform .12s ease,filter .25s ease,box-shadow .25s ease;box-shadow:0 0 12px rgba(99,102,241,.35);will-change:transform,filter}
+.cs-form button:hover{filter:brightness(1.1);box-shadow:0 0 18px rgba(99,102,241,.65)}
+.cs-form button:active{transform:scale(.98)}
+.cs-form button::after{content:"";position:absolute;inset:-2px;border-radius:inherit;background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.35),transparent);animation:glint 2.2s linear infinite;opacity:.8;pointer-events:none}
+.cs-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:10px;box-shadow:0 10px 20px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:all .25s}
+.cs-toast.show{opacity:1;visibility:visible}
+@keyframes floatIn{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes glint{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@media (max-width:768px){.cs-container{max-width:100%;margin:0;border-radius:0;box-shadow:none}.cs-header{padding:14px 16px}.cs-title{font-size:16px}.cs-body{padding:12px}.cs-chat{height:60vh}.cs-form{flex-direction:column}.cs-form button{width:100%}}
+@media (min-width:1280px){.sky-bg::after{content:"";position:absolute;inset:0;background-image:url('/images/constellations.svg');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.14;pointer-events:none}}
