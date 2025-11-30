@@ -1,0 +1,409 @@
+/* banner_y */
+.banner_y {
+  width: 1226px;
+  height: 460px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.banner_y video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.banner_y .nav {
+  width: 234px;
+  height: 460px;
+  background: rgba(0, 0, 0, 0.55);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 20px 0;
+}
+.banner_y .nav ul {
+  height: 100%;
+  padding: 0;
+  list-style: none;
+}
+.banner_y .nav ul li {
+  height: 42px;
+  line-height: 42px;
+  padding-left: 30px;
+  cursor: pointer;
+}
+.banner_y .nav ul li:hover {
+  background: #ff6700;
+}
+.banner_y .nav ul li .nav-categories {
+  display: block;
+}
+.banner_y .nav ul li .nav-categories .nav-category {
+  color: #fff;
+  font-size: 14px;
+  display: block;
+}
+
+/* Navigation Pop-up */
+.banner_y .nav ul li .pop {
+  position: absolute;
+  left: 234px;
+  top: 0;
+  /* width: 992px; Removed fixed width to allow auto-sizing */
+  min-height: 100%;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.18);
+  display: none;
+  z-index: 20;
+  box-sizing: border-box;
+  white-space: nowrap; /* Ensure columns stay side-by-side */
+}
+.banner_y .nav ul li:hover .pop {
+  display: flex; /* Use Flexbox to stretch children */
+}
+.banner_y .nav ul li.open .pop {
+  display: flex; /* Use Flexbox to stretch children */
+}
+
+/* Pop content layout */
+/* Columns width */
+.banner_y .nav ul li .pop .left,
+.banner_y .nav ul li .pop .ctn,
+.banner_y .nav ul li .pop .right {
+  float: none; /* Disable float */
+  width: 330px;
+  height: auto; /* Let Flexbox stretch height */
+  min-height: 100%; /* Ensure it fills the container */
+  padding: 0 10px;
+  box-sizing: border-box;
+  white-space: normal; /* Reset for content */
+}
+
+/* Rows inside columns */
+.banner_y .nav ul li .pop > div > div {
+  width: 100%;
+  height: 76px; /* 460 / 6 rows roughly */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner_y .nav ul li .pop .xuangou_left {
+  float: left;
+  width: 240px; /* Increased width for text */
+  height: 76px;
+  line-height: 76px;
+  display: flex;
+  align-items: center;
+}
+.banner_y .nav ul li .pop .xuangou_left a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: #333;
+  text-decoration: none;
+}
+.banner_y .nav ul li .pop .xuangou_left img {
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  object-fit: contain;
+}
+.banner_y .nav ul li .pop .xuangou_left span {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+.banner_y .nav ul li .pop .xuangou_left a:hover span {
+  color: #ff6700;
+}
+.banner_y .nav ul li .pop .xuangou_right {
+  float: right;
+  width: 60px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.banner_y .nav ul li .pop .xuangou_right a {
+  border: 1px solid #ff6700;
+  color: #ff6700;
+  font-size: 12px;
+  padding: 4px 12px;
+  line-height: normal;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.banner_y .nav ul li .pop .xuangou_right a:hover {
+  background: #ff6700;
+  color: #fff;
+}
+
+/* sub_banner */
+.sub_banner {
+  width: 1226px;
+  height: 170px;
+  margin: 14px auto 26px;
+}
+.sub_banner .sidebar {
+  width: 234px;
+  height: 170px;
+  background: #5f5750;
+  float: left;
+}
+.sub_banner .sidebar div {
+  width: 78px;
+  height: 85px; /* 170 / 2 = 85px exact height */
+  float: left;
+  position: relative;
+  padding: 0;
+}
+/* Borders for sidebar grid */
+.sub_banner .sidebar div::before {
+  content: "";
+  position: absolute;
+  background: #665e57;
+  top: 6px;
+  bottom: 6px;
+  right: 0;
+  width: 1px;
+  z-index: 1;
+}
+.sub_banner .sidebar div::after {
+  content: "";
+  position: absolute;
+  background: #665e57;
+  left: 6px;
+  right: 6px;
+  bottom: 0;
+  height: 1px;
+  z-index: 1;
+}
+/* Remove right borders for 3rd and 6th items */
+.sub_banner .sidebar div:nth-child(3n)::before {
+  display: none;
+}
+/* Remove bottom borders for last row (4, 5, 6) */
+.sub_banner .sidebar div:nth-child(n+4)::after {
+  display: none;
+}
+
+.sub_banner .sidebar div a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.sub_banner .sidebar div a:hover {
+  opacity: 1;
+}
+.sub_banner .sidebar div img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+  padding: 5px; /* Reduce padding to make icon larger */
+  box-sizing: border-box;
+}
+
+/* Images next to sidebar */
+.sub_banner .datu {
+  width: 316px;
+  height: 170px;
+  float: left;
+  margin-left: 14px; /* Even margins: 234 + 14 + 316 + 15 + 316 + 15 + 316 = 1226 approx */
+}
+/* First datu margin */
+.sub_banner .datu:nth-of-type(2) { margin-left: 14px; }
+/* Second datu margin */
+.sub_banner .datu:nth-of-type(3) { margin-left: 15px; }
+/* Third datu margin */
+.sub_banner .datu:nth-of-type(4) { margin-left: 15px; }
+
+.sub_banner .datu a img {
+  width: 100%;
+  height: 170px;
+  display: block;
+  transition: box-shadow 0.2s;
+}
+.sub_banner .datu a img:hover {
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* danpin */
+.danpin .main {
+  width: 1226px;
+  margin: 0 auto;
+  height: auto;
+}
+.danpin .main::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.danpin .main .mingxing {
+  width: 234px;
+  height: 340px;
+  background: #fafafa;
+  float: left;
+  margin-right: 14px;
+  margin-bottom: 14px;
+  text-align: center;
+  transition: all 0.2s linear;
+}
+.danpin .main .mingxing:nth-child(5n) {
+  margin-right: 0;
+}
+.danpin .main .mingxing:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+.danpin .main .mingxing:nth-child(1) { border-top: 1px solid #ffac13; }
+.danpin .main .mingxing:nth-child(2) { border-top: 1px solid #83c44e; }
+.danpin .main .mingxing:nth-child(3) { border-top: 1px solid #2196f3; }
+.danpin .main .mingxing:nth-child(4) { border-top: 1px solid #e53935; }
+.danpin .main .mingxing:nth-child(5) { border-top: 1px solid #00c0a5; }
+
+.danpin .main .mingxing .sub_mingxing {
+  margin-top: 30px;
+}
+.danpin .main .mingxing .sub_mingxing img {
+  width: 160px;
+  height: 160px;
+}
+.danpin .main .mingxing .pinpai {
+  margin: 15px 0 5px;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+.danpin .main .mingxing .youhui {
+  color: #b0b0b0;
+  font-size: 12px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+.danpin .main .mingxing .jiage {
+  color: #ff6700;
+  font-size: 14px;
+}
+
+/* peijian */
+.peijian .main {
+  width: 1226px;
+  margin: 0 auto;
+}
+.peijian .main .content {
+  height: auto;
+}
+.peijian .main .content::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.peijian .main .content .remen {
+  width: 234px;
+  height: 300px;
+  background: #fff;
+  float: left;
+  margin-right: 14px;
+  margin-bottom: 14px;
+  position: relative;
+  transition: all 0.2s linear;
+}
+.peijian .main .content .remen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+.peijian .main .content .remen:nth-child(5n) {
+  margin-right: 0;
+}
+.peijian .main .content .remen:first-child {
+  transition: all 0.2s linear;
+}
+.peijian .main .content .remen:first-child img {
+  width: 100%;
+  height: 100%;
+}
+.peijian .main .content .remen .tu {
+  text-align: center;
+  margin-top: 30px;
+}
+.peijian .main .content .remen .tu img {
+  width: 150px;
+  height: 150px;
+}
+.peijian .main .content .remen .miaoshu {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+.peijian .main .content .remen .jiage {
+  text-align: center;
+  color: #ff6700;
+  margin-top: 10px;
+}
+.peijian .main .content .remen .pingjia {
+  text-align: center;
+  color: #b0b0b0;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.peijian .main .content .remen .xinpin {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 20px;
+  background: #83c44e;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* Titles */
+.biaoti {
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 58px;
+  color: #333;
+  position: relative;
+}
+
+/* Footer */
+.footer-content {
+  width: 100%;
+  height: 100px;
+  background: #fff;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #757575;
+  font-size: 12px;
+}

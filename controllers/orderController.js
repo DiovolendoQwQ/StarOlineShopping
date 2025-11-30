@@ -16,6 +16,7 @@ const orderController = {
         });
       }
       
+      await db.runAsync('BEGIN TRANSACTION');
       // 生成订单ID
       const orderId = 'ORD-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
       
@@ -33,8 +34,25 @@ const orderController = {
            VALUES (?, ?, ?, ?)`,
           [orderId, item.productId, item.quantity, item.price]
         );
+        const updateRes = await db.runAsync(
+          `UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?`,
+          [item.quantity, item.productId, item.quantity]
+        );
+        if (!updateRes || updateRes.changes === 0) {
+          throw new Error(`库存不足或商品不存在: ${item.productId}`);
+        }
       }
       
+      const cart = await db.getAsync(
+        `SELECT id FROM carts WHERE user_id = ?`,
+        [userId]
+      );
+      if (cart && cart.id) {
+        await db.runAsync(`DELETE FROM cart_items WHERE cart_id = ?`, [cart.id]);
+        await db.runAsync(`UPDATE carts SET total_price = 0 WHERE id = ?`, [cart.id]);
+      }
+      await db.runAsync('COMMIT');
+
       // 设置订单信息到请求对象，供后续中间件使用
       req.orderData = {
         orderId,
@@ -51,6 +69,7 @@ const orderController = {
         }
       });
     } catch (error) {
+      try { await db.runAsync('ROLLBACK'); } catch (e) {}
       console.error('创建订单失败:', error);
       res.status(500).json({
         success: false,

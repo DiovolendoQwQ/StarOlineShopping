@@ -92,117 +92,235 @@ STAR 在线购物平台是一个功能完整的电商网站，支持用户注册
 
 ```
 STAR_Online_Shopping/
-├── app.js                 # 应用入口文件
+├── app.js                 # 应用入口文件（核心启动点）
 ├── package.json           # 项目依赖配置
 ├── .env                   # 环境变量配置
-├── config/
-│   ├── database.js        # 数据库配置
-│   └── server.js          # 服务器配置
-├── controllers/
-│   ├── cartController.js      # 购物车控制器
-│   ├── analyticsController.js # 数据分析控制器
-│   └── orderController.js     # 订单控制器
-├── middleware/
-│   ├── authMiddleware.js      # 认证中间件
-│   ├── adminAuth.js           # 管理员权限中间件
-│   └── behaviorTracker.js     # 行为追踪中间件
-├── models/
-│   ├── Product.js             # 商品模型
-│   ├── cart.js                # 购物车模型
-│   ├── UserBehavior.js        # 用户行为模型
-│   ├── UserPreference.js      # 用户偏好模型
-│   └── AnalyticsSummary.js    # 分析汇总模型
-├── routes/
-│   ├── authRoutes.js      # 认证路由
-│   ├── cartRoutes.js      # 购物车路由
-│   ├── productRoutes.js   # 商品路由
-│   └── userRoutes.js      # 用户路由
-├── services/
-│   └── analyticsService.js # 数据分析服务
-├── public/
-│   ├── css/               # 样式文件
-│   ├── js/                # 前端脚本
-│   │   └── search.js      # 智能搜索功能脚本
-│   ├── image/             # 商品图片资源
-│   ├── Picture/           # 其他图片资源
-│   ├── homepage.html      # 主页
-│   ├── login.html         # 登录页面
-│   ├── detail.html        # 商品详情页
-│   └── liebiao.html       # 商品列表页
-├── database/
-│   └── db.sqlite          # SQLite 数据库文件
-├── views/                 # EJS 模板文件
-│   └── analytics/         # 数据分析视图
-│       └── dashboard.ejs  # 数据分析面板
-├── scripts/
-│   └── start.ps1          # Windows 一键启动脚本
-└── uploads/               # 文件上传目录
+├── config/                # 配置文件目录
+├── controllers/           # 控制器目录（业务逻辑入口）
+├── middleware/            # 中间件目录（请求拦截与处理）
+├── models/                # 数据模型（数据结构定义）
+├── routes/                # 路由定义（URL分发）
+├── services/              # 服务层（核心业务逻辑）
+├── public/                # 静态资源目录
+├── database/              # 数据库文件
+├── views/                 # 视图模板
+├── scripts/               # 辅助脚本
+└── uploads/               # 上传文件存储
 ```
+
+## 🏛️ 核心架构与文件详解
+
+以下是各个核心目录及其文件的详细功能与协作关系说明：
+
+### 📂 config (配置中心)
+负责项目的全局配置与环境设定。
+- **`database.js`**: 数据库连接配置。负责初始化 SQLite 数据库连接实例，供 `models` 和 `services` 层直接调用进行数据操作。
+- **`server.js`**: 服务器配置模块。
+
+### 📂 controllers (业务控制器)
+接收路由请求，协调 `services` 层处理业务，并决定返回 JSON 数据或渲染 `views` 模板。
+- **`analyticsController.js`**: 处理后台数据分析请求。调用 `analyticsService` 获取报表数据，渲染 `views/analytics/dashboard.ejs`。
+- **`cartController.js`**: 管理购物车交互。处理商品的添加、删除、数量更新，与 `cart` 模型交互。
+- **`orderController.js`**: 处理订单流程。包括创建订单、查看订单历史等逻辑。
+
+### 📂 database (数据存储)
+- **`db.sqlite` / `star_shopping.db`**: SQLite 数据库文件。存储用户信息、商品、订单、行为日志等所有持久化数据。`config/database.js` 会连接此文件。
+
+### 📂 middleware (中间件)
+拦截 HTTP 请求，执行预处理逻辑（如权限验证、日志记录）。
+- **`authMiddleware.js`**: 用户登录验证。拦截需要登录的路由（如购物车、个人中心），未登录则重定向至登录页。
+- **`adminAuth.js`**: 管理员权限验证。保护 `/analytics` 等后台路由，确保只有管理员身份才能访问。
+- **`behaviorTracker.js`**: 用户行为追踪。自动记录用户的浏览、点击路径，数据存入数据库供分析系统使用。
+- **`jwtAuth.js`**: JWT 认证中间件。主要用于后台 API 的无状态身份验证，确保数据接口安全。
+
+### 📂 public (静态资源)
+存放客户端直接访问的资源，由 `express.static` 托管。
+- **`css/`**: 样式文件目录。`global.css` 定义通用样式，`style.css` 为基础样式，`detail.css`/`login.css` 等为特定页面样式。
+- **`js/`**: 前端脚本。`search.js` 包含智能搜索的前端逻辑（防抖、请求建议）。
+- **`image/`**: 商品图片、图标等静态素材。
+
+### 📂 routes (路由定义)
+定义 URL 端点（Endpoint），将 HTTP 请求分发给对应的 `controllers`。
+- **`analyticsRoutes.js`**: 定义 `/analytics` 路径下的接口。关联 `analyticsController`，并应用 `adminAuth` 中间件。
+- **`authRoutes.js`**: 处理登录 `/login`、注册 `/register` 请求。
+- **`cartRoutes.js`**: 定义购物车相关操作接口（添加、删除、更新）。
+- **`orderRoutes.js`**: 订单相关接口。
+- **`productRoutes.js`**: 商品浏览、详情页、搜索接口。调用 `searchService` 实现搜索功能。
+- **`tagRoutes.js`**: 处理标签分类页面的请求。
+- **`userRoutes.js`**: 用户个人中心、设置等接口。
+
+### 📂 services (业务服务)
+封装复杂的核心业务逻辑，实现代码复用，供 `controllers` 调用。
+- **`analyticsService.js`**: 数据分析核心逻辑。包含复杂的 SQL 聚合查询，计算销售趋势、用户留存等指标。
+- **`schedulerService.js`**: 定时任务服务。用于执行后台定期维护任务（如清理临时数据）。
+- **`searchService.js`**: 智能搜索服务。实现模糊匹配、拼音搜索算法，提升商品搜索体验。
+
+### 📂 views (视图模板)
+使用 EJS 引擎渲染的 HTML 模板，支持嵌入动态数据。
+- **`analytics/`**: 后台管理系统视图。
+  - `dashboard.ejs`: 主仪表盘容器。
+  - `partials/`:包含可复用的组件，如 `overview.ejs` (概览卡片)、`trends.ejs` (趋势图表)、`sidebar.ejs` (侧边栏)。
+- **`cart.ejs`**: 购物车页面模板。
+- **`detail.ejs`**: 商品详情页模板。
+- **`checkout.ejs`**: 结账页面模板。
+
 
 ## 数据库设计
 
-项目使用 SQLite 数据库，包含以下主要数据表：
+项目使用 SQLite 数据库 (`database/star_shopping.db`)，包含以下主要数据表：
 
-### users 表（用户信息）
-- `id` - 用户唯一标识
-- `username` - 用户名
-- `email` - 邮箱地址（唯一）
-- `password` - 加密密码
+### 1. 用户与权限
+**`users` 表** (用户信息)
+- `id` (TEXT): 用户唯一标识
+- `username` (TEXT): 用户名
+- `email` (TEXT): 邮箱地址（唯一）
+- `password` (TEXT): 加密后的密码
+- `role` (TEXT): 用户角色 (如 `admin`)
+- `avatar_url` (TEXT): 头像链接
 
-### products 表（商品信息）
-- `id` - 商品唯一标识
-- `name` - 商品名称
-- `description` - 商品描述
-- `price` - 商品价格
-- `image` - 商品图片
-- `stock` - 库存数量（默认0）
-- `created_at` - 创建时间
-- `updated_at` - 更新时间
+### 2. 商品系统
+**`products` 表** (商品核心信息)
+- `id` (INTEGER): 商品唯一标识 (PK)
+- `name` (TEXT): 商品名称
+- `subtitle` (TEXT): 副标题
+- `description` (TEXT): 商品描述
+- `price` (REAL): 价格
+- `image` (TEXT): 主图路径
+- `stock` (INTEGER): 库存数量
+- `brand` (TEXT): 品牌
+- `category` (TEXT): 分类
+- `specs_json` (TEXT): 规格参数 (JSON)
+- `detail_html` (TEXT): 详情页 HTML
+- `created_at` / `updated_at`: 时间戳
 
-### carts 表（购物车）
-- `id` - 购物车唯一标识
-- `user_id` - 用户ID（外键）
-- `total_price` - 购物车总价
+**`image_detail` 表** (商品详情图)
+- `id` (INTEGER): 唯一标识
+- `product_id` (INTEGER): 关联商品 ID
+- `detail_image1` ~ `detail_image5` (TEXT): 详情图片路径
 
-### cart_items 表（购物车商品）
-- `id` - 记录唯一标识
-- `cart_id` - 购物车ID（外键）
-- `product_id` - 商品ID（外键）
-- `quantity` - 商品数量
+**`reviews` 表** (商品评价)
+- `id` (INTEGER): 评价 ID
+- `product_id` (INTEGER): 关联商品
+- `user_name` (TEXT): 评价者昵称
+- `avatar_url` (TEXT): 评价者头像
+- `content` (TEXT): 评价内容
+- `rating` (INTEGER): 评分 (1-5)
+- `sku_info` (TEXT): 购买规格信息
 
-### orders 表（订单信息）
-- `id` - 订单唯一标识
-- `user_email` - 用户邮箱
-- `product_id` - 商品ID
-- `quantity` - 购买数量
-- `status` - 订单状态
-- `created_at` - 创建时间
+### 3. 交易系统
+**`carts` 表** (购物车)
+- `id` (INTEGER): 购物车 ID
+- `user_id` (TEXT): 关联用户
+- `total_price` (REAL): 购物车总价
 
-### user_behaviors 表（用户行为）
-- `id` - 行为记录唯一标识
-- `user_id` - 用户ID
-- `action_type` - 行为类型（view、add_to_cart、purchase等）
-- `target_type` - 目标类型（product、page等）
-- `target_id` - 目标ID
-- `metadata` - 元数据（JSON格式）
-- `ip_address` - IP地址
-- `user_agent` - 用户代理
-- `created_at` - 创建时间
+**`cart_items` 表** (购物车明细)
+- `id` (INTEGER): 明细 ID
+- `cart_id` (INTEGER): 关联购物车
+- `product_id` (INTEGER): 关联商品
+- `quantity` (INTEGER): 数量
 
-### user_preferences 表（用户偏好）
-- `id` - 偏好记录唯一标识
-- `user_id` - 用户ID
-- `product_id` - 商品ID
-- `weight` - 偏好权重
-- `created_at` - 创建时间
-- `updated_at` - 更新时间
+**`orders` 表** (订单主表)
+- `id` (TEXT): 订单号 (PK)
+- `user_id` (TEXT): 下单用户
+- `total_amount` (REAL): 订单总额
+- `shipping_address` (TEXT): 收货地址
+- `status` (TEXT): 状态 (pending/paid/shipped/completed)
 
-### analytics_summary 表（分析汇总）
-- `id` - 汇总记录唯一标识
-- `date` - 日期
-- `metric_type` - 指标类型
-- `metric_value` - 指标值
-- `created_at` - 创建时间
+**`order_items` 表** (订单商品明细)
+- `id` (INTEGER): 明细 ID
+- `order_id` (TEXT): 关联订单号
+- `product_id` (INTEGER): 关联商品
+- `quantity` (INTEGER): 购买数量
+- `price` (REAL): 购买时单价
+
+### 4. 分析与推荐
+**`user_behaviors` 表** (用户行为追踪)
+- `id` (INTEGER): 行为 ID
+- `user_id` (TEXT): 用户 ID
+- `action_type` (TEXT): 行为类型 (view/click/add_to_cart/purchase)
+- `target_type` (TEXT): 目标类型
+- `target_id` (INTEGER): 目标 ID
+- `metadata` (TEXT): 扩展数据 (JSON)
+- `ip_address` / `user_agent`: 客户端信息
+
+**`user_preferences` 表** (用户偏好画像)
+- `id` (INTEGER): 偏好 ID
+- `user_id` (TEXT): 用户 ID
+- `preference_type` (TEXT): 偏好类型
+- `preference_value` (TEXT): 偏好值
+- `weight` (REAL): 权重分值
+
+**`analytics_summary` 表** (数据报表)
+- `id` (INTEGER): 记录 ID
+- `date` (TEXT): 统计日期
+- `metric_type` (TEXT): 指标类型 (如 daily_sales)
+- `metric_value` (REAL): 统计值
+
+
+## 🔄 组件交互与深度流程解析
+
+### 1. 用户认证 (Authentication)
+**涉及文件**: `routes/authRoutes.js`, `middleware/authMiddleware.js`
+**网络协议**: HTTP/1.1 (POST, Redirect), Cookie
+**核心流程**:
+1.  **注册**: 用户提交表单 -> 调用 `bcrypt.hash(password, 10)` 进行单向哈希加密 -> 调用 `db.runAsync` 存入 `users` 表 -> 初始化 `req.session.user`。
+2.  **登录**: 用户提交凭证 -> `db.getAsync` 查询哈希 -> `bcrypt.compare` 验证 -> 服务器生成 `connect.sid` 写入 `Set-Cookie` 响应头。
+3.  **鉴权**: 客户端后续请求自动携带 Cookie -> `authMiddleware` 拦截器检查 `req.session.userId` 是否存在，实现状态保持。
+
+### 2. 智能搜索系统 (Smart Search)
+**涉及文件**: `services/searchService.js`, `routes/productRoutes.js`, `public/js/search.js`
+**网络协议**: HTTP/1.1 (GET, AJAX/Fetch)
+**核心技术**: 模糊匹配 (Fuzzy Matching), 倒排索引思想
+**交互逻辑**:
+1.  **前端发起**: `search.js` 监听输入框 `input` 事件，防抖后发送 `fetch('/products/api/search?keyword=...')`。
+2.  **服务端处理**:
+    - `productRoutes` 接收请求，调用 `searchService.fuzzySearch(keyword)`。
+    - **关键词扩展**: `expandKeyword()` 函数通过 `pinyinMap` 将 "xiaomi" 映射为 "小米"，通过 `synonymMap` 将 "手机" 扩展为 "电话"。
+    - **模糊匹配**: 使用 `Fuse.js` 库或自定义算法计算 Levenshtein 编辑距离，对 `name` 和 `description` 字段进行加权评分。
+3.  **结果返回**: 服务端返回按相关度排序的 JSON 数组，前端动态渲染下拉建议列表。
+
+### 3. 交易全链路 (Transaction Flow)
+**涉及文件**: `controllers/cartController.js`, `controllers/orderController.js`, `models/cart.js`
+**网络协议**: HTTP/1.1 (POST, RESTful API)
+**数据一致性**: 乐观锁/事务 (应用层模拟)
+**交互逻辑**:
+1.  **加入购物车**:
+    - `cartController.addToCart` 接收 POST 请求。
+    - **UPSERT 逻辑**: 查询 `cart_items` 表，若商品已存在则执行 `UPDATE ... SET quantity = quantity + ?`，否则执行 `INSERT`。
+    - **总价计算**: 触发 `updateCartTotal` 函数，聚合计算 `SUM(price * quantity)` 并更新 `carts` 主表。
+2.  **下单结算**:
+    - `orderController.createOrder` 接收结算清单。
+    - **生成订单号**: 使用时间戳+随机数算法 (`ORD-${timestamp}-${random}`) 保证唯一性。
+    - **原子操作**: 在一个逻辑单元内依次执行：插入 `orders` 表 -> 批量插入 `order_items` 表 -> (可选) 清空购物车。
+
+### 4. 数据分析闭环 (Data Analytics Loop)
+**涉及文件**: `middleware/behaviorTracker.js`, `services/analyticsService.js`
+**网络协议**: HTTP 中间件拦截
+**核心技术**: 埋点采集 (Event Tracking), SQL 聚合 (Aggregation)
+**交互逻辑**:
+1.  **数据采集 (Collection)**:
+    - `behaviorTracker.js` 作为全局中间件拦截请求。
+    - `trackPageView`: 记录 URL、IP、User-Agent 到 `user_behaviors` 表。
+    - `trackEvent`: 监听特定 API (如 `addToCart`) 记录转化行为。
+2.  **数据聚合 (Aggregation)**:
+    - `analyticsService.generateDailySummary`: 执行复杂 SQL (`COUNT(DISTINCT user_id)`, `SUM(total_amount)`) 生成每日报表。
+    - 数据缓存至 `analytics_summary` 表，减少实时查询压力。
+3.  **可视化 (Visualization)**:
+    - 前端 `Chart.js` 发起 AJAX 请求获取聚合数据，绘制趋势图。
+
+### 5. 实时客服系统 (WebSocket Real-time Chat)
+**涉及文件**: `app.js` (Server), `views/analytics/partials/scripts.ejs` (Client)
+**网络协议**: WebSocket (ws/wss), HTTP Upgrade
+**核心技术**: 全双工通信 (Full-Duplex), 事件驱动 (Event-driven)
+**交互逻辑**:
+1.  **握手升级 (Handshake)**:
+    - 客户端发起 HTTP 请求携带 `Upgrade: websocket` 头。
+    - `app.js` 中的 `server.on('upgrade')` 监听器响应 `101 Switching Protocols`，建立 TCP 长连接。
+2.  **消息路由 (Message Routing)**:
+    - **用户 -> 管理员**: 用户发送 `{type: 'question'}` -> 服务端解析 SessionID -> 查找所有连接到 `/admin/ws` 的管理员 Socket -> 广播消息。
+    - **管理员 -> 用户**: 管理员发送 `{type: 'reply', sessionId: '...'}` -> 服务端在 `sessions` Map 中查找对应用户的 Socket -> 单播推送。
+3.  **心跳保活 (Heartbeat)**:
+    - 服务端定时 (`setInterval`) 向所有客户端发送 Ping，客户端自动回复 Pong，剔除僵尸连接。
 
 ## 安装与运行
 
@@ -399,10 +517,6 @@ npm start
 
 ## 📋 版本信息
 
-### 当前版本
-- **最新版本**: v2.3.0
-- **发布日期**: 2025-7-4
-- **主要更新**: 数据分析系统全面上线
 
 ### 版本历史
 - 📄 [完整更新日志](./docs/CHANGELOG.md) - 查看详细的版本历史和技术变更
@@ -447,22 +561,6 @@ npm start
 - [SQLite](https://www.sqlite.org/) - 轻量级数据库
 - [EJS](https://ejs.co/) - 模板引擎
 
-## 未来规划
-
-- [x] ~~智能搜索功能~~ ✅ 已完成 (v2.2.0)
-- [x] ~~数据分析系统~~ ✅ 已完成 (v2.3.0)
-- [x] ~~管理员后台~~ ✅ 已完成 (v2.3.0)
-- [ ] 添加订单管理功能
-- [ ] 实现支付系统集成
-- [ ] 添加商品评价系统
-- [ ] 添加商品推荐算法
-- [ ] 搜索历史记录功能
-- [ ] 语音搜索功能
-- [ ] 图像识别搜索
-- [ ] 支持多语言国际化
-- [ ] 移动端 APP 开发
-- [ ] 添加实时聊天客服
-  （已完成：内嵌客服聊天与 WebSocket 实时通道）
 
 ## 常见问题
 - WebSocket 频繁断开或无法连接
