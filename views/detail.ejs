@@ -169,7 +169,6 @@
       <div class="tab active">用户评价</div>
       <div class="tab">参数信息</div>
       <div class="tab">图文详情</div>
-      <div class="tab">本店推荐</div>
     </div>
     <div class="tab-content">
       <div class="tab-panel active">
@@ -258,26 +257,6 @@
                   <% if (product && product.price_notice_html) { %>
                     <div class="price-notice" id="price-notice"><%- product.price_notice_html %></div>
                     <% } %>
-      </div>
-      <div class="tab-panel">
-        <!-- 数据库字段: relatedProducts[] (后端传入) -->
-        <% if (typeof relatedProducts !=='undefined' && relatedProducts && relatedProducts.length) { %>
-          <div id="related-products" style="display:flex;gap:12px;flex-wrap:wrap">
-            <% relatedProducts.forEach(function(rp){ %>
-              <a href="/product/<%= rp.id %>"
-                style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #eee;border-radius:8px;text-decoration:none;color:#333">
-                <% if (rp.image) { %>
-                  <img src="<%= rp.image %>" style="width:48px;height:48px;border-radius:6px">
-                  <% } %>
-                    <span>
-                      <%= rp.name || '商品' %>
-                    </span>
-              </a>
-              <% }) %>
-          </div>
-          <% } else { %>
-            <div class="related-empty" style="display:flex;gap:12px;flex-wrap:wrap;color:#6c7a89">暂无推荐</div>
-            <% } %>
       </div>
     </div>
   </div>
