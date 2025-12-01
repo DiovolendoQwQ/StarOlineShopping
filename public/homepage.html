@@ -79,6 +79,12 @@
     <div id="footer-container"></div>
 
     <script type="module" src="/js/homepage/index.js"></script>
-</body>
+    <script>
+      try {
+        localStorage.setItem('cs_force_new','1');
+        localStorage.removeItem('cs_session_id');
+      } catch(_) {}
+    </script>
+  </body>
 
 </html>

@@ -6,6 +6,7 @@ if (String(process.env.CLUSTER_ENABLED || '0') === '1' && cluster.isPrimary) {
   return;
 }
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -56,6 +57,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const { requireAdminJwt } = require('./middleware/jwtAuth');
+const { isAdmin } = require('./middleware/adminAuth');
 
 app.use('/auth', authRoutes);
 app.use('/cart', cartRoutes);
@@ -200,6 +202,7 @@ function setupWebSockets() {
   wssAdmin = new WebSocketServer({ noServer: true });
   wssAdmin.on('error', (err) => { try { pushLog('error', err.message); } catch (_) { } });
   wssAdmin.on('connection', (ws) => {
+    ws.isAdmin = true;
     adminClients.add(ws);
     (async () => { try { const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`); ws.send(JSON.stringify({ type: 'sessions', sessions: rows })); } catch (_) { } })();
     try { ws.send(JSON.stringify({ type: 'log_init', logs: logs.slice(-100) })); } catch (_) { }
@@ -216,9 +219,21 @@ function setupWebSockets() {
           (async () => { try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'admin', ?, CURRENT_TIMESTAMP)`, [msg.sessionId, msg.message]); await db.runAsync(`UPDATE cs_sessions SET last_active_at=CURRENT_TIMESTAMP WHERE session_id=?`, [msg.sessionId]); } catch (_) { } })();
         }
         if (msg.type === 'end_session' && msg.sessionId) {
+          if (!ws.isAdmin) return; 
           (async () => {
             try {
-              await db.runAsync(`UPDATE cs_sessions SET status='ended', online=0, ended_at=CURRENT_TIMESTAMP WHERE session_id=?`, [msg.sessionId]);
+              {
+                let ok=false; for (let i=0;i<3;i++){ try { await db.runAsync(`UPDATE cs_sessions SET status='ended', online=0, ended_at=CURRENT_TIMESTAMP WHERE session_id=?`, [msg.sessionId]); ok=true; break; } catch(e){ await new Promise(r=>setTimeout(r, 120*(i+1))); } }
+                if (!ok) throw new Error('db_update_failed');
+              }
+              try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'system', 'session_ended', CURRENT_TIMESTAMP)`, [msg.sessionId]); } catch (_) {}
+              try { await db.runAsync(`CREATE TABLE IF NOT EXISTS cs_sessions_archive (session_id TEXT PRIMARY KEY, username TEXT, email TEXT, status TEXT, online INTEGER, user_agent TEXT, created_at TEXT, last_active_at TEXT, ended_at TEXT)`); } catch (_) {}
+              try {
+                const row = await db.getAsync(`SELECT session_id, username, email, status, online, user_agent, created_at, last_active_at, ended_at FROM cs_sessions WHERE session_id=?`, [msg.sessionId]);
+                if (row) {
+                  await db.runAsync(`INSERT OR REPLACE INTO cs_sessions_archive(session_id, username, email, status, online, user_agent, created_at, last_active_at, ended_at) VALUES(?,?,?,?,?,?,?,?,?)`, [row.session_id, row.username, row.email, 'ended', 0, row.user_agent, row.created_at, row.last_active_at, row.ended_at || new Date().toISOString()]);
+                }
+              } catch (_) {}
               const clientWs = sessions.get(msg.sessionId);
               if (clientWs && clientWs.readyState === 1) {
                 clientWs.send(JSON.stringify({ type: 'session_ended', sessionId: msg.sessionId, timestamp: ts() }));
@@ -226,7 +241,8 @@ function setupWebSockets() {
               broadcastAdmin({ type: 'session_ended', sessionId: msg.sessionId, endedAt: ts() });
               const rows = await db.allAsync(`SELECT session_id, username, email, status, online, last_active_at FROM cs_sessions WHERE status='active' ORDER BY last_active_at DESC`);
               broadcastAdmin({ type: 'sessions', sessions: rows });
-            } catch (e) { }
+              pushLog('info', `Admin ended session ${msg.sessionId}`);
+            } catch (e) { pushLog('error', `end_session_failed: ${e && e.message ? e.message : e}`); broadcastAdmin({ type: 'app_error', data: 'end_session_failed' }); }
           })();
         }
       } catch (e) { console.error('Admin message error:', e); }
@@ -242,7 +258,17 @@ function setupWebSockets() {
         return;
       }
       if (url.pathname === '/admin/ws') {
-        wssAdmin.handleUpgrade(req, socket, head, (ws) => { wssAdmin.emit('connection', ws, req); });
+        const cookieHeader = req.headers.cookie || '';
+        const authHeader = req.headers.authorization || '';
+        const tokenFromHeader = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+        const tokenFromCookie = (cookieHeader.match(/(?:^|;\s*)(?:token|jwt)=([^;]+)/) || [])[1] || null;
+        const token = tokenFromHeader || tokenFromCookie;
+        let payload = null;
+        if (token) {
+          try { payload = jwt.verify(token, process.env.JWT_SECRET || process.env.SESSION_SECRET || 'your_secret_key'); } catch (_) { payload = null; }
+        }
+        if (!payload || !isAdmin(payload)) { try { socket.destroy(); } catch (_) {} return; }
+        wssAdmin.handleUpgrade(req, socket, head, (ws) => { ws.isAdmin = true; wssAdmin.emit('connection', ws, req); });
         return;
       }
       socket.destroy();
@@ -406,6 +432,7 @@ app.get('/api/customer-service/history/:sessionId', async (req, res) => {
     res.json({ ok: true, history: rows });
   } catch (e) { res.status(500).json({ ok: false }); }
 });
+
 
 setInterval(async () => {
   try {

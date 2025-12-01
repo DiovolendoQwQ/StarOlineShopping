@@ -96,7 +96,7 @@
         
         @media (max-width: 768px) {
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 gap: 16px;
             }
         }
@@ -325,6 +325,8 @@
             background-size: 200px 100%;
             animation: shimmer 1.5s infinite;
         }
+        .stock-ok { color: #28a745; }
+        .stock-zero { color: #dc3545; }
     </style>
 </head>
 <body>
@@ -342,7 +344,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                         <span>搜索 "<%= keyword %>" 找到 <strong><%= typeof totalCount !== 'undefined' ? totalCount : products.length %></strong> 个结果</span>
                         <% if (typeof totalCount !== 'undefined' && totalCount > products.length) { %>
-                            <span style="font-size: 12px; color: #666;">显示第 <%= (page-1)*10 + 1 %>-<%= Math.min(page*10, totalCount) %> 个结果</span>
+                            <span style="font-size: 12px; color: #666;">显示第 <%= startItem %>-<%= endItem %> 个结果</span>
                         <% } %>
                     </div>
                 <% } else { %>
@@ -372,8 +374,8 @@
                             <% } %>
                             <div class="product-price">¥<%= product.price %></div>
                             <% if (product.stock !== undefined) { %>
-                                <div style="font-size: 11px; color: <%= product.stock > 0 ? '#28a745' : '#dc3545' %>; margin: 3px 0;">
-                                    <%= product.stock > 0 ? `库存: ${product.stock}` : '暂无库存' %>
+                                <div class="<%= Number(product.stock) > 0 ? 'stock-ok' : 'stock-zero' %>" style="font-size: 11px; margin:3px 0;">
+                                    <%= Number(product.stock) > 0 ? `库存: ${product.stock}` : '暂无库存' %>
                                 </div>
                             <% } %>
                             

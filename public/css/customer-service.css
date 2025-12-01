@@ -33,4 +33,4 @@ body{background:radial-gradient(1200px circle at 20% 10%,var(--bg3),var(--bg2) 4
 @keyframes floatIn{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes glint{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 @media (max-width:768px){.cs-container{max-width:100%;margin:0;border-radius:0;box-shadow:none}.cs-header{padding:14px 16px}.cs-title{font-size:16px}.cs-body{padding:12px}.cs-chat{height:60vh}.cs-form{flex-direction:column}.cs-form button{width:100%}}
-@media (min-width:1280px){.sky-bg::after{content:"";position:absolute;inset:0;background-image:url('/images/constellations.svg');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.14;pointer-events:none}}
+@media (min-width:1280px){.sky-bg::after{content:"";position:absolute;inset:0;background-image:url('/image/constellations.svg');background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.14;pointer-events:none}}

@@ -41,20 +41,25 @@ function dedupeProducts(list) {
   return out;
 }
 
+function excludeUnwanted(list) {
+  const skip = new Set([301, 302]);
+  return list.filter(p => !skip.has(Number(p.id)));
+}
+
 // 获取商品列表（支持分页与模糊搜索）- 返回HTML页面
 router.get('/all', async (req, res) => {
   const { page = 1, keyword = '' } = req.query;
-  const limit = parseInt(req.query.pageSize || 12);
-  const pageNum = Math.max(1, parseInt(page));
+  const limit = Math.max(1, parseInt(req.query.pageSize) || 12);
+  const pageNum = Math.max(1, parseInt(page) || 1);
   const offset = (pageNum - 1) * limit;
 
   try {
     let products, totalCount;
     const tag = (req.query.tag || '').toLowerCase();
     
-    if (keyword.trim()) {
-      const allResults = await searchService.fuzzySearch(keyword, { limit: 1000 });
-      let filteredResults = allResults;
+  if (keyword.trim()) {
+    const allResults = await searchService.fuzzySearch(keyword, { limit: 1000 });
+    let filteredResults = allResults;
       if (tag === 'accessory' || /手机壳|保护壳|保护套|外壳|手机膜|钢化膜/.test(keyword)) {
         const allowTokens = ['壳', '手机壳', '保护壳', '保护套', '外壳', '膜', '钢化膜'];
         filteredResults = allResults.filter(p => {
@@ -62,19 +67,19 @@ router.get('/all', async (req, res) => {
           return allowTokens.some(t => text.includes(t));
         });
       }
-      filteredResults = dedupeProducts(filteredResults);
-      totalCount = filteredResults.length;
-      products = filteredResults.slice(offset, offset + limit);
-    } else {
-      // 获取所有商品
-      const total = await db.getAsync("SELECT COUNT(*) AS count FROM products");
-      totalCount = total.count;
-      products = await db.allAsync(
-        "SELECT * FROM products ORDER BY created_at DESC LIMIT ? OFFSET ?",
-        [limit, offset]
-      );
-      products = dedupeProducts(products);
-    }
+    filteredResults = excludeUnwanted(dedupeProducts(filteredResults));
+    totalCount = filteredResults.length;
+    products = filteredResults.slice(offset, offset + limit);
+  } else {
+    // 获取所有商品
+    const total = await db.getAsync("SELECT COUNT(*) AS count FROM products WHERE id NOT IN (301,302)");
+    totalCount = total.count;
+    products = await db.allAsync(
+      "SELECT * FROM products WHERE id NOT IN (301,302) ORDER BY created_at DESC LIMIT ? OFFSET ?",
+      [limit, offset]
+    );
+    products = excludeUnwanted(dedupeProducts(products));
+  }
     
     const totalPages = Math.max(1, Math.ceil(totalCount / limit));
     const startItem = totalCount === 0 ? 0 : offset + 1;

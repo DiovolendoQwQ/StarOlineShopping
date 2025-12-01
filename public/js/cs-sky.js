@@ -137,16 +137,22 @@
     const sy = Math.random()*H*0.6;
     const ex = sx<0 ? W+60 : -60;
     const ey = sy + (Math.random()*H*0.25 - H*0.12);
+    const angle = Math.atan2(ey-sy, ex-sx);
+    const len = 100;
     const steps = 48;
     let i = 0;
     function draw(){
       mctx.clearRect(0,0,W,H);
-      const t = i/steps; const x = sx + (ex-sx)*t; const y = sy + (ey-sy)*t;
-      const grad = mctx.createLinearGradient(x,y,x-60,y-20);
+      const t = i/steps; 
+      const x = sx + (ex-sx)*t; 
+      const y = sy + (ey-sy)*t;
+      const tx = x - Math.cos(angle) * len;
+      const ty = y - Math.sin(angle) * len;
+      const grad = mctx.createLinearGradient(x,y,tx,ty);
       grad.addColorStop(0,'rgba(255,255,255,0.95)');
       grad.addColorStop(1,'rgba(124,140,255,0)');
       mctx.strokeStyle = grad; mctx.lineWidth = 2;
-      mctx.beginPath(); mctx.moveTo(x,y); mctx.lineTo(x-80,y-30); mctx.stroke();
+      mctx.beginPath(); mctx.moveTo(x,y); mctx.lineTo(tx,ty); mctx.stroke();
       i++; if(i<=steps) requestAnimationFrame(draw); else setTimeout(()=>mctx.clearRect(0,0,W,H),60);
     }
     requestAnimationFrame(draw);

@@ -16,6 +16,7 @@
       const inputEl = document.getElementById('cs-input');
       const sendBtn = document.getElementById('cs-send');
       const toastEl = document.getElementById('cs-toast');
+      let endOverlay = null;
       function fmtTime(){return new Date().toLocaleTimeString('zh-CN',{hour12:false,hour:'2-digit',minute:'2-digit'});}      
       function showToast(text){toastEl.textContent=text;toastEl.classList.add('show');setTimeout(()=>{toastEl.classList.remove('show');},2000);}      
       function addMsg(text, who){
@@ -46,6 +47,32 @@
           showToast('会话已结束');
           sendBtn.disabled = true;
           inputEl.disabled = true;
+          if (!endOverlay) {
+            endOverlay = document.createElement('div');
+            endOverlay.style.position = 'absolute';
+            endOverlay.style.left = '50%';
+            endOverlay.style.top = '50%';
+            endOverlay.style.transform = 'translate(-50%, -50%)';
+            endOverlay.style.background = 'rgba(17,24,39,0.9)';
+            endOverlay.style.color = '#fff';
+            endOverlay.style.padding = '16px 20px';
+            endOverlay.style.borderRadius = '12px';
+            endOverlay.style.boxShadow = '0 12px 24px rgba(0,0,0,.35)';
+            endOverlay.style.textAlign = 'center';
+            endOverlay.style.zIndex = '1000';
+            endOverlay.innerHTML = '<div style="font-weight:600;margin-bottom:10px">会话已结束</div>'+
+              '<button id="cs-restart" style="background:#6366f1;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer">再次会话</button>'+
+              '<div style="margin-top:10px"><a href="/homepage" style="color:#93c5fd;text-decoration:none">返回首页</a></div>';
+            const body = document.querySelector('.cs-body');
+            (body || document.body).appendChild(endOverlay);
+            endOverlay.querySelector('#cs-restart').addEventListener('click', function(){
+              window.CustomerService.resetToNewSession();
+              chatEl.innerHTML='';
+              sendBtn.disabled = false; inputEl.disabled = false;
+              try { endOverlay.parentNode.removeChild(endOverlay); endOverlay=null; } catch(_){}
+              showToast('已开启新会话');
+            });
+          }
         }
       });
       function doSend(){

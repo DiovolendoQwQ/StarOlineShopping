@@ -1,7 +1,8 @@
 (() => {
-  const STATE = { ws: null, connected: false, reconnectAttempts: 0, sessionId: null };
+  const STATE = { ws: null, connected: false, reconnectAttempts: 0, sessionId: null, status: 'new' };
   const QUEUE_KEY = 'cs_offline_queue';
   const SID_KEY = 'cs_session_id';
+  const FORCE_NEW_KEY = 'cs_force_new';
   const MAX_RETRY = 24;
 
   function now() { return new Date().toISOString(); }
@@ -9,12 +10,24 @@
   function loadSid() { try { return localStorage.getItem(SID_KEY) || null; } catch (_) { return null; } }
   function saveSid(id) { try { localStorage.setItem(SID_KEY, id); } catch (_) { } }
   function clearSid() { try { localStorage.removeItem(SID_KEY); } catch (_) { } }
+  function shouldForceNew() { try { return localStorage.getItem(FORCE_NEW_KEY) === '1'; } catch (_) { return false; } }
+  function consumeForceNew() { try { localStorage.removeItem(FORCE_NEW_KEY); } catch (_) { } }
+  function markForceNew() { try { localStorage.setItem(FORCE_NEW_KEY, '1'); } catch (_) { } }
   function loadQueue() { try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch (_) { return []; } }
   function saveQueue(q) { try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); } catch (_) { } }
   function enqueue(item) { const q = loadQueue(); q.push(item); saveQueue(q); }
   function drainQueue(send) { const q = loadQueue(); const rest = []; for (const m of q) { try { send(m); } catch (e) { rest.push(m); } } saveQueue(rest); }
 
   function wsUrl() { const proto = location.protocol === 'https:' ? 'wss' : 'ws'; return `${proto}://${location.host}/ws`; }
+
+  function setStatus(s) { STATE.status = s; try { console.log('[CS] status:', s); } catch (_) {} }
+  function initSessionState() {
+    if (shouldForceNew()) {
+      clearSid(); STATE.sessionId = null; setStatus('new'); consumeForceNew();
+    } else {
+      const sid = loadSid(); if (sid) { STATE.sessionId = sid; setStatus('active'); } else { setStatus('new'); }
+    }
+  }
 
   async function getUserInfo() {
     try {
@@ -28,6 +41,7 @@
 
   async function connect() {
     if (STATE.connected || STATE.ws) return;
+    initSessionState();
     STATE.sessionId = STATE.sessionId || loadSid() || uuid();
     saveSid(STATE.sessionId);
 
@@ -44,6 +58,7 @@
     ws.onopen = () => {
       STATE.connected = true;
       STATE.reconnectAttempts = 0;
+      setStatus('active');
       safeLog('INFO', `WS 已连接，会话: ${STATE.sessionId}`);
       send({
         type: 'init',
@@ -62,6 +77,7 @@
       if (msg.type === 'session_ended' && msg.sessionId && msg.sessionId === STATE.sessionId) {
         clearSid();
         STATE.sessionId = null;
+        setStatus('ended');
       }
     };
     ws.onclose = (ev) => {
@@ -106,6 +122,13 @@
 
   window.CustomerService = {
     connect,
+    resetToNewSession: () => {
+      try { if (STATE.ws && STATE.ws.readyState === WebSocket.OPEN) { STATE.ws.close(); } } catch (_) {}
+      clearSid(); STATE.sessionId = null; setStatus('new');
+      STATE.connected = false; STATE.ws = null; STATE.reconnectAttempts = 0;
+      connect();
+    },
+    forceNewOnEntry: () => { markForceNew(); },
     sendQuestion: async (text) => {
       const ok = send({ type: 'question', message: text, userAgent: navigator.userAgent });
       if (!ok) { await sendViaRest(text); }
