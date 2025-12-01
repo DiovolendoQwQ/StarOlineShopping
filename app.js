@@ -96,7 +96,6 @@ app.use((err, req, res, next) => { console.error(color('ERROR', `[${ts()}] 全�
 
 let WebSocketServer; try { WebSocketServer = require('ws').WebSocketServer; } catch (e) { WebSocketServer = null; }
 const sessions = new Map();
-const sessionHistory = new Map();
 let wss;
 let wssAdmin;
 let adminClients = new Set();
@@ -114,8 +113,6 @@ function replyActive(message) {
     try {
       ws.send(JSON.stringify({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() }));
       console.log(color('REPLY', `[${ts()}] 已回复 会话:${activeSessionId} 消息:${message}`));
-      if (!sessionHistory.has(activeSessionId)) sessionHistory.set(activeSessionId, []);
-      sessionHistory.get(activeSessionId).push({ sender: 'admin', content: message, time: ts() });
       broadcastAdmin({ type: 'reply', sessionId: activeSessionId, message, timestamp: ts() });
     } catch (e) {
       console.error(color('ERROR', `[${ts()}] 回复失败: ${e.message}`));
@@ -160,6 +157,7 @@ function setupWebSockets() {
         try { const row = await db.getAsync(`SELECT status FROM cs_sessions WHERE session_id=?`, [sid]); if (row && row.status === 'ended') { return; } } catch (_) {}
         console.log(color('QUESTION', `[${ts()}] 客服询问[WS] 会话:${sid} 分类:${cat}\nIP:${ip} UA:${ua}\n消息:${msg.message}`));
         try { ws.send(JSON.stringify({ type: 'ack', sessionId: sid, timestamp: ts() })); } catch (_) { }
+
         if (!sessionHistory.has(sid)) sessionHistory.set(sid, []);
         sessionHistory.get(sid).push({ sender: 'user', content: msg.message, time: ts(), user: ws.user });
         try { await db.runAsync(`INSERT INTO cs_messages(session_id, sender, content, time) VALUES(?, 'user', ?, CURRENT_TIMESTAMP)`, [sid, msg.message]); await db.runAsync(`UPDATE cs_sessions SET last_active_at=CURRENT_TIMESTAMP WHERE session_id=?`, [sid]); } catch (_) { }
@@ -414,13 +412,6 @@ app.get('/admin/api/clients', requireAdminJwt, async (req, res) => {
     res.json({ ok: true, clients: rows });
   } catch (e) { res.json({ ok: false, error: 'db_error' }); }
 });
-
-app.get('/admin/api/chat/history/:sessionId', requireAdminJwt, (req, res) => {
-  const sid = req.params.sessionId;
-  const history = sessionHistory.get(sid) || [];
-  res.json({ ok: true, history });
-});
-
 app.get('/admin/api/logs', requireAdminJwt, (req, res) => {
   res.json({ ok: true, logs });
 });

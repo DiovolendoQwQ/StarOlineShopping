@@ -272,6 +272,10 @@
 
         // 初始化图表
         function initializeCharts() {
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js 未加载，跳过图表初始化');
+                return;
+            }
             // 行为类型分布饼图
             if (document.getElementById('behaviorChart')) {
                 const behaviorCtx = document.getElementById('behaviorChart').getContext('2d');

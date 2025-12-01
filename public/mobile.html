@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>STAR移动版</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{width:100%;min-height:100%;margin:0;overflow-x:hidden}
+    body{font-family:"Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:#f7f8fa;color:#111}
+    .container{width:100%;max-width:100vw;margin:0 auto;padding:12px calc(12px + env(safe-area-inset-right)) 12px calc(12px + env(safe-area-inset-left))}
+    .brand{font-size:20px;font-weight:600;text-align:center;padding:12px 0}
+    .search{width:100%}
+    .search form{display:flex;height:48px;width:100%}
+    .search .text{width:calc(100% - 64px);height:48px;line-height:48px;border:1px solid #ddd;border-radius:10px 0 0 10px;background:#fff}
+    .search .text .shuru{width:100%;height:46px;padding:0 12px;border:none;outline:none;font-size:16px}
+    .search .submit{width:64px;height:48px;border:1px solid #ddd;border-left:none;border-radius:0 10px 10px 0;background:#ff6700}
+    .search .submit .sousuo{width:100%;height:100%;border:none;background:none;color:#fff;letter-spacing:1px}
+    .actions{margin-top:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .actions a{display:block;text-align:center;padding:10px 8px;border-radius:10px;background:#fff;border:1px solid #eee;color:#333;text-decoration:none}
+    .cats{margin-top:12px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+    .cats a{display:block;text-align:center;padding:8px 4px;border-radius:999px;background:#fff;border:1px solid #eee;color:#333;text-decoration:none;font-size:12px}
+    .section-title{margin:16px 0 10px 0;text-align:center;font-size:18px;font-weight:600}
+    .products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;justify-items:center}
+    .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;text-align:center;width:100%}
+    .card img{display:block;max-width:160px;width:100%;height:auto;margin:0 auto 8px auto;border-radius:8px}
+    .card .name{font-size:14px;color:#333}
+    .card .price{font-size:14px;color:#ff6700;font-weight:600;margin-top:4px}
+    @media (max-width:540px){.actions{grid-template-columns:repeat(3,1fr)}.cats{grid-template-columns:repeat(3,1fr)}.search .text .shuru{font-size:15px}}
+    @media (max-width:420px){.products{grid-template-columns:1fr}.card img{max-width:140px}.cats{grid-template-columns:repeat(3,1fr)}.actions{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">STAR在线购物平台</div>
+    <div class="search">
+      <form action="/products/all" method="get">
+        <div class="text"><input type="text" name="keyword" class="shuru" placeholder="搜索商品"></div>
+        <div class="submit"><input type="submit" class="sousuo" value="搜索"></div>
+      </form>
+    </div>
+    <div class="actions">
+      <a href="/cart">购物车</a>
+      <a href="/customer-service.html">客服</a>
+      <a href="/login.html">登录</a>
+      <a href="/profile.html">个人中心</a>
+    </div>
+    <div class="cats">
+      <a href="/products/all?keyword=%E9%80%89%E8%B4%AD%E6%89%8B%E6%9C%BA">选购手机</a>
+      <a href="/products/all?keyword=%E4%BC%81%E4%B8%9A%E5%9B%A2%E8%B4%AD">企业团购</a>
+      <a href="/products/all?keyword=%E4%B8%80%E5%85%83%E6%B4%BB%E5%8A%A8">一元活动</a>
+      <a href="/products/all?keyword=%E8%99%BE%E7%B1%B3%E7%A7%BB%E5%8A%A8">移动</a>
+      <a href="/products/all?keyword=%E4%BB%A5%E6%97%A7%E6%8D%A2%E6%96%B0">以旧换新</a>
+      <a href="/products/all?keyword=%E8%AF%9D%E8%B4%B9%E5%85%85%E5%80%BC">话费充值</a>
+    </div>
+    <div class="section-title">推荐商品</div>
+    <div class="products">
+      <a class="card" href="/product/1">
+        <img src="./image/Product1.jpg" alt="iPhone 16 Pro">
+        <div class="name">iPhone 16 Pro</div>
+        <div class="price">3499元起</div>
+      </a>
+      <a class="card" href="/product/2">
+        <img src="./image/Product2.png" alt="小米5s">
+        <div class="name">小米5s</div>
+        <div class="price">1999元</div>
+      </a>
+      <a class="card" href="/product/3">
+        <img src="./image/Product3.jpg" alt="荣耀X60">
+        <div class="name">荣耀X60</div>
+        <div class="price">1799元</div>
+      </a>
+      <a class="card" href="/product/4">
+        <img src="./image/Product4.jpg" alt="华硕 ROG">
+        <div class="name">华硕 ROG</div>
+        <div class="price">3999元</div>
+      </a>
+      <a class="card" href="/product/5">
+        <img src="./image/Product5.jpg" alt="红魔10Pro">
+        <div class="name">红魔10Pro</div>
+        <div class="price">3599元起</div>
+      </a>
+    </div>
+  </div>
+  <script src="./js/search.js"></script>
+</body>
+</html>
