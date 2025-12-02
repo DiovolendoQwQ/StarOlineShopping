@@ -78,6 +78,7 @@
         clearSid();
         STATE.sessionId = null;
         setStatus('ended');
+        try { window.CustomerService.resetToNewSession(); } catch (_) {}
       }
     };
     ws.onclose = (ev) => {

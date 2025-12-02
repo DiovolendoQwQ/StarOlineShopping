@@ -104,6 +104,7 @@ app.use((err, req, res, next) => { console.error(color('ERROR', `[${ts()}] å…¨å±
 
 let WebSocketServer; try { WebSocketServer = require('ws').WebSocketServer; } catch (e) { WebSocketServer = null; }
 const sessions = new Map();
+const sessionHistory = new Map();
 let wss;
 let wssAdmin;
 let adminClients = new Set();
