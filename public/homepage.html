@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="author" content="order by dede58.com" />
     <title>Star Online Shopping Center</title>
+    <script>
+      (function(){
+        var ua = navigator.userAgent || '';
+        var isMobile = /Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua) || (window.innerWidth && window.innerWidth < 640);
+        if (isMobile && location.pathname !== '/mobile.html') { location.replace('/mobile.html'); }
+      })();
+    </script>
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/home.css">

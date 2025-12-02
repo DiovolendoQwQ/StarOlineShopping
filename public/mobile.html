@@ -81,7 +81,21 @@
         <div class="price">3599元起</div>
       </a>
     </div>
+    <div class="section-title">配件</div>
+    <div class="products" id="mobile-accessories"></div>
   </div>
+  <script type="module">
+    import { accessoriesData, accessoriesData2 } from '/js/homepage/data.js';
+    const container = document.getElementById('mobile-accessories');
+    const items = [...accessoriesData, ...accessoriesData2].filter(i => i.type === 'product');
+    container.innerHTML = items.map(item => `
+      <a class="card" href="${item.link || ('/products/all?keyword=' + encodeURIComponent(item.name))}">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="name">${item.name}</div>
+        <div class="price">${item.price}</div>
+      </a>
+    `).join('');
+  </script>
   <script src="./js/search.js"></script>
 </body>
 </html>

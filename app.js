@@ -73,7 +73,15 @@ app.post('/login', (req, res) => res.redirect(307, '/auth/login'));
 
 app.get('/', (req, res) => { console.log(color('INFO', `[${ts()}] 访问根路径，跳转到登录页面`)); res.sendFile(path.join(__dirname, 'public', 'login.html')); });
 app.get('/login', (req, res) => { console.log(color('INFO', `[${ts()}] 访问登录页面`)); res.sendFile(path.join(__dirname, 'public', 'login.html')); });
-app.get('/homepage', (req, res) => { console.log(color('INFO', `[${ts()}] 访问主页`)); res.sendFile(path.join(__dirname, 'public', 'homepage.html')); });
+app.get('/homepage', (req, res) => {
+  console.log(color('INFO', `[${ts()}] 访问主页`));
+  const ua = req.headers['user-agent'] || '';
+  if (/Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua)) {
+    console.log(color('INFO', `[${ts()}] 检测到移动端 UA,跳转 mobile.html`));
+    return res.redirect('/mobile.html');
+  }
+  res.sendFile(path.join(__dirname, 'public', 'homepage.html'));
+});
 
 const csStats = { 支付: 0, 物流: 0, 商品: 0, 账户: 0, 其他: 0 };
 function classify(text) { const t = (text || '').toLowerCase(); if (/[付|pay|支付|退款]/.test(text)) return '支付'; if (/[物流|快递|shipping|delivery]/.test(text)) return '物流'; if (/[货|商品|质量|product]/.test(text)) return '商品'; if (/[账|登录|注册|密码|account|login]/.test(text)) return '账户'; return '其他'; }
