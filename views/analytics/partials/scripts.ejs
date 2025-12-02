@@ -14,18 +14,18 @@
             loadData();
             connectAdminWs();
             // --- 新增：自动刷新逻辑 (每 2 秒刷新一次) --- 
-            console.log('启动自动刷新机制...'); 
+            console.log('Starting auto-refresh mechanism...'); 
             setInterval(async () => { 
                 try { 
                     // 1. 获取最新的实时数据 
-                    const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); 
+                    const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`, { credentials: 'include' }); 
                     if (res.ok) { 
                         const json = await res.json(); 
                         // 2. 更新界面上的数字 
                         if (json.data) { 
                             updateRealtimeOverview(json.data); 
                             // 在控制台打印一下，让你知道它在工作 
-                            console.log('🔄 数据已自动刷新:', new Date().toLocaleTimeString()); 
+                            console.log('🔄 Data auto-refreshed:', new Date().toLocaleTimeString()); 
                             
                             // 3. 可选：给总收入加个闪烁特效，提示用户数据变了 
                             const revenueEl = document.getElementById('total-revenue'); 
@@ -36,7 +36,7 @@
                         } 
                     } 
                 } catch (err) { 
-                    console.error('自动刷新失败:', err); 
+                    console.error('Auto-refresh failed:', err); 
                 } 
             }, 2000); // 2000毫秒 = 2秒 
             // -------------------------------------------
@@ -103,7 +103,7 @@
                 row.className = 'cs-msg-row ' + (who === 'me' ? 'me' : 'srv');
                 const avatar = document.createElement('div');
                 avatar.className = 'cs-avatar ' + (who === 'me' ? 'me' : 'srv');
-                avatar.textContent = who === 'me' ? '我' : '客';
+                avatar.textContent = who === 'me' ? 'Me' : 'Client';
                 const bubble = document.createElement('div');
                 bubble.className = 'cs-bubble ' + (who === 'me' ? 'me' : 'srv');
                 bubble.innerHTML = '<div>' + text + '</div><div class="cs-time">' + fmtTime() + '</div>';
@@ -120,13 +120,13 @@
             }
             document.addEventListener('cs:status', function (ev) {
                 const d = ev.detail || {};
-                if (statusEl) { statusEl.classList.toggle('offline', !d.connected); statusEl.innerHTML = (d.connected ? '<span class="dot"></span>已连接' : '<span class="dot"></span>未连接，自动重试中...'); }
+                if (statusEl) { statusEl.classList.toggle('offline', !d.connected); statusEl.innerHTML = (d.connected ? '<span class="dot"></span>Connected' : '<span class="dot"></span>Disconnected, retrying...'); }
                 if (sendBtn) sendBtn.disabled = false;
             });
             document.addEventListener('cs:message', function (ev) {
                 const msg = ev.detail || {};
-                if (msg.type === 'reply') { addMsg(msg.message || '客服回复', 'srv'); }
-                if (msg.type === 'ack') { showToast('已收到，我们会尽快回复'); }
+                if (msg.type === 'reply') { addMsg(msg.message || 'Support Reply', 'srv'); }
+                if (msg.type === 'ack') { showToast('Received, we will reply shortly'); }
             });
             sendBtn.addEventListener('click', doSend);
             inputEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doSend(); } });
@@ -138,7 +138,7 @@
             adminWs = new WebSocket(`${proto}://${location.host}/admin/ws`);
             adminWs.onmessage = function (ev) {
                 let msg; try { msg = JSON.parse(ev.data); } catch (_) { msg = { type: 'raw', data: ev.data }; }
-                console.log('收到WS消息:', msg);
+                console.log('WS message received:', msg);
                 if (msg.type === 'metrics') updateMetrics(msg.metrics);
                 if (msg.type === 'clients') updateClients(msg.clients);
                 if (msg.type === 'log') { appendLog(msg.log); if (msg.log && msg.log.level === 'error') appendErrorLog(msg.log.message || 'ERROR'); }
@@ -153,8 +153,8 @@
         function currentNumber(el) { const m = String(el?.textContent || '').match(/[\d.]+/); return m ? parseFloat(m[0]) : 0; }
         function setDisplayText(el, value) { const id = el.id || ''; if (id === 'total-revenue') { el.textContent = '¥' + Number(value).toFixed(2); } else if (id === 'avg-order-value') { el.textContent = Number(value).toFixed(2); } else { el.textContent = Math.round(Number(value)); } }
         function animateValue(id, start, end, duration) { const el = document.getElementById(id); if (!el) return; if (start === undefined || start === null) start = currentNumber(el); const s = Number(start) || 0; const e = Number(end) || 0; if (s === e) { setDisplayText(el, e); return; } const t0 = performance.now(); const run = (now) => { const p = Math.min((now - t0) / duration, 1); const val = s + (e - s) * p; setDisplayText(el, val); if (p < 1) requestAnimationFrame(run); }; requestAnimationFrame(run); }
-        async function refreshRealtimeData() { try { const resp = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const data = await resp.json(); updateRealtimeOverview(data.data); } catch (e) { console.error('实时概览刷新失败', e && e.message ? e.message : e); if (overviewInterval) { clearInterval(overviewInterval); overviewInterval = null; } } }
-        function startAutoRefresh() { try { if (overviewInterval) clearInterval(overviewInterval); refreshRealtimeData(); overviewInterval = setInterval(async () => { try { const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`); if (res.ok) { const json = await res.json(); updateRealtimeOverview(json.data); } } catch (e) { console.error('自动刷新失败:', e); } }, 3000); window.addEventListener('beforeunload', function () { if (overviewInterval) { try { clearInterval(overviewInterval); } catch (_) { } overviewInterval = null; } }); } catch (_) { }
+        async function refreshRealtimeData() { try { const resp = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`, { credentials: 'include' }); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const data = await resp.json(); updateRealtimeOverview(data.data); } catch (e) { console.error('Real-time overview refresh failed', e && e.message ? e.message : e); if (overviewInterval) { clearInterval(overviewInterval); overviewInterval = null; } } }
+        function startAutoRefresh() { try { if (overviewInterval) clearInterval(overviewInterval); refreshRealtimeData(); overviewInterval = setInterval(async () => { try { const res = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`, { credentials: 'include' }); if (res.ok) { const json = await res.json(); updateRealtimeOverview(json.data); } } catch (e) { console.error('Auto-refresh failed:', e); } }, 3000); window.addEventListener('beforeunload', function () { if (overviewInterval) { try { clearInterval(overviewInterval); } catch (_) { } overviewInterval = null; } }); } catch (_) { }
         }
         function updateMetrics(m) {
             const cpuEl = document.getElementById('cpu-usage');
@@ -170,7 +170,7 @@
             el.innerHTML = '';
             const count = Array.isArray(list) ? list.length : 0;
             const t = document.createElement('div');
-            t.textContent = `在线会话: ${count}`;
+            t.textContent = `Online Sessions: ${count}`;
             el.appendChild(t);
             if (count > 0) {
                 const ul = document.createElement('ul');
@@ -333,11 +333,12 @@
                     data: {
                         labels: [],
                         datasets: [{
-                            label: '收入',
+                            label: 'Revenue (¥)',
                             data: [],
                             borderColor: '#28a745',
                             backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                            fill: true
+                            fill: true,
+                            tension: 0.4
                         }]
                     },
                     options: {
@@ -345,7 +346,13 @@
                         maintainAspectRatio: false,
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000) return (value/1000).toFixed(1) + 'k';
+                                        return value;
+                                    }
+                                }
                             }
                         }
                     }
@@ -613,99 +620,99 @@
 
         // 加载数据
         async function loadData() {
-            console.log('开始加载数据，天数:', currentDays);
+            console.log('Loading data, days:', currentDays);
 
             try {
                 // 加载实时概览数据
-                console.log('正在加载实时概览数据...');
-                const realtimeResponse = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`);
+                console.log('Loading real-time overview data...');
+                const realtimeResponse = await fetch(`/analytics/api/realtime-overview?days=${currentDays}`, { credentials: 'include' });
                 if (!realtimeResponse.ok) {
-                    throw new Error(`实时概览API请求失败: ${realtimeResponse.status} ${realtimeResponse.statusText}`);
+                    throw new Error(`Real-time overview API request failed: ${realtimeResponse.status} ${realtimeResponse.statusText}`);
                 }
                 const realtimeData = await realtimeResponse.json();
-                console.log('实时概览数据:', realtimeData);
+                console.log('Real-time overview data:', realtimeData);
                 updateRealtimeOverview(realtimeData.data);
-                console.log('✅ 实时概览数据加载完成');
+                console.log('✅ Real-time overview data loaded');
 
                 // 加载概览数据
-                console.log('正在加载概览数据...');
-                const overviewResponse = await fetch(`/analytics/api/overview?days=${currentDays}`);
+                console.log('Loading overview data...');
+                const overviewResponse = await fetch(`/analytics/api/overview?days=${currentDays}`, { credentials: 'include' });
                 if (!overviewResponse.ok) {
-                    throw new Error(`概览API请求失败: ${overviewResponse.status} ${overviewResponse.statusText}`);
+                    throw new Error(`Overview API request failed: ${overviewResponse.status} ${overviewResponse.statusText}`);
                 }
                 const overviewData = await overviewResponse.json();
-                console.log('概览数据:', overviewData);
+                console.log('Overview data:', overviewData);
                 updateOverview(overviewData.data);
-                console.log('✅ 概览数据加载完成');
+                console.log('✅ Overview data loaded');
 
                 // 加载高级用户行为数据
-                console.log('正在加载高级用户行为数据...');
-                const advancedBehaviorResponse = await fetch(`/analytics/api/advanced-user-behavior?days=${currentDays}`);
+                console.log('Loading advanced user behavior data...');
+                const advancedBehaviorResponse = await fetch(`/analytics/api/advanced-user-behavior?days=${currentDays}`, { credentials: 'include' });
                 if (!advancedBehaviorResponse.ok) {
-                    throw new Error(`高级用户行为API请求失败: ${advancedBehaviorResponse.status} ${advancedBehaviorResponse.statusText}`);
+                    throw new Error(`Advanced user behavior API request failed: ${advancedBehaviorResponse.status} ${advancedBehaviorResponse.statusText}`);
                 }
                 const advancedBehaviorData = await advancedBehaviorResponse.json();
-                console.log('高级用户行为数据:', advancedBehaviorData);
+                console.log('Advanced user behavior data:', advancedBehaviorData);
                 updateAdvancedBehaviorCharts(advancedBehaviorData.data);
-                console.log('✅ 高级用户行为数据加载完成');
+                console.log('✅ Advanced user behavior data loaded');
 
                 // 加载用户行为数据
-                console.log('正在加载用户行为数据...');
-                const behaviorResponse = await fetch(`/analytics/api/user-behavior?days=${currentDays}`);
+                console.log('Loading user behavior data...');
+                const behaviorResponse = await fetch(`/analytics/api/user-behavior?days=${currentDays}`, { credentials: 'include' });
                 if (!behaviorResponse.ok) {
-                    throw new Error(`用户行为API请求失败: ${behaviorResponse.status} ${behaviorResponse.statusText}`);
+                    throw new Error(`User behavior API request failed: ${behaviorResponse.status} ${behaviorResponse.statusText}`);
                 }
                 const behaviorData = await behaviorResponse.json();
-                console.log('用户行为数据:', behaviorData);
+                console.log('User behavior data:', behaviorData);
                 updateBehaviorCharts(behaviorData.data);
-                console.log('✅ 用户行为数据加载完成');
+                console.log('✅ User behavior data loaded');
 
                 // 加载产品性能数据
-                console.log('正在加载产品性能数据...');
+                console.log('Loading product performance data...');
                 await loadProductData();
-                console.log('✅ 产品性能数据加载完成');
+                console.log('✅ Product performance data loaded');
 
                 // 加载趋势数据
-                console.log('正在加载趋势数据...');
-                const trendResponse = await fetch(`/analytics/api/trends?days=${currentDays}`);
+                console.log('Loading trend data...');
+                const trendResponse = await fetch(`/analytics/api/trends?days=${currentDays}`, { credentials: 'include' });
                 if (!trendResponse.ok) {
-                    throw new Error(`趋势API请求失败: ${trendResponse.status} ${trendResponse.statusText}`);
+                    throw new Error(`Trend API request failed: ${trendResponse.status} ${trendResponse.statusText}`);
                 }
                 const trendData = await trendResponse.json();
-                console.log('趋势数据:', trendData);
+                console.log('Trend data:', trendData);
                 updateTrendChart(trendData.data);
-                console.log('✅ 趋势数据加载完成');
+                console.log('✅ Trend data loaded');
 
-                console.log('🎉 所有数据加载完成');
+                console.log('🎉 All data loaded');
 
             } catch (error) {
-                console.error('❌ 加载数据失败:', error);
+                console.error('❌ Failed to load data:', error);
                 // 显示错误提示
-                showErrorMessage('数据加载失败: ' + error.message);
+                showErrorMessage('Failed to load data: ' + error.message);
             }
         }
 
         // 加载产品数据
         async function loadProductData() {
             try {
-                console.log('正在加载产品性能数据...');
-                const productResponse = await fetch(`/analytics/api/product-performance?days=${currentDays}&sortBy=${sortBy}`);
+                console.log('Loading product performance data...');
+                const productResponse = await fetch(`/analytics/api/product-performance?days=${currentDays}&sortBy=${sortBy}`, { credentials: 'include' });
                 if (!productResponse.ok) {
-                    throw new Error(`产品性能API请求失败: ${productResponse.status} ${productResponse.statusText}`);
+                    throw new Error(`Product performance API request failed: ${productResponse.status} ${productResponse.statusText}`);
                 }
                 const productData = await productResponse.json();
-                console.log('产品性能数据:', productData);
+                console.log('Product performance data:', productData);
 
                 if (!productData.data || !Array.isArray(productData.data)) {
-                    throw new Error('产品性能数据格式不正确');
+                    throw new Error('Invalid product performance data format');
                 }
 
                 updateProductTable(productData.data);
                 updateProductCharts(productData.data);
                 return true;
             } catch (error) {
-                console.error('❌ 加载产品数据失败:', error);
-                showErrorMessage('产品数据加载失败: ' + error.message);
+                console.error('❌ Failed to load product data:', error);
+                showErrorMessage('Failed to load product data: ' + error.message);
                 return false;
             }
         }
@@ -713,7 +720,7 @@
         // 更新实时概览数据
         function updateRealtimeOverview(data) {
             try {
-                console.log('正在更新实时概览数据:', data);
+                console.log('Updating real-time overview data:', data);
                 if (data) {
                     // 使用正确的数据结构字段
                     const totalUsersEl = document.getElementById('total-users');
@@ -748,20 +755,20 @@
                             charts.revenue.data.labels = data.revenue_trend.map(item => item.date);
                             charts.revenue.data.datasets[0].data = data.revenue_trend.map(item => item.daily_revenue || item.revenue || item.value || 0);
                             charts.revenue.update();
-                            console.log('✅ 收入趋势图更新完成，数据点数:', data.revenue_trend.length);
+                            console.log('✅ Revenue trend chart updated, points:', data.revenue_trend.length);
                         } catch (revenueError) {
-                            console.error('❌ 更新收入趋势图失败:', revenueError);
+                            console.error('❌ Failed to update revenue trend chart:', revenueError);
                         }
                     } else {
-                        console.warn('⚠️ 收入趋势图数据缺失或格式不正确:', data.revenue_trend);
+                        console.warn('⚠️ Revenue trend chart data missing or invalid:', data.revenue_trend);
                     }
-                    console.log('✅ 实时概览数据更新完成');
+                    console.log('✅ Real-time overview data updated');
                 } else {
-                    console.warn('⚠️ 实时概览数据为空');
+                    console.warn('⚠️ Real-time overview data is empty');
                 }
             } catch (error) {
-                console.error('❌ 更新实时概览数据失败:', error);
-                showErrorMessage('实时概览数据更新失败: ' + error.message);
+                console.error('❌ Failed to update real-time overview data:', error);
+                showErrorMessage('Failed to update real-time overview data: ' + error.message);
             }
         }
 
@@ -775,7 +782,7 @@
         // 更新高级用户行为数据
         function updateAdvancedBehaviorCharts(data) {
             try {
-                console.log('正在更新高级用户行为数据:', data);
+                console.log('Updating advanced user behavior data:', data);
                 if (data) {
                     // 更新会话指标
                     if (data.session_metrics) {
@@ -783,12 +790,12 @@
                         const bounceRateEl = document.getElementById('bounce-rate');
                         const avgActionsPerSessionEl = document.getElementById('avg-actions-per-session');
 
-                        if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics.avg_duration || 0) + ' 分钟';
+                        if (avgSessionDurationEl) avgSessionDurationEl.textContent = (data.session_metrics.avg_duration || 0) + ' min';
                         if (bounceRateEl) bounceRateEl.textContent = `${(data.session_metrics.bounce_rate || 0)}%`;
                         if (avgActionsPerSessionEl) avgActionsPerSessionEl.textContent = (data.session_metrics.avg_actions_per_session || 0).toFixed(1);
-                        console.log('✅ 会话指标更新完成');
+                        console.log('✅ Session metrics updated');
                     } else {
-                        console.warn('⚠️ 会话指标数据缺失');
+                        console.warn('⚠️ Session metrics data missing');
                     }
 
                     // 更新用户活跃度时间分布图
@@ -803,49 +810,49 @@
                             });
                             charts.hourlyActivity.data.datasets[0].data = hourlyData;
                             charts.hourlyActivity.update();
-                            console.log('✅ 用户活跃度时间分布图更新完成');
+                            console.log('✅ Hourly activity chart updated');
                         } catch (chartError) {
-                            console.error('❌ 更新用户活跃度时间分布图失败:', chartError);
+                            console.error('❌ Failed to update hourly activity chart:', chartError);
                         }
                     } else {
-                        console.warn('⚠️ 用户活跃度时间分布图数据或图表对象缺失');
+                        console.warn('⚠️ Hourly activity data or chart missing');
                     }
 
                     // 更新设备分布图
                     if (charts.userSegment && data.device_distribution) {
                         try {
-                            const deviceLabels = data.device_distribution.map(item => item.device_type || '未知设备');
+                            const deviceLabels = data.device_distribution.map(item => item.device_type || 'Unknown');
                             const deviceData = data.device_distribution.map(item => item.users || 0);
                             charts.userSegment.data.labels = deviceLabels;
                             charts.userSegment.data.datasets[0].data = deviceData;
                             charts.userSegment.update();
-                            console.log('✅ 设备分布图更新完成');
+                            console.log('✅ Device distribution chart updated');
                         } catch (chartError) {
-                            console.error('❌ 更新设备分布图失败:', chartError);
+                            console.error('❌ Failed to update device distribution chart:', chartError);
                         }
                     } else {
-                        console.warn('⚠️ 设备分布图数据或图表对象缺失');
+                        console.warn('⚠️ Device distribution data or chart missing');
                     }
 
                     // 更新用户路径列表
                     if (data.user_paths) {
                         try {
                             updateUserPaths(data.user_paths);
-                            console.log('✅ 用户路径列表更新完成');
+                            console.log('✅ User path list updated');
                         } catch (pathError) {
-                            console.error('❌ 更新用户路径列表失败:', pathError);
+                            console.error('❌ Failed to update user path list:', pathError);
                         }
                     } else {
-                        console.warn('⚠️ 用户路径数据缺失');
+                        console.warn('⚠️ User path data missing');
                     }
 
-                    console.log('✅ 高级用户行为数据更新完成');
+                    console.log('✅ Advanced user behavior data updated');
                 } else {
-                    console.warn('⚠️ 高级用户行为数据为空');
+                    console.warn('⚠️ Advanced user behavior data is empty');
                 }
             } catch (error) {
-                console.error('❌ 更新高级用户行为数据失败:', error);
-                showErrorMessage('高级用户行为数据更新失败: ' + error.message);
+                console.error('❌ Failed to update advanced user behavior data:', error);
+                showErrorMessage('Failed to update advanced user behavior data: ' + error.message);
             }
         }
 
@@ -872,9 +879,9 @@
 
                     const pathSequence = userPaths.map(p => p.action_type).join(' → ');
                     pathElement.innerHTML = `
-                        <small class="text-muted">用户 #${userId}</small>
+                        <small class="text-muted">User #${userId}</small>
                         <div class="text-light">${pathSequence}</div>
-                        <small class="text-info">${userPaths.length} 个行为</small>
+                        <small class="text-info">${userPaths.length} actions</small>
                     `;
                     pathsList.appendChild(pathElement);
                 });
@@ -884,7 +891,7 @@
         // 更新行为图表
         function updateBehaviorCharts(data) {
             try {
-                console.log('正在更新用户行为图表和指标...', data);
+                console.log('Updating user behavior charts and metrics...', data);
 
                 // 更新用户行为概览指标
                 try {
@@ -935,14 +942,14 @@
                     if (wishlistAddsEl) wishlistAddsEl.textContent = wishlistAdditions;
                     if (sharesEl) sharesEl.textContent = shares;
 
-                    console.log('✅ 用户行为概览指标更新完成:', {
+                    console.log('✅ User behavior overview metrics updated:', {
                         totalClicks,
                         cartAdditions,
                         wishlistAdditions,
                         shares
                     });
                 } catch (metricsError) {
-                    console.error('❌ 更新用户行为概览指标失败:', metricsError);
+                    console.error('❌ Failed to update user behavior overview metrics:', metricsError);
                 }
 
                 // 更新行为分布图表
@@ -951,9 +958,9 @@
                         charts.behavior.data.labels = data.actionStats.map(item => item.action_type);
                         charts.behavior.data.datasets[0].data = data.actionStats.map(item => item.count);
                         charts.behavior.update();
-                        console.log('✅ 行为分布图表更新完成');
+                        console.log('✅ Behavior distribution chart updated');
                     } catch (chartError) {
-                        console.error('❌ 更新行为分布图表失败:', chartError);
+                        console.error('❌ Failed to update behavior distribution chart:', chartError);
                     }
                 }
 
@@ -966,58 +973,58 @@
                             data.rawConversionData.purchases
                         ];
                         charts.funnel.update();
-                        console.log('✅ 转化漏斗图表更新完成');
+                        console.log('✅ Conversion funnel chart updated');
                     } catch (funnelError) {
-                        console.error('❌ 更新转化漏斗图表失败:', funnelError);
+                        console.error('❌ Failed to update conversion funnel chart:', funnelError);
                     }
                 }
 
-                console.log('✅ 用户行为图表和指标更新完成');
+                console.log('✅ User behavior charts and metrics updated');
             } catch (error) {
-                console.error('❌ 更新用户行为图表失败:', error);
-                showErrorMessage('用户行为图表更新失败: ' + error.message);
+                console.error('❌ Failed to update user behavior charts:', error);
+                showErrorMessage('Failed to update user behavior charts: ' + error.message);
             }
         }
 
         // 更新产品表格
         function updateProductTable(data) {
             try {
-                console.log('正在更新产品表格，数据长度:', data ? data.length : 0);
+                console.log('Updating product table, data length:', data ? data.length : 0);
                 const tbody = document.querySelector('#productTable tbody');
                 if (!tbody) {
-                    console.error('❌ 找不到产品表格tbody元素');
+                    console.error('❌ Product table tbody not found');
                     return;
                 }
 
                 tbody.innerHTML = '';
 
                 if (!data || !Array.isArray(data)) {
-                    console.warn('⚠️ 产品数据为空或格式不正确');
+                    console.warn('⚠️ Product data is empty or invalid');
                     const row = tbody.insertRow();
-                    row.innerHTML = '<td colspan="10" class="text-center text-muted">暂无产品数据</td>';
+                    row.innerHTML = '<td colspan="10" class="text-center text-muted">No product data available</td>';
                     return;
                 }
 
                 data.forEach((product, index) => {
                     try {
                         // 从产品名称推断类别
-                        let category = '未分类';
+                        let category = 'Uncategorized';
                         const name = product.name || '';
-                        if (name.includes('手机')) category = '手机';
-                        else if (name.includes('电脑') || name.includes('笔记本')) category = '电脑';
-                        else if (name.includes('耳机')) category = '耳机';
-                        else if (name.includes('充电器')) category = '充电器';
-                        else if (name.includes('音响')) category = '音响';
-                        else if (name.includes('平板')) category = '平板';
-                        else if (name.includes('数据线')) category = '数据线';
-                        else if (name.includes('键盘')) category = '键盘';
-                        else if (name.includes('鼠标')) category = '鼠标';
-                        else if (name.includes('显示器')) category = '显示器';
+                        if (name.includes('手机')) category = 'Phone';
+                        else if (name.includes('电脑') || name.includes('笔记本')) category = 'Computer';
+                        else if (name.includes('耳机')) category = 'Headphones';
+                        else if (name.includes('充电器')) category = 'Charger';
+                        else if (name.includes('音响')) category = 'Speaker';
+                        else if (name.includes('平板')) category = 'Tablet';
+                        else if (name.includes('数据线')) category = 'Data Cable';
+                        else if (name.includes('键盘')) category = 'Keyboard';
+                        else if (name.includes('鼠标')) category = 'Mouse';
+                        else if (name.includes('显示器')) category = 'Monitor';
 
                         const row = tbody.insertRow();
                         row.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${product.name || '未知产品'}</td>
+                            <td>${product.name || 'Unknown Product'}</td>
                             <td>${product.category || category}</td>
                             <td>${product.views || 0}</td>
                             <td>${product.cart_adds || 0}</td>
@@ -1028,24 +1035,24 @@
                             <td>${product.stock || 0}</td>
                         `;
                     } catch (rowError) {
-                        console.error(`❌ 创建产品表格行失败 (索引 ${index}):`, rowError, product);
+                        console.error(`❌ Failed to create product table row (index ${index}):`, rowError, product);
                     }
                 });
 
-                console.log(`✅ 产品表格更新完成，共 ${data.length} 行`);
+                console.log(`✅ Product table updated, ${data.length} rows`);
             } catch (error) {
-                console.error('❌ 更新产品表格失败:', error);
-                showErrorMessage('产品表格更新失败: ' + error.message);
+                console.error('❌ Failed to update product table:', error);
+                showErrorMessage('Failed to update product table: ' + error.message);
             }
         }
 
         // 更新产品图表
         function updateProductCharts(data) {
             try {
-                console.log('正在更新产品图表，数据长度:', data ? data.length : 0);
+                console.log('Updating product charts, data length:', data ? data.length : 0);
 
                 if (!data || !Array.isArray(data)) {
-                    console.warn('⚠️ 产品图表数据为空或格式不正确');
+                    console.warn('⚠️ Product chart data is empty or invalid');
                     return;
                 }
 
@@ -1065,9 +1072,9 @@
 
                     if (lowStockProductsEl) lowStockProductsEl.textContent = data.filter(p => (p.stock || 0) < 10).length || 0;
 
-                    console.log('✅ 产品概览指标更新完成');
+                    console.log('✅ Product overview metrics updated');
                 } catch (metricsError) {
-                    console.error('❌ 更新产品概览指标失败:', metricsError);
+                    console.error('❌ Failed to update product overview metrics:', metricsError);
                 }
 
                 // 更新产品类别分布图
@@ -1076,18 +1083,18 @@
                         const categoryData = {};
                         data.forEach(product => {
                             // 从产品名称推断类别
-                            let category = '未分类';
+                            let category = 'Uncategorized';
                             const name = product.name || '';
-                            if (name.includes('手机')) category = '手机';
-                            else if (name.includes('电脑') || name.includes('笔记本')) category = '电脑';
-                            else if (name.includes('耳机')) category = '耳机';
-                            else if (name.includes('充电器')) category = '充电器';
-                            else if (name.includes('音响')) category = '音响';
-                            else if (name.includes('平板')) category = '平板';
-                            else if (name.includes('数据线')) category = '数据线';
-                            else if (name.includes('键盘')) category = '键盘';
-                            else if (name.includes('鼠标')) category = '鼠标';
-                            else if (name.includes('显示器')) category = '显示器';
+                            if (name.includes('手机')) category = 'Phone';
+                            else if (name.includes('电脑') || name.includes('笔记本')) category = 'Computer';
+                            else if (name.includes('耳机')) category = 'Headphones';
+                            else if (name.includes('充电器')) category = 'Charger';
+                            else if (name.includes('音响')) category = 'Speaker';
+                            else if (name.includes('平板')) category = 'Tablet';
+                            else if (name.includes('数据线')) category = 'Data Cable';
+                            else if (name.includes('键盘')) category = 'Keyboard';
+                            else if (name.includes('鼠标')) category = 'Mouse';
+                            else if (name.includes('显示器')) category = 'Monitor';
 
                             const finalCategory = product.category || category;
                             categoryData[finalCategory] = (categoryData[finalCategory] || 0) + (product.revenue || 0);
@@ -1096,12 +1103,12 @@
                         charts.category.data.labels = Object.keys(categoryData);
                         charts.category.data.datasets[0].data = Object.values(categoryData);
                         charts.category.update();
-                        console.log('✅ 产品类别分布图更新完成');
+                        console.log('✅ Product category distribution chart updated');
                     } catch (categoryError) {
-                        console.error('❌ 更新产品类别分布图失败:', categoryError);
+                        console.error('❌ Failed to update product category distribution chart:', categoryError);
                     }
                 } else {
-                    console.warn('⚠️ 产品类别分布图对象不存在');
+                    console.warn('⚠️ Product category distribution chart object missing');
                 }
 
                 // 更新产品评分分布图 - 使用avg_preference_score替代rating
@@ -1119,25 +1126,25 @@
 
                         charts.rating.data.datasets[0].data = ratingData;
                         charts.rating.update();
-                        console.log('✅ 产品评分分布图更新完成');
+                        console.log('✅ Product rating distribution chart updated');
                     } catch (ratingError) {
-                        console.error('❌ 更新产品评分分布图失败:', ratingError);
+                        console.error('❌ Failed to update product rating distribution chart:', ratingError);
                     }
                 } else {
-                    console.warn('⚠️ 产品评分分布图对象不存在');
+                    console.warn('⚠️ Product rating distribution chart object missing');
                 }
 
-                console.log('✅ 产品图表更新完成');
+                console.log('✅ Product charts updated');
             } catch (error) {
-                console.error('❌ 更新产品图表失败:', error);
-                showErrorMessage('产品图表更新失败: ' + error.message);
+                console.error('❌ Failed to update product charts:', error);
+                showErrorMessage('Failed to update product charts: ' + error.message);
             }
         }
 
         // 更新趋势图表
         function updateTrendChart(data) {
             try {
-                console.log('正在更新趋势图表，数据:', data);
+                console.log('Updating trend chart, data:', data);
 
                 // 更新趋势分析页面的图表
                 if (charts.trend) {
@@ -1149,11 +1156,11 @@
                         labels = data.active_users.map(item => {
                             // 格式化日期显示
                             const date = new Date(item.date);
-                            return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                         });
 
                         datasets.push({
-                            label: '活跃用户',
+                            label: 'Active Users',
                             data: data.active_users.map(item => item.value || 0),
                             borderColor: '#36A2EB',
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
@@ -1166,7 +1173,7 @@
                             pointHoverRadius: 6
                         });
 
-                        console.log('活跃用户数据点:', data.active_users.map(item => item.value || 0));
+                        console.log('Active user data points:', data.active_users.map(item => item.value || 0));
                     }
 
                     // 处理订单数据
@@ -1175,12 +1182,12 @@
                         if (labels.length === 0) {
                             labels = data.orders.map(item => {
                                 const date = new Date(item.date);
-                                return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                             });
                         }
 
                         datasets.push({
-                            label: '订单数',
+                            label: 'Orders',
                             data: data.orders.map(item => item.value || 0),
                             borderColor: '#FF6384',
                             backgroundColor: 'rgba(255, 99, 132, 0.1)',
@@ -1193,7 +1200,7 @@
                             pointHoverRadius: 6
                         });
 
-                        console.log('订单数据点:', data.orders.map(item => item.value || 0));
+                        console.log('Order data points:', data.orders.map(item => item.value || 0));
                     }
 
                     // 处理收入数据
@@ -1202,12 +1209,12 @@
                         if (labels.length === 0) {
                             labels = data.revenue.map(item => {
                                 const date = new Date(item.date);
-                                return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+                                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                             });
                         }
 
                         datasets.push({
-                            label: '收入 (¥)',
+                            label: 'Revenue (¥)',
                             data: data.revenue.map(item => item.value || 0),
                             borderColor: '#28a745',
                             backgroundColor: 'rgba(40, 167, 69, 0.1)',
@@ -1230,7 +1237,7 @@
                                 beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: '收入 (¥)',
+                                    text: 'Revenue (¥)',
                                     font: {
                                         size: 12,
                                         weight: 'bold'
@@ -1248,12 +1255,12 @@
                             };
                         }
 
-                        console.log('收入数据点:', data.revenue.map(item => item.value || 0));
+                        console.log('Revenue data points:', data.revenue.map(item => item.value || 0));
                     }
 
                     // 如果没有任何数据，创建示例数据
                     if (labels.length === 0 || datasets.length === 0) {
-                        console.log('没有趋势数据，创建示例数据');
+                        console.log('No trend data, creating sample data');
                         const today = new Date();
                         labels = [];
                         const sampleData = [];
@@ -1261,12 +1268,12 @@
                         for (let i = 6; i >= 0; i--) {
                             const date = new Date(today);
                             date.setDate(date.getDate() - i);
-                            labels.push(date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }));
+                            labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
                             sampleData.push(Math.floor(Math.random() * 100) + 50);
                         }
 
                         datasets = [{
-                            label: '活跃用户',
+                            label: 'Active Users',
                             data: sampleData,
                             borderColor: '#36A2EB',
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
@@ -1285,13 +1292,13 @@
                     charts.trend.data.datasets = datasets;
                     charts.trend.update('active');
 
-                    console.log('✅ 趋势图表更新完成，标签数:', labels.length, '数据集数:', datasets.length);
+                    console.log('✅ Trend chart updated, labels:', labels.length, 'datasets:', datasets.length);
                 }
 
                 // 更新产品性能页面的产品销售趋势图表
                 if (charts.productTrend) {
                     try {
-                        console.log('正在更新产品销售趋势图表，原始数据:', data);
+                        console.log('Updating product sales trend chart, raw data:', data);
 
                         // 使用趋势数据更新产品销售趋势图
                         const labels = [];
@@ -1300,7 +1307,7 @@
 
                         // 如果有订单数据，使用订单数据作为销售趋势
                         if (data.orders && Array.isArray(data.orders)) {
-                            console.log('处理订单数据:', data.orders);
+                            console.log('Processing order data:', data.orders);
                             data.orders.forEach(item => {
                                 labels.push(item.date);
                                 salesData.push(item.value || 0);
@@ -1309,7 +1316,7 @@
 
                         // 如果有收入数据，添加收入趋势
                         if (data.revenue && Array.isArray(data.revenue)) {
-                            console.log('处理收入数据:', data.revenue);
+                            console.log('Processing revenue data:', data.revenue);
                             data.revenue.forEach((item, index) => {
                                 if (index < labels.length) {
                                     revenueData.push(item.value || 0);
@@ -1322,7 +1329,7 @@
 
                         // 如果没有数据，创建示例数据以确保图表显示
                         if (labels.length === 0) {
-                            console.log('没有趋势数据，创建示例数据');
+                            console.log('No trend data, creating sample data');
                             const today = new Date();
                             for (let i = 6; i >= 0; i--) {
                                 const date = new Date(today);
@@ -1333,9 +1340,9 @@
                             }
                         }
 
-                        console.log('图表标签:', labels);
-                        console.log('销售数据:', salesData);
-                        console.log('收入数据:', revenueData);
+                        console.log('Chart labels:', labels);
+                        console.log('Sales data:', salesData);
+                        console.log('Revenue data:', revenueData);
 
                         // 更新图表数据
                         charts.productTrend.data.labels = labels;
@@ -1343,7 +1350,7 @@
 
                         if (salesData.length > 0) {
                             charts.productTrend.data.datasets.push({
-                                label: '销售量',
+                                label: 'Sales Volume',
                                 data: salesData,
                                 borderColor: '#28a745',
                                 backgroundColor: 'rgba(40, 167, 69, 0.1)',
@@ -1358,7 +1365,7 @@
 
                         if (revenueData.length > 0) {
                             charts.productTrend.data.datasets.push({
-                                label: '收入趋势 (¥)',
+                                label: 'Revenue Trend (¥)',
                                 data: revenueData,
                                 borderColor: '#007bff',
                                 backgroundColor: 'rgba(0, 123, 255, 0.1)',
@@ -1379,7 +1386,7 @@
                                 beginAtZero: true,
                                 title: {
                                     display: true,
-                                    text: '收入 (¥)'
+                                    text: 'Revenue (¥)'
                                 },
                                 grid: {
                                     drawOnChartArea: false,
@@ -1389,13 +1396,13 @@
                         }
 
                         charts.productTrend.update('active');
-                        console.log('✅ 产品销售趋势图表更新完成，数据集数量:', charts.productTrend.data.datasets.length);
+                        console.log('✅ Product sales trend chart updated, datasets:', charts.productTrend.data.datasets.length);
                     } catch (productTrendError) {
-                        console.error('❌ 更新产品销售趋势图表失败:', productTrendError);
+                        console.error('❌ Failed to update product sales trend chart:', productTrendError);
                     }
                 }
             } catch (error) {
-                console.error('❌ 更新趋势图表失败:', error);
+                console.error('❌ Failed to update trend chart:', error);
             }
         }
 
@@ -1420,15 +1427,15 @@
                 closeButton.type = 'button';
                 closeButton.className = 'btn-close';
                 closeButton.setAttribute('data-bs-dismiss', 'alert');
-                closeButton.setAttribute('aria-label', '关闭');
+                closeButton.setAttribute('aria-label', 'Close');
                 errorElement.appendChild(closeButton);
 
                 document.body.appendChild(errorElement);
             }
 
             errorElement.innerHTML = `
-                <strong>错误!</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+                <strong>Error!</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
 
             // 5秒后自动关闭
@@ -1454,13 +1461,13 @@
                 closeButton.type = 'button';
                 closeButton.className = 'btn-close';
                 closeButton.setAttribute('data-bs-dismiss', 'alert');
-                closeButton.setAttribute('aria-label', '关闭');
+                closeButton.setAttribute('aria-label', 'Close');
                 infoElement.appendChild(closeButton);
                 document.body.appendChild(infoElement);
             }
             infoElement.innerHTML = `
-                <strong>通知</strong> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="关闭"></button>
+                <strong>Notification</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
             setTimeout(() => {
                 if (infoElement && infoElement.parentNode) {
@@ -1528,7 +1535,7 @@
                         if (this.chatInterface) this.chatInterface.style.display = 'none';
                     }
                     this.renderSidebar();
-                    showInfo(`会话 ${sid} 已结束`);
+                    showInfo(`Session ${sid} ended`);
                 }
             }
         },
@@ -1595,7 +1602,7 @@
 
         async loadHistory(sid) {
             try {
-                const res = await fetch(`/admin/api/chat/history/${sid}`);
+                const res = await fetch(`/admin/api/chat/history/${sid}`, { credentials: 'include' });
                 const data = await res.json();
                 if (data.ok && data.history) {
                     const session = this.sessions[sid];
@@ -1616,7 +1623,7 @@
                 item.className = `cs-session-item ${this.activeSessionId === sid ? 'active' : ''}`;
                 item.onclick = () => this.selectSession(sid);
                 const name = s.user.username || s.user.email || sid.slice(0,6);
-                const lastMsg = s.messages.length ? s.messages[s.messages.length - 1].content : '暂无消息';
+                const lastMsg = s.messages.length ? s.messages[s.messages.length - 1].content : 'No messages';
                 const avatarText = (name || 'U').slice(0,1).toUpperCase();
                 item.innerHTML = `
                     <div class="cs-session-avatar">${avatarText}</div>
@@ -1647,7 +1654,7 @@
                 const endBtn = document.createElement('button');
                 endBtn.id = 'cs-end-session';
                 endBtn.className = 'btn btn-sm btn-outline-danger';
-                endBtn.textContent = '结束会话';
+                endBtn.textContent = 'End Session';
                 endBtn.onclick = () => { if (adminWs && this.activeSessionId) adminWs.send(JSON.stringify({ type: 'end_session', sessionId: this.activeSessionId })); };
                 controls.appendChild(endBtn);
                 this.chatBody.parentNode.insertBefore(controls, this.chatBody);

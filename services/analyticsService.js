@@ -196,22 +196,9 @@ const AnalyticsService = {
          COALESCE(purchases.purchase_count, 0) as purchases,
          COALESCE(purchases.purchase_revenue, 0) as revenue,
          (
-           SELECT AVG(up.weight) 
+           SELECT AVG(up.preference_score) 
            FROM user_preferences up 
-           WHERE up.preference_type = 'category' 
-           AND (
-             (p.name LIKE '%' || up.preference_value || '%') OR
-             (up.preference_value = '手机' AND p.name LIKE '%手机%') OR
-             (up.preference_value = '电脑' AND p.name LIKE '%电脑%') OR
-             (up.preference_value = '耳机' AND p.name LIKE '%耳机%') OR
-             (up.preference_value = '充电器' AND p.name LIKE '%充电器%') OR
-             (up.preference_value = '音响' AND p.name LIKE '%音响%') OR
-             (up.preference_value = '平板' AND p.name LIKE '%平板%') OR
-             (up.preference_value = '数据线' AND p.name LIKE '%数据线%') OR
-             (up.preference_value = '键盘' AND p.name LIKE '%键盘%') OR
-             (up.preference_value = '鼠标' AND p.name LIKE '%鼠标%') OR
-             (up.preference_value = '显示器' AND p.name LIKE '%显示器%')
-           )
+           WHERE up.product_id = p.id
          ) as avg_preference_score
        FROM products p
        LEFT JOIN (

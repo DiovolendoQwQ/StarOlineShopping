@@ -1,5 +1,5 @@
 <div id="overview" class="section">
-    <!-- 主要指标卡片 -->
+    <!-- Main Metric Cards -->
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card dashboard-card metric-card">
@@ -8,8 +8,8 @@
                     <h3 id="total-users">
                         <%= report.summary.total_users || 0 %>
                     </h3>
-                    <p class="mb-0">总用户数</p>
-                    <small class="text-light" id="user-growth">增长率: <%=
+                    <p class="mb-0">Total Users</p>
+                    <small class="text-light" id="user-growth">Growth Rate: <%=
                             report.summary.user_growth_rate || 0 %>%</small>
                 </div>
             </div>
@@ -21,8 +21,8 @@
                     <h3 id="daily-active-users">
                         <%= report.summary.daily_active_users || 0 %>
                     </h3>
-                    <p class="mb-0">日活跃用户</p>
-                    <small class="text-light">今日活跃</small>
+                    <p class="mb-0">Daily Active Users</p>
+                    <small class="text-light">Active Today</small>
                 </div>
             </div>
         </div>
@@ -33,10 +33,10 @@
                     <h3 id="total-orders">
                         <%= report.summary.total_orders || 0 %>
                     </h3>
-                    <p class="mb-0">总订单数</p>
+                    <p class="mb-0">Total Orders</p>
                     <small class="text-light">¥<span id="avg-order-value">
                             <%= (report.summary.avg_order_value || 0).toFixed(2) %>
-                        </span> 平均订单</small>
+                        </span> Avg Order</small>
                 </div>
             </div>
         </div>
@@ -46,61 +46,61 @@
                     <i class="fas fa-dollar-sign fa-2x mb-2"></i>
                     <h3 id="total-revenue">¥<%= (report.summary.total_revenue || 0).toFixed(2) %>
                     </h3>
-                    <p class="mb-0">总收入</p>
-                    <small class="text-light">累计收入</small>
+                    <p class="mb-0">Total Revenue</p>
+                    <small class="text-light">Cumulative Revenue</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 次要指标卡片 -->
+    <!-- Secondary Metric Cards -->
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card dashboard-card">
-                <div class="card-body text-center">
+        <div class="col-md-3 d-flex">
+            <div class="card dashboard-card w-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <i class="fas fa-eye fa-2x mb-2 text-info"></i>
                     <h4 id="total-views">0</h4>
-                    <p class="mb-0 text-muted">总浏览量</p>
+                    <p class="mb-0 text-muted">Total Views</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card dashboard-card">
-                <div class="card-body text-center">
+        <div class="col-md-3 d-flex">
+            <div class="card dashboard-card w-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <i class="fas fa-percentage fa-2x mb-2 text-success"></i>
                     <h4 id="conversion-rate">
                         <%= report.summary.conversion_rates?.viewToPurchase || 0 %>%
                     </h4>
-                    <p class="mb-0 text-muted">转化率</p>
+                    <p class="mb-0 text-muted">Conversion Rate</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card dashboard-card">
-                <div class="card-body text-center">
+        <div class="col-md-3 d-flex">
+            <div class="card dashboard-card w-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <i class="fas fa-clock fa-2x mb-2 text-warning"></i>
                     <h4 id="avg-session-duration">0</h4>
-                    <p class="mb-0 text-muted">平均会话时长(分钟)</p>
+                    <p class="mb-0 text-muted">Avg Session Duration (min)</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card dashboard-card">
-                <div class="card-body text-center">
+        <div class="col-md-3 d-flex">
+            <div class="card dashboard-card w-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <i class="fas fa-bounce fa-2x mb-2 text-danger"></i>
                     <h4 id="bounce-rate">0%</h4>
-                    <p class="mb-0 text-muted">跳出率</p>
+                    <p class="mb-0 text-muted">Bounce Rate</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 收入趋势图 -->
+    <!-- Revenue Trend Chart -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card dashboard-card">
                 <div class="card-header">
-                    <h5><i class="fas fa-chart-area me-2"></i>收入趋势</h5>
+                    <h5><i class="fas fa-chart-area me-2"></i>Revenue Trend</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="revenueChart" height="100"></canvas>

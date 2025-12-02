@@ -5,22 +5,22 @@ require('dotenv').config();
 // 使用环境变量中的数据库路径，如果没有则使用默认路径
 const dbPath = process.env.DB_PATH || './database/star_shopping.db';
 
-  const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-      console.error('❌ 数据库连接失败:', err.message);
-    } else {
-    
-    }
-  });
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('数据库连接失败:', err.message);
+  } else {
+
+  }
+});
 
 // 启用外键约束
-  db.run('PRAGMA foreign_keys = ON;', (err) => {
-    if (err) {
-      console.error('❌ 无法启用外键约束:', err.message);
-    } else {
-      
-    }
-  });
+db.run('PRAGMA foreign_keys = ON;', (err) => {
+  if (err) {
+    console.error('无法启用外键约束:', err.message);
+  } else {
+
+  }
+});
 
 // 包装异步方法
 db.getAsync = promisify(db.get).bind(db);
@@ -50,28 +50,28 @@ db.serialize(() => {
       avatar_url TEXT
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 users 表失败:', err.message);
+    if (err) console.error('创建 users 表失败:', err.message);
     else {
-      
-      // 检查并添加 role 字段（如果不存在）
-       db.run(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT NULL`, (alterErr) => {
-         if (alterErr && !alterErr.message.includes('duplicate column name')) {
-           console.error('❌ 添加 role 字段失败:', alterErr.message);
-         } else if (!alterErr) {
-           
-         }
-       });
 
-       // 检查并添加 avatar_url 字段（如果不存在）
-       db.run(`ALTER TABLE users ADD COLUMN avatar_url TEXT`, (alterErr) => {
-         if (alterErr && !alterErr.message.includes('duplicate column name')) {
-           console.error('❌ 添加 avatar_url 字段失败:', alterErr.message);
-         } else if (!alterErr) {
-           
-     }
-   });
-     }
-   });
+      // 检查并添加 role 字段（如果不存在）
+      db.run(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT NULL`, (alterErr) => {
+        if (alterErr && !alterErr.message.includes('duplicate column name')) {
+          console.error('添加 role 字段失败:', alterErr.message);
+        } else if (!alterErr) {
+
+        }
+      });
+
+      // 检查并添加 avatar_url 字段（如果不存在）
+      db.run(`ALTER TABLE users ADD COLUMN avatar_url TEXT`, (alterErr) => {
+        if (alterErr && !alterErr.message.includes('duplicate column name')) {
+          console.error('添加 avatar_url 字段失败:', alterErr.message);
+        } else if (!alterErr) {
+
+        }
+      });
+    }
+  });
 
   // 商品表
   db.run(`
@@ -94,8 +94,8 @@ db.serialize(() => {
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 products 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 products 表失败:', err.message);
+    else { }
   });
 
   // 订单表（新版本）
@@ -111,8 +111,8 @@ db.serialize(() => {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 orders 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 orders 表失败:', err.message);
+    else { }
   });
 
   // 订单项表
@@ -128,8 +128,8 @@ db.serialize(() => {
       FOREIGN KEY (product_id) REFERENCES products(id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 order_items 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 order_items 表失败:', err.message);
+    else { }
   });
 
   // 购物车表
@@ -141,8 +141,8 @@ db.serialize(() => {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 carts 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 carts 表失败:', err.message);
+    else { }
   });
 
   // 购物车项表
@@ -156,8 +156,8 @@ db.serialize(() => {
       FOREIGN KEY (product_id) REFERENCES products(id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 cart_items 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 cart_items 表失败:', err.message);
+    else { }
   });
 
   // 用户行为数据表
@@ -175,14 +175,14 @@ db.serialize(() => {
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 user_behaviors 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 user_behaviors 表失败:', err.message);
+    else { }
   });
 
   // 用户偏好数据表（适配推荐系统）
   db.run(`DROP TABLE IF EXISTS user_preferences;`, (dropErr) => {
-    if (dropErr) console.error('❌ 删除旧 user_preferences 表失败:', dropErr.message);
-    
+    if (dropErr) console.error('删除旧 user_preferences 表失败:', dropErr.message);
+
     db.run(`
       CREATE TABLE IF NOT EXISTS user_preferences (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -200,8 +200,8 @@ db.serialize(() => {
         UNIQUE(user_id, product_id)
       );
     `, (err) => {
-      if (err) console.error('❌ 创建 user_preferences 表失败:', err.message);
-
+      if (err) console.error('创建 user_preferences 表失败:', err.message);
+      else { }
     });
   });
 
@@ -217,14 +217,14 @@ db.serialize(() => {
       UNIQUE(date, metric_type)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 analytics_summary 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 analytics_summary 表失败:', err.message);
+    else { }
   });
 
   // 移除旧版统一图片表 product_images（已不再使用，改为 image_detail）
   db.run(`DROP TABLE IF EXISTS product_images;`, (err) => {
-    if (err) console.error('❌ 删除 product_images 表失败:', err.message);
-    else {}
+    if (err) console.error('删除旧 product_images 表失败:', err.message);
+    else { }
   });
 
   db.run(`
@@ -239,14 +239,14 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 image_detail 表失败:', err.message);
-    else {}
+    else { }
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_image_detail_product ON image_detail(product_id);`, (err) => {
-    if (err) console.error('❌ 创建 idx_image_detail_product 失败:', err.message);
+    if (err) console.error('创建 idx_image_detail_product 失败:', err.message);
   });
   db.run(`ALTER TABLE image_detail ADD COLUMN detail_image4 TEXT`, (alterErr) => {
     if (alterErr && !alterErr.message.includes('duplicate column name')) {
-      console.error('❌ 添加 detail_image4 字段失败:', alterErr.message);
+      console.error('添加 detail_image4 字段失败:', alterErr.message);
     }
   });
 
@@ -264,8 +264,8 @@ db.serialize(() => {
       ended_at DATETIME
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 cs_sessions 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 cs_sessions 表失败:', err.message);
+    else { }
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_status ON cs_sessions(status);`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_last_active ON cs_sessions(last_active_at);`);
@@ -280,18 +280,18 @@ db.serialize(() => {
       FOREIGN KEY(session_id) REFERENCES cs_sessions(session_id)
     );
   `, (err) => {
-    if (err) console.error('❌ 创建 cs_messages 表失败:', err.message);
-    else {}
+    if (err) console.error('创建 cs_messages 表失败:', err.message);
+    else { }
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_messages_session_time ON cs_messages(session_id, time);`);
 
   // 索引：提升昵称查询/更新性能
   db.run(`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`, (err) => {
-    if (err) console.error('❌ 创建 idx_users_username 失败:', err.message);
+    if (err) console.error('创建 idx_users_username 失败:', err.message);
   });
   db.run(`ALTER TABLE image_detail ADD COLUMN detail_image5 TEXT`, (alterErr) => {
     if (alterErr && !alterErr.message.includes('duplicate column name')) {
-      console.error('❌ 添加 detail_image5 字段失败:', alterErr.message);
+      console.error('添加 detail_image5 字段失败:', alterErr.message);
     }
   });
 
@@ -311,7 +311,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 reviews 表失败:', err.message);
-    else {}
+    else { }
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews(product_id);`, (err) => {
     if (err) console.error('❌ 创建 idx_reviews_product 失败:', err.message);
@@ -349,7 +349,7 @@ module.exports = db;
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
       `);
-      const wantCols = ['id','name','subtitle','description','price','image','stock','brand','category','specs_json','detail_html','created_at','updated_at'];
+      const wantCols = ['id', 'name', 'subtitle', 'description', 'price', 'image', 'stock', 'brand', 'category', 'specs_json', 'detail_html', 'created_at', 'updated_at'];
       const has = new Set(cols.map(c => c.name));
       const selectParts = wantCols.map(col => has.has(col) ? col : `NULL AS ${col}`);
       const insertCols = wantCols.join(',');
