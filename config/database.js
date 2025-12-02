@@ -321,45 +321,4 @@ db.serialize(() => {
 
 // 导出数据库对象
 module.exports = db;
-// 列删除迁移：移除 products 中的 shipping_origin/shipping_promise/service_tags
-(async () => {
-  try {
-    const cols = await db.allAsync(`PRAGMA table_info(products)`);
-    const hasShipOrigin = cols.some(c => c.name === 'shipping_origin');
-    const hasShipPromise = cols.some(c => c.name === 'shipping_promise');
-    const hasServiceTags = cols.some(c => c.name === 'service_tags');
-    const hasOriginalPrice = cols.some(c => c.name === 'original_price');
-    if (hasShipOrigin || hasShipPromise || hasServiceTags || hasOriginalPrice) {
-      await db.runAsync('PRAGMA foreign_keys = OFF');
-      await db.runAsync('BEGIN TRANSACTION');
-      await db.runAsync(`
-        CREATE TABLE products_tmp (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          subtitle TEXT,
-          description TEXT,
-          price REAL NOT NULL,
-          image TEXT,
-          stock INTEGER DEFAULT 0,
-          brand TEXT,
-          category TEXT,
-          specs_json TEXT,
-          detail_html TEXT,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-      `);
-      const wantCols = ['id', 'name', 'subtitle', 'description', 'price', 'image', 'stock', 'brand', 'category', 'specs_json', 'detail_html', 'created_at', 'updated_at'];
-      const has = new Set(cols.map(c => c.name));
-      const selectParts = wantCols.map(col => has.has(col) ? col : `NULL AS ${col}`);
-      const insertCols = wantCols.join(',');
-      await db.runAsync(`INSERT INTO products_tmp (${insertCols}) SELECT ${selectParts.join(', ')} FROM products;`);
-      await db.runAsync('DROP TABLE products');
-      await db.runAsync('ALTER TABLE products_tmp RENAME TO products');
-      await db.runAsync('COMMIT');
-      await db.runAsync('PRAGMA foreign_keys = ON');
-    }
-  } catch (e) {
-    console.warn('⚠️ 删除列迁移失败：', e.message);
-  }
-})();
+

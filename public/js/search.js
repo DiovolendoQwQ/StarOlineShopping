@@ -384,30 +384,30 @@ class SearchManager {
     // 显示热门搜索词
     displayHotSearches(hotSearches) {
         const MAP = {
-            '小米手机':'Xiaomi Phone',
-            '华为手机':'Huawei Phone',
-            '苹果手机':'Apple iPhone',
-            '三星手机':'Samsung Phone',
-            '手机壳':'Phone Case',
-            '手机膜':'Screen Protector',
-            '耳机':'Earphones',
-            '音箱':'Speaker',
-            '路由器':'Router',
-            '笔记本':'Laptop',
-            '平板':'Tablet',
-            '电视':'TV',
-            '相机':'Camera',
-            '充电宝':'Power Bank',
-            '水杯':'Bottle',
-            '插线板':'Power Strip'
+            '小米手机': 'Xiaomi Phone',
+            '华为手机': 'Huawei Phone',
+            '苹果手机': 'Apple iPhone',
+            '三星手机': 'Samsung Phone',
+            '手机壳': 'Phone Case',
+            '手机膜': 'Screen Protector',
+            '耳机': 'Earphones',
+            '音箱': 'Speaker',
+            '路由器': 'Router',
+            '笔记本': 'Laptop',
+            '平板': 'Tablet',
+            '电视': 'TV',
+            '相机': 'Camera',
+            '充电宝': 'Power Bank',
+            '水杯': 'Bottle',
+            '插线板': 'Power Strip'
         };
         const hotSearchesHtml = `
             <div style="padding: 16px; border-bottom: 1px solid #f5f5f5;">
                 <div style="color: #666; font-size: 13px; margin-bottom: 12px; font-weight: 500;">🔥 Hot Searches</div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                     ${hotSearches.map(term => {
-                        const text = MAP[term] || term;
-                        return `
+            const text = MAP[term] || term;
+            return `
                         <span class="hot-search-tag" data-term="${this.escapeHtml(term)}" style="
                             background: #f8f9fa;
                             color: #666;
@@ -422,7 +422,7 @@ class SearchManager {
                            onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#666'; this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                             ${this.escapeHtml(text)}
                         </span>`;
-                    }).join('')}
+        }).join('')}
                 </div>
             </div>
         `;

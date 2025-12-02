@@ -1,17 +1,5 @@
 const db = require('../config/database');
-
-// 辅助函数：更新购物车总价
-async function updateCartTotal(userId) {
-  return db.runAsync(
-    `UPDATE carts 
-         SET total_price = (SELECT COALESCE(SUM(ci.quantity * p.price), 0) 
-                           FROM cart_items ci 
-                           JOIN products p ON ci.product_id = p.id 
-                           WHERE ci.cart_id = (SELECT id FROM carts WHERE user_id = ?)) 
-         WHERE user_id = ?`,
-    [userId, userId]
-  );
-}
+const Cart = require('../models/cart');
 
 // 获取购物车页面
 exports.getCartPage = async (req, res) => {
@@ -22,20 +10,10 @@ exports.getCartPage = async (req, res) => {
       return res.redirect('/login.html');
     }
 
-    const cartItems = await db.allAsync(
-      `SELECT p.id as product_id, p.name, p.price, p.image, ci.quantity 
-       FROM cart_items ci 
-       JOIN products p ON ci.product_id = p.id 
-       WHERE ci.cart_id = (SELECT id FROM carts WHERE user_id = ?)`,
-      [userId]
-    );
+    // 使用 Model 获取数据
+    const { items, totalPrice } = await Cart.getCart(userId);
 
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    res.render('cart', {
-      items: cartItems || [],
-      totalPrice: totalPrice || 0,
-    });
+    res.render('cart', { items: items || [], totalPrice: totalPrice || 0, });
   } catch (error) {
     console.error('获取购物车页面失败:', error);
     res.status(500).send('服务器错误');
@@ -52,44 +30,19 @@ exports.addToCart = async (req, res) => {
       return res.status(401).send('Unauthenticated users cannot add items');
     }
 
-    const product = await db.getAsync(`SELECT * FROM products WHERE id = ?`, [productId]);
+    await Cart.addToCart(userId, productId, quantity);
 
-    if (!product) {
-      return res.status(404).send('商品不存在');
-    }
 
-    let cart = await db.getAsync(`SELECT id FROM carts WHERE user_id = ?`, [userId]);
+    res.json({ success: true, message: '商品已添加到购物车' });
 
-    if (!cart) {
-      await db.runAsync(`INSERT INTO carts (user_id, total_price) VALUES (?, ?)`, [userId, 0]);
-      cart = await db.getAsync(`SELECT id FROM carts WHERE user_id = ?`, [userId]);
-    }
-
-    const cartItem = await db.getAsync(
-      `SELECT * FROM cart_items WHERE cart_id = ? AND product_id = ?`,
-      [cart.id, productId]
-    );
-
-    if (cartItem) {
-      await db.runAsync(
-        `UPDATE cart_items SET quantity = quantity + ? WHERE cart_id = ? AND product_id = ?`,
-        [quantity, cart.id, productId]
-      );
-    } else {
-      await db.runAsync(
-        `INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)`,
-        [cart.id, productId, quantity]
-      );
-    }
-
-    await updateCartTotal(userId);
-    res.redirect('/cart');
   } catch (error) {
     console.error('添加商品到购物车失败:', error);
+    if (error.message === '商品不存在') {
+      return res.status(404).send('商品不存在');
+    }
     res.status(500).send('服务器错误');
   }
 };
-
 // 更新购物车商品数量
 exports.updateCartItem = async (req, res) => {
   try {
@@ -101,36 +54,17 @@ exports.updateCartItem = async (req, res) => {
       return res.status(401).json({ success: false, error: 'unauthenticated' });
     }
 
-    if (quantity === 0) {
-      return exports.removeFromCart(req, res);
-    }
 
-    const cart = await db.getAsync(`SELECT id FROM carts WHERE user_id = ?`, [userId]);
+    await Cart.updateItemQuantity(userId, productId, quantity);
 
-    if (!cart) {
-      return res.status(404).json({ success: false, error: '购物车不存在' });
-    }
 
-    // 获取商品价格
     const product = await db.getAsync(`SELECT price FROM products WHERE id = ?`, [productId]);
-    
-    if (!product) {
-      return res.status(404).json({ success: false, error: '商品不存在' });
-    }
 
-    await db.runAsync(
-      `UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND product_id = ?`,
-      [quantity, cart.id, productId]
-    );
-
-    await updateCartTotal(userId);
-    
-    // 返回JSON响应而不是重定向
-    res.json({ 
-      success: true, 
-      price: product.price,
+    res.json({
+      success: true,
+      price: product ? product.price : 0,
       quantity: quantity,
-      message: '更新成功' 
+      message: '更新成功'
     });
   } catch (error) {
     console.error('更新购物车商品数量失败:', error);
@@ -148,22 +82,12 @@ exports.removeFromCart = async (req, res) => {
       return res.status(400).json({ error: '无效的请求' });
     }
 
-    const cart = await db.getAsync(`SELECT id FROM carts WHERE user_id = ?`, [userId]);
+    const success = await Cart.removeFromCart(userId, productId);
 
-    if (!cart) {
-      return res.status(404).json({ error: '购物车不存在' });
+    if (!success) {
+      return res.status(404).json({ error: '商品未找到或删除失败' });
     }
 
-    const result = await db.runAsync(
-      `DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?`,
-      [cart.id, productId]
-    );
-
-    if (result.changes === 0) {
-      return res.status(404).json({ error: '商品未找到' });
-    }
-
-    await updateCartTotal(userId);
     return res.status(200).json({ message: '商品已删除' });
   } catch (error) {
     console.error('删除购物车商品失败:', error);
