@@ -179,7 +179,7 @@ db.serialize(() => {
     else {}
   });
 
-  // 用户偏好数据表（新版本）
+  // 用户偏好数据表（适配推荐系统）
   db.run(`DROP TABLE IF EXISTS user_preferences;`, (dropErr) => {
     if (dropErr) console.error('❌ 删除旧 user_preferences 表失败:', dropErr.message);
     
@@ -187,17 +187,21 @@ db.serialize(() => {
       CREATE TABLE IF NOT EXISTS user_preferences (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id TEXT NOT NULL,
-        preference_type TEXT NOT NULL,
-        preference_value TEXT NOT NULL,
-        weight REAL DEFAULT 0,
+        product_id INTEGER NOT NULL,
+        preference_score REAL DEFAULT 0,
+        view_count INTEGER DEFAULT 0,
+        cart_add_count INTEGER DEFAULT 0,
+        purchase_count INTEGER DEFAULT 0,
+        last_interaction DATETIME DEFAULT CURRENT_TIMESTAMP,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id),
-        UNIQUE(user_id, preference_type, preference_value)
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        UNIQUE(user_id, product_id)
       );
     `, (err) => {
       if (err) console.error('❌ 创建 user_preferences 表失败:', err.message);
-      else {}
+
     });
   });
 

@@ -67,14 +67,11 @@
       background: #f8f8f8;
       border-color: #ccc;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
       color: #333;
     }
 
-    .back-home-btn::before {
-      content: '🏠';
-      font-size: 16px;
-    }
+
 
     .logo-section {
       display: flex;
@@ -110,7 +107,7 @@
     .cart-container {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       margin-bottom: 30px;
     }
@@ -143,7 +140,7 @@
     .cart-item:hover {
       background: #f8f9ff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     .cart-item:last-child {
@@ -161,7 +158,7 @@
       height: 80px;
       border-radius: 12px;
       object-fit: cover;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .product-name {
@@ -246,7 +243,7 @@
       padding: 80px 20px;
       background: white;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
     .empty-cart-icon {
@@ -289,7 +286,7 @@
     .checkout-section {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       padding: 30px;
       margin-top: 20px;
     }
@@ -313,11 +310,17 @@
       color: #ff6700;
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
+      padding: 10px 20px;
+      border: 1px solid #ff6700;
+      border-radius: 20px;
     }
 
     .continue-shopping-link:hover {
-      color: #e55a00;
+      background: #ff6700;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 103, 0, 0.2);
     }
 
     .item-count {
@@ -359,15 +362,84 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
     }
-    #delete-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;opacity:0;visibility:hidden;transition:all .2s ease}
-    #delete-overlay.show{opacity:1;visibility:visible}
-    #delete-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);background:#fff;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.15);padding:24px 28px;z-index:1001;opacity:0;visibility:hidden;transition:all .2s cubic-bezier(.34,1.56,.64,1);min-width:320px;max-width:90%}
-    #delete-modal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
-    #delete-modal h3{margin:0 0 8px;font-size:18px;color:#333;font-weight:600}
-    #delete-modal p{margin:0 0 18px;color:#666;font-size:14px}
-    #delete-modal .buttons{display:flex;gap:12px;justify-content:flex-end}
-    #delete-cancel{background:#f8f9fa;color:#666;border:1px solid #ddd;padding:10px 18px;border-radius:10px;cursor:pointer}
-    #delete-confirm{background:#ff6b6b;color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer}
+
+    #delete-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all .2s ease
+    }
+
+    #delete-overlay.show {
+      opacity: 1;
+      visibility: visible
+    }
+
+    #delete-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+      padding: 24px 28px;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: all .2s cubic-bezier(.34, 1.56, .64, 1);
+      min-width: 320px;
+      max-width: 90%
+    }
+
+    #delete-modal.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1)
+    }
+
+    #delete-modal h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #333;
+      font-weight: 600
+    }
+
+    #delete-modal p {
+      margin: 0 0 18px;
+      color: #666;
+      font-size: 14px
+    }
+
+    #delete-modal .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end
+    }
+
+    #delete-cancel {
+      background: #f8f9fa;
+      color: #666;
+      border: 1px solid #ddd;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer
+    }
+
+    #delete-confirm {
+      background: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer
+    }
 
     /* 页脚 */
     footer {
@@ -381,6 +453,7 @@
 
     /* 响应式设计 */
     @media (max-width: 768px) {
+
       .cart-header,
       .cart-item {
         grid-template-columns: 1fr;
@@ -416,6 +489,7 @@
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -430,48 +504,58 @@
 
   <script>
     // 删除商品
-    function removeFromCart(productId){
-      const overlay=document.getElementById('delete-overlay');
-      const modal=document.getElementById('delete-modal');
-      const confirmBtn=document.getElementById('delete-confirm');
-      const cancelBtn=document.getElementById('delete-cancel');
-      modal.dataset.pid=productId;
+    function removeFromCart(productId) {
+      const overlay = document.getElementById('delete-overlay');
+      const modal = document.getElementById('delete-modal');
+      const confirmBtn = document.getElementById('delete-confirm');
+      const cancelBtn = document.getElementById('delete-cancel');
+      modal.dataset.pid = productId;
       overlay.classList.add('show');
       modal.classList.add('show');
-      cancelBtn.onclick=function(){overlay.classList.remove('show');modal.classList.remove('show');modal.dataset.pid='';};
-      confirmBtn.onclick=function(){
-        const pid=modal.dataset.pid;
+      cancelBtn.onclick = function () { overlay.classList.remove('show'); modal.classList.remove('show'); modal.dataset.pid = ''; };
+      confirmBtn.onclick = function () {
+        const pid = modal.dataset.pid;
         overlay.classList.remove('show');
         modal.classList.remove('show');
-        modal.dataset.pid='';
-        const deleteBtn=document.querySelector(`.remove-btn[data-product-id="${pid}"]`);
-        const cartItem=deleteBtn?deleteBtn.closest('.cart-item'):null;
-        if(!cartItem){showNotification('Remove failed: item not found','error');return;}
-        cartItem.style.transition='all 0.5s ease';
-        cartItem.style.transform='translateX(-100%)';
-        cartItem.style.opacity='0';
-        fetch(`/cart/remove/${pid}`,{method:'DELETE'})
-        .then(r=>{if(!r.ok)throw new Error();return r.json();})
-        .then(d=>{
-          if(d.message){
-            showNotification(d.message,'success');
-            setTimeout(()=>{
-              cartItem.remove();
-              updateTotal();
-              const remaining=document.querySelectorAll('.cart-item');
-              if(remaining.length===0){setTimeout(()=>{window.location.reload();},500);} 
-            },500);
-          } else {
-            cartItem.style.transform='translateX(0)';
-            cartItem.style.opacity='1';
-            showNotification(d.error||'Remove failed, please retry','error');
-          }
-        })
-        .catch(()=>{
-          cartItem.style.transform='translateX(0)';
-          cartItem.style.opacity='1';
-          showNotification('Remove failed, please retry','error');
-        });
+        modal.dataset.pid = '';
+        const deleteBtn = document.querySelector(`.remove-btn[data-product-id="${pid}"]`);
+        const cartItem = deleteBtn ? deleteBtn.closest('.cart-item') : null;
+        if (!cartItem) { showNotification('Remove failed: item not found', 'error'); return; }
+
+        // 立即执行动画
+        cartItem.style.transition = 'all 0.5s ease';
+        cartItem.style.transform = 'translateX(-100%)';
+        cartItem.style.opacity = '0';
+
+        fetch(`/cart/remove/${pid}`, { method: 'DELETE' })
+          .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+          .then(d => {
+            if (d.message) {
+              showNotification(d.message, 'success');
+              // 动画结束后移除元素
+              setTimeout(() => {
+                if (cartItem && cartItem.parentNode) {
+                  cartItem.remove();
+                  updateTotal();
+                  const remaining = document.querySelectorAll('.cart-item');
+                  if (remaining.length === 0) {
+                    window.location.reload();
+                  }
+                }
+              }, 500);
+            } else {
+              // 失败时恢复
+              cartItem.style.transform = 'translateX(0)';
+              cartItem.style.opacity = '1';
+              showNotification(d.error || 'Remove failed, please retry', 'error');
+            }
+          })
+          .catch(() => {
+            // 错误时恢复
+            cartItem.style.transform = 'translateX(0)';
+            cartItem.style.opacity = '1';
+            showNotification('Remove failed, please retry', 'error');
+          });
       };
     }
 
@@ -481,21 +565,21 @@
       const cartItem = document.querySelector(`.remove-btn[data-product-id="${productId}"]`)?.closest('.cart-item') || document.querySelector(`button[onclick*="${productId}"]`)?.closest('.cart-item');
       const input = cartItem.querySelector('.quantity-input');
       let newQuantity;
-      
+
       if (isAbsolute) {
         newQuantity = parseInt(change);
       } else {
         const currentQuantity = parseInt(input.value);
         newQuantity = currentQuantity + change;
       }
-      
+
       if (newQuantity < 1) {
         newQuantity = 1;
       }
-      
+
       // 更新输入框显示
       input.value = newQuantity;
-      
+
       // 发送更新请求
       fetch(`/cart/update/${productId}`, {
         method: 'PUT',
@@ -506,21 +590,21 @@
           quantity: newQuantity
         })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // 更新小计显示
-          updateSubtotal(productId, data.price, newQuantity);
-          // 更新总价
-          updateTotal();
-        } else {
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // 更新小计显示
+            updateSubtotal(productId, data.price, newQuantity);
+            // 更新总价
+            updateTotal();
+          } else {
+            showNotification('Update failed, please retry', 'error');
+            input.value = data.oldQuantity || 1;
+          }
+        })
+        .catch(error => {
           showNotification('Update failed, please retry', 'error');
-          input.value = data.oldQuantity || 1;
-        }
-      })
-      .catch(error => {
-        showNotification('Update failed, please retry', 'error');
-      });
+        });
     }
 
     // 更新小计显示
@@ -538,7 +622,7 @@
         const amount = parseFloat(element.textContent.replace('¥', ''));
         total += amount;
       });
-      
+
       const totalElement = document.querySelector('.total-amount');
       if (totalElement) {
         totalElement.textContent = `¥${total.toFixed(2)}`;
@@ -564,7 +648,7 @@
           <span class="notification-message">${message}</span>
         </div>
       `;
-      
+
       // 添加样式
       notification.style.cssText = `
         position: fixed;
@@ -580,14 +664,14 @@
         transition: transform 0.3s ease;
         max-width: 300px;
       `;
-      
+
       document.body.appendChild(notification);
-      
+
       // 显示动画
       setTimeout(() => {
         notification.style.transform = 'translateX(0)';
       }, 100);
-      
+
       // 自动隐藏
       setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
@@ -597,58 +681,58 @@
       }, 3000);
     }
 
-    function getNotificationIcon(type) {
-      switch(type) {
-        case 'success': return '✅';
-        case 'error': return '❌';
-        case 'info': return 'ℹ️';
-        default: return 'ℹ️';
-      }
-    }
-
     function getNotificationColor(type) {
-      switch(type) {
+      switch (type) {
         case 'success': return 'linear-gradient(135deg, #27ae60, #2ecc71)';
         case 'error': return 'linear-gradient(135deg, #e74c3c, #c0392b)';
         case 'info': return 'linear-gradient(135deg, #3498db, #2980b9)';
         default: return 'linear-gradient(135deg, #3498db, #2980b9)';
       }
     }
-    
+
+    function getNotificationIcon(type) {
+      switch (type) {
+        case 'success': return '✓';
+        case 'error': return '✕';
+        case 'info': return 'ℹ';
+        default: return 'ℹ';
+      }
+    }
+
     // 页面加载完成后的初始化
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       console.log('=== Cart page loaded ===');
       console.log('Current page URL:', window.location.href);
-      
+
       const cartItems = document.querySelectorAll('.cart-item');
       console.log('Cart items:', cartItems.length);
-      
+
       const deleteButtons = document.querySelectorAll('.remove-btn');
       console.log('Remove buttons:', deleteButtons.length);
-      
+
       // 测试删除函数是否可用
       if (typeof removeFromCart === 'function') {
         console.log('removeFromCart is defined');
       } else {
         console.error('removeFromCart is not defined');
       }
-      
-       deleteButtons.forEach((btn, index) => {
-         const dataId = btn.dataset.productId;
-         let productId = dataId;
-         if (!productId) {
-           const onclickAttr = btn.getAttribute('onclick') || '';
-           const m = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
-           if (m) productId = m[1];
-         }
-         btn.removeAttribute('onclick');
-         if (productId) {
-           btn.addEventListener('click', function(e) {
-             e.preventDefault();
-             removeFromCart(productId);
-           });
-         }
-       });
+
+      deleteButtons.forEach((btn, index) => {
+        const dataId = btn.dataset.productId;
+        let productId = dataId;
+        if (!productId) {
+          const onclickAttr = btn.getAttribute('onclick') || '';
+          const m = onclickAttr.match(/removeFromCart\('([^']+)'\)/);
+          if (m) productId = m[1];
+        }
+        btn.removeAttribute('onclick');
+        if (productId) {
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            removeFromCart(productId);
+          });
+        }
+      });
     });
   </script>
 </head>
@@ -663,7 +747,7 @@
             <a href="/homepage">
               <div class="logo fl"></div>
             </a>
-            <div class="cart-title">My Cart</div>
+            <div class="cart-title"></div>
           </div>
           <a href="/homepage" class="back-home-btn">Back to Home</a>
         </div>
@@ -673,7 +757,7 @@
     <!-- 主内容区 -->
     <div class="main-content">
       <div class="center">
-        <% if (items && items.length > 0) { %>
+        <% if (items && items.length> 0) { %>
           <div class="cart-container">
             <div class="cart-header">
               <div>Item</div>
@@ -682,57 +766,64 @@
               <div>Subtotal</div>
               <div>Actions</div>
             </div>
-            
-            <% items.forEach(item => { %>
+
+            <% items.forEach(item=> { %>
               <div class="cart-item">
                 <div class="product-info">
                   <img src="<%= item.image %>" alt="<%= item.name %>" class="product-image">
-                  <div class="product-name"><%= item.name %></div>
+                  <div class="product-name">
+                    <%= item.name %>
+                  </div>
                 </div>
-                <div class="product-price">¥<%= item.price %></div>
+                <div class="product-price">¥<%= item.price %>
+                </div>
                 <div class="quantity-control">
                   <button class="quantity-btn" onclick="updateQuantity('<%= item.product_id %>', -1)">-</button>
-                  <input class="quantity-input" type="number" value="<%= item.quantity %>" min="1" 
-                         onchange="updateQuantity('<%= item.product_id %>', this.value, true)">
+                  <input class="quantity-input" type="number" value="<%= item.quantity %>" min="1"
+                    onchange="updateQuantity('<%= item.product_id %>', this.value, true)">
                   <button class="quantity-btn" onclick="updateQuantity('<%= item.product_id %>', 1)">+</button>
                 </div>
-                <div class="subtotal">¥<%= (item.price * item.quantity).toFixed(2) %></div>
+                <div class="subtotal">¥<%= (item.price * item.quantity).toFixed(2) %>
+                </div>
                 <div>
                   <% if (item.product_id) { %>
-                    <button class="remove-btn" data-product-id="<%= item.product_id %>" onclick="removeFromCart('<%= item.product_id %>')">Remove</button>
-                  <% } else { %>
-                    <span>Product ID not found</span>
-                  <% } %>
+                    <button class="remove-btn" data-product-id="<%= item.product_id %>"
+                      onclick="removeFromCart('<%= item.product_id %>')">Remove</button>
+                    <% } else { %>
+                      <span>Product ID not found</span>
+                      <% } %>
                 </div>
               </div>
-            <% }); %>
+              <% }); %>
           </div>
-        <% } else { %>
-          <div class="empty-cart">
-            <div class="empty-cart-icon">🛒</div>
-            <div class="empty-cart-title">Your cart is empty</div>
-            <div class="empty-cart-subtitle">Start shopping and add your favorite items!</div>
-            <a href="/products" class="continue-shopping">Continue Shopping</a>
-          </div>
-        <% } %>
+          <% } else { %>
+            <div class="empty-cart">
+              <div class="empty-cart-icon">🛒</div>
+              <div class="empty-cart-title">Your cart is empty</div>
+              <div class="empty-cart-subtitle">Start shopping and add your favorite items!</div>
+              <a href="/products" class="continue-shopping">Continue Shopping</a>
+            </div>
+            <% } %>
 
-        <% if (items && items.length > 0) { %>
-          <div class="checkout-section">
-            <div class="checkout-header">
-              <div class="checkout-info">
-                <a href="/products" class="continue-shopping-link">Continue Shopping</a>
-                <span class="item-count"><%= items.length %> items</span>
-              </div>
-            </div>
-            <div class="checkout-total">
-              <div>
-                <span class="total-label">Total (excl. shipping):</span>
-                <span class="total-amount">¥<%= totalPrice.toFixed(2) %></span>
-              </div>
-              <button class="checkout-btn" onclick="checkout()">Checkout</button>
-            </div>
-          </div>
-        <% } %>
+              <% if (items && items.length> 0) { %>
+                <div class="checkout-section">
+                  <div class="checkout-header">
+                    <div class="checkout-info">
+                      <a href="/products" class="continue-shopping-link">Continue Shopping</a>
+                      <span class="item-count">
+                        <%= items.length %> items
+                      </span>
+                    </div>
+                  </div>
+                  <div class="checkout-total">
+                    <div>
+                      <span class="total-label">Total (excl. shipping):</span>
+                      <span class="total-amount">¥<%= totalPrice.toFixed(2) %></span>
+                    </div>
+                    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+                  </div>
+                </div>
+                <% } %>
       </div>
     </div>
     <div id="delete-overlay"></div>
