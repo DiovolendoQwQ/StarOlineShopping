@@ -1,4 +1,3 @@
-// models/UserPreference.js
 const db = require('../config/database');
 
 // 用户偏好数据模型
