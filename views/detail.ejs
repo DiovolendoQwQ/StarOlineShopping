@@ -11,67 +11,64 @@
 </head>
 
 <body>
-  <div class="banner_x">
-    <div class="center-content">
-      <div class="logo-stack"
-        style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-right:12px;">
-        <a href="/homepage">
-          <div class="logo"></div>
-        </a>
-        <button class="back-button" onclick="history.back()">← Back</button>
-      </div>
-      <a href="/products/all">
-        <div class="ad_top"></div>
-      </a>
-    </div>
+  <div id="header-container">
+    <div class="banner_x">
+      <div class="w banner_inner">
+        <div class="logo-section">
+          <a href="/homepage">
+            <div class="logo"></div>
+          </a>
+        </div>
 
-    <div class="search-cart-container">
-      <div class="user-buttons">
-        <a href="javascript:void(0)" id="logout-link" class="icon-button" title="Logout">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
-            <path fill="currentColor"
-              d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z">
-            </path>
-          </svg>
-          <span class="label">Logout</span>
-        </a>
-        <a href="/profile.html" class="icon-button" title="Profile">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
-            <path fill="currentColor"
-              d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z">
-            </path>
-          </svg>
-          <span class="label">Profile</span>
-        </a>
-      </div>
-      <div class="cart-button">
-        <a href="/cart" class="cart-link">
-          <svg class="cart-icon" viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor"
-              d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
-            </path>
-          </svg>
-          <span class="cart-text">Cart</span>
-        </a>
-      </div>
-      <div class="search" style="position: relative;">
-        <form action="/products/all" method="get">
-          <div class="text fl">
-            <input type="text" name="keyword" class="shuru" placeholder="Search products">
+        <div class="search-section">
+          <div class="search-wrapper">
+            <form action="/products/all" method="get" class="search-form">
+              <input type="text" name="keyword" class="search-input" placeholder="Search products">
+              <button type="submit" class="search-btn">Search</button>
+            </form>
+            <div class="search-results"></div>
+            <div class="search-suggestions"></div>
+            <div class="hot-searches"></div>
           </div>
-          <div class="submit fl">
-            <input type="submit" class="sousuo" value="Search">
+        </div>
+
+        <div class="actions-section">
+          <div class="cart-box">
+            <a href="/cart" class="cart-btn-styled">
+              <svg class="cart-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor"
+                  d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+                </path>
+              </svg>
+              <span>Cart</span>
+            </a>
           </div>
-          <div class="clear"></div>
-        </form>
-        <div class="search-results"
-          style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-top: none; max-height: 400px; overflow-y: auto; z-index: 10000; margin-top: 1px; box-shadow: rgba(0,0,0,0.1) 0 4px 6px; display: none;">
-        </div>
-        <div class="search-suggestions"
-          style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 300px; overflow-y: auto; z-index: 10001; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;">
-        </div>
-        <div class="hot-searches"
-          style="position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: white; border: 1px solid #e0e0e0; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto; z-index: 10002; box-shadow: rgba(0,0,0,0.15) 0 8px 24px; display: none; margin-top: 1px;">
+          <div class="user-actions">
+            <a href="javascript:void(0)" id="logout-link" class="action-item" title="Logout">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor"
+                  d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z">
+                </path>
+              </svg>
+              <span class="label">Logout</span>
+            </a>
+            <a href="/customer-service.html" class="action-item" title="Customer Service">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor"
+                  d="M12 2a10 10 0 00-10 10v3a3 3 0 003 3h2v-6H5v-1a7 7 0 0114 0v1h-2v6h2a3 3 0 003-3v-3A10 10 0 0012 2zm-2 14h4v4h-4v-4z">
+                </path>
+              </svg>
+              <span class="label">Customer Service</span>
+            </a>
+            <a href="/profile.html" class="action-item" title="Profile">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+                <path fill="currentColor"
+                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z">
+                </path>
+              </svg>
+              <span class="label">Profile</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -242,15 +239,17 @@
         <% if (product && product.detail_images && product.detail_images.length) { %>
           <div class="product-images">
             <% product.detail_images.forEach(function(img, idx){ %>
-              <img src="<%= img %>" alt="<%= (product.name || 'Product') %> Detail Image <%= idx + 1 %>" class="detail-image"
-                loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/image/default.png'">
+              <img src="<%= img %>" alt="<%= (product.name || 'Product') %> Detail Image <%= idx + 1 %>"
+                class="detail-image" loading="lazy" decoding="async"
+                onerror="this.onerror=null;this.src='/image/default.png'">
               <% }) %>
           </div>
           <% } %>
             <% if (product && product.detail_html) { %>
               <div id="product-detail-html"><%- product.detail_html %></div>
               <% } else if (!(product && product.detail_images && product.detail_images.length)) { %>
-                <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">No detailed images
+                <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">No
+                  detailed images
                 </div>
                 <% } %>
                   <!-- 可选动态块: product.price_notice_html -->
