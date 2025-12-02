@@ -52,11 +52,11 @@ export function initLogout() {
                         var redirect = (data && data.redirect) ? data.redirect : '/login.html';
                         window.location.href = redirect;
                     } else {
-                        alert('登出失败，请稍后再试');
+                        alert('Logout failed. Please try again later');
                         hideModal();
                     }
                 } catch (e) {
-                    alert('网络错误，请稍后再试');
+                    alert('Network error. Please try again later');
                     hideModal();
                 }
             });

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>我的购物车-StarShopping</title>
+  <title>My Cart - StarShopping</title>
   <style>
     * {
       margin: 0;
@@ -446,7 +446,7 @@
         modal.dataset.pid='';
         const deleteBtn=document.querySelector(`.remove-btn[data-product-id="${pid}"]`);
         const cartItem=deleteBtn?deleteBtn.closest('.cart-item'):null;
-        if(!cartItem){showNotification('删除失败：未找到对应商品','error');return;}
+        if(!cartItem){showNotification('Remove failed: item not found','error');return;}
         cartItem.style.transition='all 0.5s ease';
         cartItem.style.transform='translateX(-100%)';
         cartItem.style.opacity='0';
@@ -464,13 +464,13 @@
           } else {
             cartItem.style.transform='translateX(0)';
             cartItem.style.opacity='1';
-            showNotification(d.error||'删除失败，请重试','error');
+            showNotification(d.error||'Remove failed, please retry','error');
           }
         })
         .catch(()=>{
           cartItem.style.transform='translateX(0)';
           cartItem.style.opacity='1';
-          showNotification('删除失败，请重试','error');
+          showNotification('Remove failed, please retry','error');
         });
       };
     }
@@ -514,12 +514,12 @@
           // 更新总价
           updateTotal();
         } else {
-          showNotification('更新失败，请重试', 'error');
+          showNotification('Update failed, please retry', 'error');
           input.value = data.oldQuantity || 1;
         }
       })
       .catch(error => {
-        showNotification('更新失败，请重试', 'error');
+        showNotification('Update failed, please retry', 'error');
       });
     }
 
@@ -547,7 +547,7 @@
 
     // 结算功能
     function checkout() {
-      showNotification('正在跳转到结算页面...', 'info');
+      showNotification('Redirecting to checkout...', 'info');
       setTimeout(() => {
         window.location.href = '/order/checkout';
       }, 1000);
@@ -617,20 +617,20 @@
     
     // 页面加载完成后的初始化
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('=== 购物车页面已加载 ===');
-      console.log('当前页面URL:', window.location.href);
+      console.log('=== Cart page loaded ===');
+      console.log('Current page URL:', window.location.href);
       
       const cartItems = document.querySelectorAll('.cart-item');
-      console.log('购物车商品数量:', cartItems.length);
+      console.log('Cart items:', cartItems.length);
       
       const deleteButtons = document.querySelectorAll('.remove-btn');
-      console.log('删除按钮数量:', deleteButtons.length);
+      console.log('Remove buttons:', deleteButtons.length);
       
       // 测试删除函数是否可用
       if (typeof removeFromCart === 'function') {
-        console.log('removeFromCart 函数已定义');
+        console.log('removeFromCart is defined');
       } else {
-        console.error('removeFromCart 函数未定义');
+        console.error('removeFromCart is not defined');
       }
       
        deleteButtons.forEach((btn, index) => {
@@ -663,9 +663,9 @@
             <a href="/homepage">
               <div class="logo fl"></div>
             </a>
-            <div class="cart-title">我的购物车</div>
+            <div class="cart-title">My Cart</div>
           </div>
-          <a href="/homepage" class="back-home-btn">返回首页</a>
+          <a href="/homepage" class="back-home-btn">Back to Home</a>
         </div>
       </div>
     </div>
@@ -676,11 +676,11 @@
         <% if (items && items.length > 0) { %>
           <div class="cart-container">
             <div class="cart-header">
-              <div>商品信息</div>
-              <div>单价</div>
-              <div>数量</div>
-              <div>小计</div>
-              <div>操作</div>
+              <div>Item</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Subtotal</div>
+              <div>Actions</div>
             </div>
             
             <% items.forEach(item => { %>
@@ -699,9 +699,9 @@
                 <div class="subtotal">¥<%= (item.price * item.quantity).toFixed(2) %></div>
                 <div>
                   <% if (item.product_id) { %>
-                    <button class="remove-btn" data-product-id="<%= item.product_id %>" onclick="removeFromCart('<%= item.product_id %>')">删除</button>
+                    <button class="remove-btn" data-product-id="<%= item.product_id %>" onclick="removeFromCart('<%= item.product_id %>')">Remove</button>
                   <% } else { %>
-                    <span>商品 ID 不存在</span>
+                    <span>Product ID not found</span>
                   <% } %>
                 </div>
               </div>
@@ -710,9 +710,9 @@
         <% } else { %>
           <div class="empty-cart">
             <div class="empty-cart-icon">🛒</div>
-            <div class="empty-cart-title">购物车是空的</div>
-            <div class="empty-cart-subtitle">快去挑选您喜欢的商品吧！</div>
-            <a href="/products" class="continue-shopping">继续购物</a>
+            <div class="empty-cart-title">Your cart is empty</div>
+            <div class="empty-cart-subtitle">Start shopping and add your favorite items!</div>
+            <a href="/products" class="continue-shopping">Continue Shopping</a>
           </div>
         <% } %>
 
@@ -720,16 +720,16 @@
           <div class="checkout-section">
             <div class="checkout-header">
               <div class="checkout-info">
-                <a href="/products" class="continue-shopping-link">继续购物</a>
-                <span class="item-count">共 <%= items.length %> 件商品</span>
+                <a href="/products" class="continue-shopping-link">Continue Shopping</a>
+                <span class="item-count"><%= items.length %> items</span>
               </div>
             </div>
             <div class="checkout-total">
               <div>
-                <span class="total-label">合计（不含运费）：</span>
+                <span class="total-label">Total (excl. shipping):</span>
                 <span class="total-amount">¥<%= totalPrice.toFixed(2) %></span>
               </div>
-              <button class="checkout-btn" onclick="checkout()">去结算</button>
+              <button class="checkout-btn" onclick="checkout()">Checkout</button>
             </div>
           </div>
         <% } %>
@@ -737,11 +737,11 @@
     </div>
     <div id="delete-overlay"></div>
     <div id="delete-modal" role="dialog" aria-hidden="true">
-      <h3>确认删除该商品？</h3>
-      <p>删除后无法恢复。</p>
+      <h3>Remove this item?</h3>
+      <p>This action cannot be undone.</p>
       <div class="buttons">
-        <button id="delete-cancel" type="button">取消</button>
-        <button id="delete-confirm" type="button">确认删除</button>
+        <button id="delete-cancel" type="button">Cancel</button>
+        <button id="delete-confirm" type="button">Confirm Remove</button>
       </div>
     </div>
 

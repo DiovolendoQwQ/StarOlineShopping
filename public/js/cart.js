@@ -16,19 +16,19 @@ async function addToCart(productId, quantity = 1) {
 
         if (response.ok) {
             const result = await response.json();
-            alert('商品已成功添加到购物车！');
+            alert('Item added to cart successfully!');
             // 可以在这里更新购物车图标的数量显示
             updateCartCount();
         } else if (response.status === 401) {
-            alert('请先登录后再添加商品到购物车');
+            alert('Please log in before adding items to cart');
             window.location.href = '/login.html';
         } else {
             const error = await response.text();
-            alert('添加到购物车失败：' + error);
+            alert('Failed to add to cart: ' + error);
         }
     } catch (error) {
         console.error('添加到购物车时发生错误:', error);
-        alert('网络错误，请稍后重试');
+        alert('Network error. Please try again later');
     }
 }
 

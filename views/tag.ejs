@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= tagName %> 标签 - Star Online Shopping</title>
+  <title><%= tagName %> Tag - Star Online Shopping</title>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <style>
     .page{max-width:1226px;margin:0 auto;padding:20px}
@@ -26,8 +26,8 @@
 <body>
   <div class="page">
     <div class="header">
-      <div class="title">标签：<%= tagName %></div>
-      <a href="/homepage" class="link">返回首页</a>
+      <div class="title">Tag: <%= tagName %></div>
+      <a href="/homepage" class="link">Back to Home</a>
     </div>
 
     <% if (products && products.length) { %>
@@ -43,7 +43,7 @@
               <% if (typeof p.price !== 'undefined') { %>
                 <div class="price">¥<%= p.price %></div>
               <% } %>
-              <a class="link" href="/product/<%= p.id %>">查看详情</a>
+              <a class="link" href="/product/<%= p.id %>">View Details</a>
             </div>
           </div>
         <% }) %>
@@ -51,17 +51,17 @@
 
       <div class="pagination">
         <% if (page > 1) { %>
-          <a href="/tags/<%= tag %>?page=<%= page - 1 %>">上一页</a>
+          <a href="/tags/<%= tag %>?page=<%= page - 1 %>">Previous</a>
         <% } %>
-        <span class="current">第 <%= page %> 页</span>
+        <span class="current">Page <%= page %></span>
         <% if (page < totalPages) { %>
-          <a href="/tags/<%= tag %>?page=<%= page + 1 %>">下一页</a>
+          <a href="/tags/<%= tag %>?page=<%= page + 1 %>">Next</a>
         <% } %>
       </div>
     <% } else { %>
       <div style="background:#fff;border-radius:16px;padding:40px;box-shadow:0 8px 24px rgba(0,0,0,.08);text-align:center">
-        <h3 style="margin:0 0 12px;color:#2c3e50">没有找到 <%= tagName %> 商品</h3>
-        <p style="color:#666">可以尝试返回首页或更换筛选条件。</p>
+        <h3 style="margin:0 0 12px;color:#2c3e50">No products found for <%= tagName %></h3>
+        <p style="color:#666">Try returning to home or change filter conditions.</p>
       </div>
     <% } %>
   </div>

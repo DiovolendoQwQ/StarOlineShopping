@@ -1,5 +1,5 @@
 
-import { navData, featuredData, accessoriesData, accessoriesData2 } from './data.js';
+import { navData, featuredData, accessoriesData, accessoriesData2 } from './data.js?v=20251202-1';
 
 export function renderNav() {
     const navContainer = document.querySelector('.banner_y .nav ul');
@@ -21,7 +21,7 @@ export function renderNav() {
                     </a>
                 </div>
                 <div class="xuangou_right fr">
-                    <a href="${p.link || 'javascript:void(0)'}" class="add-to-cart" ${p.id ? `data-product-id="${p.id}"` : ''}>选购</a>
+                    <a href="${p.link || 'javascript:void(0)'}" class="add-to-cart" ${p.id ? `data-product-id="${p.id}"` : ''}>Buy</a>
                 </div>
                 <div class="clear"></div>
             </div>

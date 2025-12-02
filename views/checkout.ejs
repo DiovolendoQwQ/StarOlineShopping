@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>结算</title>
+  <title>Checkout</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     .checkout-page{max-width:1226px;margin:0 auto;padding:20px}
@@ -41,10 +41,10 @@
   </style>
 </head>
 <body>
-  <div class="topbar"><div class="inner"><div style="display:flex;align-items:center;gap:12px"><a href="/homepage"><div class="logo fl" style="width:200px;height:100px;background:url('/image/logo_top.jpg.png') no-repeat center center;background-size:contain"></div></a></div><a href="/cart" style="color:#333;text-decoration:none">返回购物车</a></div></div>
+  <div class="topbar"><div class="inner"><div style="display:flex;align-items:center;gap:12px"><a href="/homepage"><div class="logo fl" style="width:200px;height:100px;background:url('/image/logo_top.jpg.png') no-repeat center center;background-size:contain"></div></a></div><a href="/cart" style="color:#333;text-decoration:none">Back to Cart</a></div></div>
   <div class="checkout-page">
     <div class="section collapsible collapsed" id="summarySection">
-      <div class="section-header"><div class="section-title">订单概要</div><div class="toggle" id="summaryToggle"><span class="icon">▶</span><span>展开</span><span style="margin-left:12px;color:#e74c3c">¥<%= totalAmount %></span></div></div>
+      <div class="section-header"><div class="section-title">Order Summary</div><div class="toggle" id="summaryToggle"><span class="icon">▶</span><span>Expand</span><span style="margin-left:12px;color:#e74c3c">¥<%= totalAmount %></span></div></div>
       <div class="section-body">
         <% cartItems.forEach(item => { %>
           <div class="summary-item">
@@ -53,59 +53,59 @@
           </div>
         <% }) %>
         <div class="total-line">
-          <span>合计</span>
+          <span>Total</span>
           <span>¥<%= totalAmount %></span>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <div class="section-header"><div class="section-title">选择支付方式</div></div>
+      <div class="section-header"><div class="section-title">Choose Payment Method</div></div>
       <div class="section-body">
         <div class="pay-methods" id="payMethods">
           <div class="pay-option" data-method="credit-card">
-            <input type="radio" name="payMethod" value="credit-card">信用卡
+            <input type="radio" name="payMethod" value="credit-card">Credit Card
           </div>
           <div class="pay-option" data-method="wechat">
-            <input type="radio" name="payMethod" value="wechat">微信支付
+            <input type="radio" name="payMethod" value="wechat">WeChat Pay
           </div>
           <div class="pay-option" data-method="alipay">
-            <input type="radio" name="payMethod" value="alipay">支付宝
+            <input type="radio" name="payMethod" value="alipay">Alipay
           </div>
         </div>
 
         <div class="pay-content">
           <div id="ccForm" class="cc-form">
             <div class="full">
-              <label>持卡人姓名</label>
-              <input type="text" id="cc-name" placeholder="姓名">
+              <label>Cardholder Name</label>
+              <input type="text" id="cc-name" placeholder="Name">
             </div>
             <div class="full">
-              <label>卡号</label>
+              <label>Card Number</label>
               <input type="text" id="cc-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19">
             </div>
             <div>
-              <label>有效期(月/年)</label>
+              <label>Expiry (MM/YY)</label>
               <input type="text" id="cc-exp" placeholder="MM/YY" maxlength="5">
             </div>
             <div>
-              <label>安全码(CVV)</label>
+              <label>Security Code (CVV)</label>
               <input type="text" id="cc-cvv" placeholder="CVV" maxlength="4">
             </div>
           </div>
 
           <div id="wechatBox" class="qr-box">
-            <img src="/image/pay/wechat_qr.png" alt="微信支付二维码">
+            <img src="/image/pay/wechat_qr.png" alt="WeChat Pay QR">
           </div>
 
           <div id="alipayBox" class="qr-box">
-            <img src="/image/pay/alipay_qr.png" alt="支付宝二维码">
+            <img src="/image/pay/alipay_qr.png" alt="Alipay QR">
           </div>
         </div>
 
         <div class="actions">
-          <button class="btn btn-secondary" onclick="window.location.href='/cart'">返回购物车</button>
-          <button class="btn btn-primary" id="confirmPay">确认支付</button>
+          <button class="btn btn-secondary" onclick="window.location.href='/cart'">Back to Cart</button>
+          <button class="btn btn-primary" id="confirmPay">Confirm Payment</button>
         </div>
       </div>
     </div>
@@ -142,7 +142,7 @@
 
       summaryToggle.addEventListener('click', () => {
         const collapsed = summarySection.classList.toggle('collapsed');
-        summaryToggle.querySelector('span:nth-child(2)').textContent = collapsed ? '展开' : '收起';
+        summaryToggle.querySelector('span:nth-child(2)').textContent = collapsed ? 'Expand' : 'Collapse';
       });
 
       const CART_ITEMS = <%- JSON.stringify(cartItems.map(function(ci){ return { productId: ci.product_id, quantity: ci.quantity, price: ci.price }; })) %>;

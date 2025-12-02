@@ -70,17 +70,17 @@ async function addToCart(productId, quantity = 1) {
     });
 
     if (response.ok) {
-      if (window.showCartNotification) window.showCartNotification(); else alert('商品已成功添加到购物车！');
+      if (window.showCartNotification) window.showCartNotification(); else alert('Item added to cart successfully!');
     } else if (response.status === 401) {
-      if (window.showErrorNotification) window.showErrorNotification('请先登录后再添加商品到购物车'); else alert('请先登录后再添加商品到购物车');
+      if (window.showErrorNotification) window.showErrorNotification('Please log in before adding items to cart'); else alert('Please log in before adding items to cart');
       window.location.href = '/login.html';
     } else {
       const error = await response.text();
-      if (window.showErrorNotification) window.showErrorNotification('添加到购物车失败：' + error); else alert('添加到购物车失败：' + error);
+      if (window.showErrorNotification) window.showErrorNotification('Failed to add to cart: ' + error); else alert('Failed to add to cart: ' + error);
     }
   } catch (error) {
     console.error('添加到购物车时发生错误:', error);
-  if (window.showErrorNotification) window.showErrorNotification('网络错误，请稍后重试'); else alert('网络错误，请稍后重试');
+  if (window.showErrorNotification) window.showErrorNotification('Network error. Please try again later'); else alert('Network error. Please try again later');
   }
 }
 

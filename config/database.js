@@ -5,22 +5,22 @@ require('dotenv').config();
 // 使用环境变量中的数据库路径，如果没有则使用默认路径
 const dbPath = process.env.DB_PATH || './database/star_shopping.db';
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('❌ 数据库连接失败:', err.message);
-  } else {
-    console.log('✅ 成功连接到 SQLite 数据库:', dbPath);
-  }
-});
+  const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      console.error('❌ 数据库连接失败:', err.message);
+    } else {
+    
+    }
+  });
 
 // 启用外键约束
-db.run('PRAGMA foreign_keys = ON;', (err) => {
-  if (err) {
-    console.error('❌ 无法启用外键约束:', err.message);
-  } else {
-    console.log('✅ 外键约束已启用');
-  }
-});
+  db.run('PRAGMA foreign_keys = ON;', (err) => {
+    if (err) {
+      console.error('❌ 无法启用外键约束:', err.message);
+    } else {
+      
+    }
+  });
 
 // 包装异步方法
 db.getAsync = promisify(db.get).bind(db);
@@ -52,14 +52,13 @@ db.serialize(() => {
   `, (err) => {
     if (err) console.error('❌ 创建 users 表失败:', err.message);
     else {
-      console.log('✅ users 表已创建或已存在');
       
       // 检查并添加 role 字段（如果不存在）
        db.run(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT NULL`, (alterErr) => {
          if (alterErr && !alterErr.message.includes('duplicate column name')) {
            console.error('❌ 添加 role 字段失败:', alterErr.message);
          } else if (!alterErr) {
-           console.log('✅ users 表已添加 role 字段');
+           
          }
        });
 
@@ -68,9 +67,9 @@ db.serialize(() => {
          if (alterErr && !alterErr.message.includes('duplicate column name')) {
            console.error('❌ 添加 avatar_url 字段失败:', alterErr.message);
          } else if (!alterErr) {
-           console.log('✅ users 表已添加 avatar_url 字段');
-         }
-       });
+           
+     }
+   });
      }
    });
 
@@ -96,7 +95,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 products 表失败:', err.message);
-    else console.log('✅ products 表已创建或已存在');
+    else {}
   });
 
   // 订单表（新版本）
@@ -113,7 +112,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 orders 表失败:', err.message);
-    else console.log('✅ orders 表已创建或已存在');
+    else {}
   });
 
   // 订单项表
@@ -130,7 +129,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 order_items 表失败:', err.message);
-    else console.log('✅ order_items 表已创建或已存在');
+    else {}
   });
 
   // 购物车表
@@ -143,7 +142,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 carts 表失败:', err.message);
-    else console.log('✅ carts 表已创建或已存在');
+    else {}
   });
 
   // 购物车项表
@@ -158,7 +157,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 cart_items 表失败:', err.message);
-    else console.log('✅ cart_items 表已创建或已存在');
+    else {}
   });
 
   // 用户行为数据表
@@ -177,7 +176,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 user_behaviors 表失败:', err.message);
-    else console.log('✅ user_behaviors 表已创建或已存在');
+    else {}
   });
 
   // 用户偏好数据表（新版本）
@@ -198,7 +197,7 @@ db.serialize(() => {
       );
     `, (err) => {
       if (err) console.error('❌ 创建 user_preferences 表失败:', err.message);
-      else console.log('✅ user_preferences 表已创建或已存在');
+      else {}
     });
   });
 
@@ -215,13 +214,13 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 analytics_summary 表失败:', err.message);
-    else console.log('✅ analytics_summary 表已创建或已存在');
+    else {}
   });
 
   // 移除旧版统一图片表 product_images（已不再使用，改为 image_detail）
   db.run(`DROP TABLE IF EXISTS product_images;`, (err) => {
     if (err) console.error('❌ 删除 product_images 表失败:', err.message);
-    else console.log('🧹 已删除旧表 product_images');
+    else {}
   });
 
   db.run(`
@@ -236,7 +235,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 image_detail 表失败:', err.message);
-    else console.log('✅ image_detail 表已创建或已存在');
+    else {}
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_image_detail_product ON image_detail(product_id);`, (err) => {
     if (err) console.error('❌ 创建 idx_image_detail_product 失败:', err.message);
@@ -262,7 +261,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 cs_sessions 表失败:', err.message);
-    else console.log('✅ cs_sessions 表已创建或已存在');
+    else {}
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_status ON cs_sessions(status);`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_sessions_last_active ON cs_sessions(last_active_at);`);
@@ -278,7 +277,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 cs_messages 表失败:', err.message);
-    else console.log('✅ cs_messages 表已创建或已存在');
+    else {}
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_cs_messages_session_time ON cs_messages(session_id, time);`);
 
@@ -308,7 +307,7 @@ db.serialize(() => {
     );
   `, (err) => {
     if (err) console.error('❌ 创建 reviews 表失败:', err.message);
-    else console.log('✅ reviews 表已创建或已存在');
+    else {}
   });
   db.run(`CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews(product_id);`, (err) => {
     if (err) console.error('❌ 创建 idx_reviews_product 失败:', err.message);
@@ -327,7 +326,6 @@ module.exports = db;
     const hasServiceTags = cols.some(c => c.name === 'service_tags');
     const hasOriginalPrice = cols.some(c => c.name === 'original_price');
     if (hasShipOrigin || hasShipPromise || hasServiceTags || hasOriginalPrice) {
-      console.log('⚙️ 正在移除 products 中不需要的列: shipping_origin/shipping_promise/service_tags');
       await db.runAsync('PRAGMA foreign_keys = OFF');
       await db.runAsync('BEGIN TRANSACTION');
       await db.runAsync(`
@@ -356,7 +354,6 @@ module.exports = db;
       await db.runAsync('ALTER TABLE products_tmp RENAME TO products');
       await db.runAsync('COMMIT');
       await db.runAsync('PRAGMA foreign_keys = ON');
-      console.log('✅ 已删除不需要的列并保留数据');
     }
   } catch (e) {
     console.warn('⚠️ 删除列迁移失败：', e.message);

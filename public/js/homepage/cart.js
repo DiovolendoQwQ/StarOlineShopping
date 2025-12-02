@@ -5,7 +5,7 @@ async function addToCartRequest(productId, quantity) {
       body: JSON.stringify({ productId: productId, quantity: quantity || 1 })
     });
     if (resp.redirected && resp.url.includes('/login')) {
-      if (window.showErrorNotification) window.showErrorNotification('请先登录后再添加商品到购物车');
+      if (window.showErrorNotification) window.showErrorNotification('Please log in before adding items to cart');
       window.location.href = '/login.html';
       return;
     }
@@ -14,14 +14,14 @@ async function addToCartRequest(productId, quantity) {
       return;
     }
     if (resp.status === 401) {
-      if (window.showErrorNotification) window.showErrorNotification('请先登录后再添加商品到购物车');
+      if (window.showErrorNotification) window.showErrorNotification('Please log in before adding items to cart');
       window.location.href = '/login.html';
       return;
     }
     var text = await resp.text();
-    if (window.showErrorNotification) window.showErrorNotification('添加到购物车失败：' + text);
+    if (window.showErrorNotification) window.showErrorNotification('Failed to add to cart: ' + text);
   } catch (e) {
-    if (window.showErrorNotification) window.showErrorNotification('网络错误，请稍后重试');
+    if (window.showErrorNotification) window.showErrorNotification('Network error. Please try again later');
   }
 }
 

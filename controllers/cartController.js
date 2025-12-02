@@ -49,7 +49,7 @@ exports.addToCart = async (req, res) => {
     const userId = req.session.userId;
 
     if (!userId) {
-      return res.status(401).send('未登录用户无法添加商品');
+      return res.status(401).send('Unauthenticated users cannot add items');
     }
 
     const product = await db.getAsync(`SELECT * FROM products WHERE id = ?`, [productId]);
@@ -98,7 +98,7 @@ exports.updateCartItem = async (req, res) => {
     const userId = req.session.userId;
 
     if (!userId) {
-      return res.status(401).json({ success: false, error: '未登录' });
+      return res.status(401).json({ success: false, error: 'unauthenticated' });
     }
 
     if (quantity === 0) {

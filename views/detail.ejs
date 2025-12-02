@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -18,7 +18,7 @@
         <a href="/homepage">
           <div class="logo"></div>
         </a>
-        <button class="back-button" onclick="history.back()">← 返回</button>
+        <button class="back-button" onclick="history.back()">← Back</button>
       </div>
       <a href="/products/all">
         <div class="ad_top"></div>
@@ -27,21 +27,21 @@
 
     <div class="search-cart-container">
       <div class="user-buttons">
-        <a href="javascript:void(0)" id="logout-link" class="icon-button" title="登出">
+        <a href="javascript:void(0)" id="logout-link" class="icon-button" title="Logout">
           <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
             <path fill="currentColor"
               d="M16 13v-2H7V8l-5 4 5 4v-3h9zm6-9v16c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-4h2v4h12V4H8v4H6V4c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2z">
             </path>
           </svg>
-          <span class="label">登出</span>
+          <span class="label">Logout</span>
         </a>
-        <a href="/profile.html" class="icon-button" title="个人中心">
+        <a href="/profile.html" class="icon-button" title="Profile">
           <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
             <path fill="currentColor"
               d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a3 3 0 110 6 3 3 0 010-6zm0 8c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z">
             </path>
           </svg>
-          <span class="label">个人中心</span>
+          <span class="label">Profile</span>
         </a>
       </div>
       <div class="cart-button">
@@ -51,16 +51,16 @@
               d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
             </path>
           </svg>
-          <span class="cart-text">购物车</span>
+          <span class="cart-text">Cart</span>
         </a>
       </div>
       <div class="search" style="position: relative;">
         <form action="/products/all" method="get">
           <div class="text fl">
-            <input type="text" name="keyword" class="shuru" placeholder="华为mate70pro现货开抢">
+            <input type="text" name="keyword" class="shuru" placeholder="Search products">
           </div>
           <div class="submit fl">
-            <input type="submit" class="sousuo" value="搜索">
+            <input type="submit" class="sousuo" value="Search">
           </div>
           <div class="clear"></div>
         </form>
@@ -80,15 +80,15 @@
 
 
 
-  <!-- 购物车通知弹窗 -->
+  <!-- Cart Notification -->
   <div class="overlay" id="overlay"></div>
   <div class="cart-notification" id="cartNotification">
     <div class="icon">✓</div>
-    <h3>添加成功！</h3>
-    <p>商品已成功添加到购物车</p>
+    <h3>Added Successfully!</h3>
+    <p>Item added to cart successfully</p>
     <div class="buttons">
-      <button class="btn-secondary" onclick="closeNotification()">继续购物</button>
-      <button class="btn-primary" onclick="window.location.href='/cart'">查看购物车</button>
+      <button class="btn-secondary" onclick="closeNotification()">Continue Shopping</button>
+      <button class="btn-primary" onclick="window.location.href='/cart'">View Cart</button>
     </div>
   </div>
 
@@ -98,9 +98,9 @@
       <div class="main-pic">
         <!-- 数据库字段: product.image -->
         <% if (product && product.image) { %>
-          <img id="mainImage" src="<%= product.image %>" alt="<%= product.name || '商品' %>">
+          <img id="mainImage" src="<%= product.image %>" alt="<%= product.name || 'Product' %>">
           <% } else { %>
-            <img id="mainImage" src="/image/default.png" alt="<%= product && product.name || '商品' %>">
+            <img id="mainImage" src="/image/default.png" alt="<%= product && product.name || 'Product' %>">
             <% } %>
       </div>
 
@@ -108,7 +108,7 @@
     <div class="detail-container">
       <!-- 数据库字段: product.name -->
       <h1 id="product-title">
-        <%= product && product.name ? product.name : '未命名商品' %>
+        <%= product && product.name ? product.name : 'Unnamed Product' %>
       </h1>
       <!-- 数据库字段: product.description -->
       <div class="description" id="product-description">
@@ -121,15 +121,15 @@
         </div>
         <% if (typeof product.stock !=='undefined' ) { %>
           <div class="tb-stock">
-            <%= product.stock> 0 ? '现货' : '缺货' %> | 库存：<%= product.stock %>
+            <%= product.stock> 0 ? 'In Stock' : 'Out of Stock' %> | Stock: <%= product.stock %>
           </div>
           <% } %>
       </div>
       <div class="tb-sku">
         <div class="tb-sku-row">
-          <div class="tb-sku-title">规格</div>
+          <div class="tb-sku-title">Specifications</div>
           <div class="tb-sku-options">
-            <span class="tb-sku-option selected">默认</span>
+            <span class="tb-sku-option selected">Default</span>
           </div>
         </div>
         <!-- 可选动态块: product.shipping_html -->
@@ -141,34 +141,34 @@
               <div class="extra-info" id="extra-info"><%- product.extra_info_html %></div>
               <% } %>
                 <div class="tb-sku-row">
-                  <div class="tb-sku-title">数量</div>
+                  <div class="tb-sku-title">Quantity</div>
                   <div class="tb-quantity">
                     <button class="qty-btn minus" type="button">-</button>
                     <input type="number" id="buyQty" min="1" value="1">
                     <button class="qty-btn plus" type="button">+</button>
                     <% if (typeof product.stock !=='undefined' ) { %>
-                      <span class="tb-qty-stock">库存 <%= product.stock %> 件</span>
+                      <span class="tb-qty-stock">Stock <%= product.stock %></span>
                       <% } %>
                   </div>
                 </div>
       </div>
       <div class="tb-actions">
-        <button class="buy-btn" data-product-id="<%= product.id %>">立即购买</button>
-        <button class="cart-btn add-to-cart-btn" data-product-id="<%= product.id %>">加入购物车</button>
+        <button class="buy-btn" data-product-id="<%= product.id %>">Buy Now</button>
+        <button class="cart-btn add-to-cart-btn" data-product-id="<%= product.id %>">Add to Cart</button>
       </div>
       <ul class="tb-service">
-        <li>正品保证</li>
-        <li>七天无理由</li>
-        <li>极速发货</li>
+        <li>Genuine Guarantee</li>
+        <li>7-Day Return</li>
+        <li>Fast Shipping</li>
       </ul>
     </div>
   </div>
 
   <div class="image-tabs">
     <div class="tabs-nav">
-      <div class="tab active">用户评价</div>
-      <div class="tab">参数信息</div>
-      <div class="tab">图文详情</div>
+      <div class="tab active">Reviews</div>
+      <div class="tab">Specifications</div>
+      <div class="tab">Details</div>
     </div>
     <div class="tab-content">
       <div class="tab-panel active">
@@ -183,7 +183,7 @@
                 <div class="review-body">
                   <div class="review-header">
                     <span class="review-name">
-                      <%= rv.author || '匿名用户' %>
+                      <%= rv.author || 'Anonymous' %>
                     </span>
                     <% if (rv.rating) { %><span class="badge rating">★<%= Array(rv.rating).fill('').join('★') %></span>
                       <% } %>
@@ -193,7 +193,7 @@
                         <%= rv.created_at %>
                       </span>
                       <% } %>
-                        <% if (rv.sku_info) { %><span>已购：<%= rv.sku_info %></span>
+                        <% if (rv.sku_info) { %><span>Purchased: <%= rv.sku_info %></span>
                           <% } %>
                   </div>
                   <div class="review-content">
@@ -210,7 +210,7 @@
               </div>
               <% }) %>
                 <% } else { %>
-                  <div class="reviews-empty">暂无评价</div>
+                  <div class="reviews-empty">No reviews yet</div>
                   <% } %>
         </div>
       </div>
@@ -234,7 +234,7 @@
           <% } else if (product && product.specs_json) { %>
             <pre class="spec-json" id="product-specs-json"><%= product.specs_json %></pre>
             <% } else { %>
-              <div class="spec-empty">暂无参数信息</div>
+              <div class="spec-empty">No specification information</div>
               <% } %>
       </div>
       <div class="tab-panel">
@@ -242,7 +242,7 @@
         <% if (product && product.detail_images && product.detail_images.length) { %>
           <div class="product-images">
             <% product.detail_images.forEach(function(img, idx){ %>
-              <img src="<%= img %>" alt="<%= (product.name || '商品') %> 详情图 <%= idx + 1 %>" class="detail-image"
+              <img src="<%= img %>" alt="<%= (product.name || 'Product') %> Detail Image <%= idx + 1 %>" class="detail-image"
                 loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/image/default.png'">
               <% }) %>
           </div>
@@ -250,7 +250,7 @@
             <% if (product && product.detail_html) { %>
               <div id="product-detail-html"><%- product.detail_html %></div>
               <% } else if (!(product && product.detail_images && product.detail_images.length)) { %>
-                <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">暂无图文详情
+                <div class="detail-empty" style="margin-top:16px;color:#6c7a89;font-size:13px;line-height:1.8">No detailed images
                 </div>
                 <% } %>
                   <!-- 可选动态块: product.price_notice_html -->

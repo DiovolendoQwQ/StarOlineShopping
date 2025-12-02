@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>搜索结果 - Star Online Shopping</title>
+    <title>Search Results - Star Online Shopping</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <style>
         * {
@@ -333,22 +333,22 @@
     <div class="search-page">
         <div class="search-header">
             <form class="search-form" method="get" action="/products/all">
-                <input type="text" name="keyword" class="search-input" placeholder="搜索商品..." value="<%= keyword %>">
-                <button type="submit" class="search-btn">搜索</button>
+                <input type="text" name="keyword" class="search-input" placeholder="Search products..." value="<%= keyword %>">
+                <button type="submit" class="search-btn">Search</button>
             </form>
             <div style="display:flex;justify-content:flex-end;">
-                <a href="/homepage" class="back-home">返回首页</a>
+                <a href="/homepage" class="back-home">Back to Home</a>
             </div>
             <div class="search-info">
                 <% if (keyword) { %>
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <span>搜索 "<%= keyword %>" 找到 <strong><%= typeof totalCount !== 'undefined' ? totalCount : products.length %></strong> 个结果</span>
+                        <span>Search "<%= keyword %>" found <strong><%= typeof totalCount !== 'undefined' ? totalCount : products.length %></strong> results</span>
                         <% if (typeof totalCount !== 'undefined' && totalCount > products.length) { %>
-                            <span style="font-size: 12px; color: #666;">显示第 <%= startItem %>-<%= endItem %> 个结果</span>
+                            <span style="font-size: 12px; color: #666;">Showing <%= startItem %>-<%= endItem %> of <%= totalCount %></span>
                         <% } %>
                     </div>
                 <% } else { %>
-                    <span>显示所有商品 (<%= typeof totalCount !== 'undefined' ? totalCount : products.length %> 个)</span>
+                    <span>Showing all products (<%= typeof totalCount !== 'undefined' ? totalCount : products.length %>)</span>
                 <% } %>
             </div>
         </div>
@@ -359,7 +359,7 @@
                     <div class="product-card">
                         <% if (product.relevanceScore && keyword) { %>
                             <div style="position: absolute; top: 8px; right: 8px; background: rgba(255,103,0,0.9); color: white; padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: bold;">
-                                匹配度: <%= Math.round(product.relevanceScore * 100) %>%
+                                Match: <%= Math.round(product.relevanceScore * 100) %>%
                             </div>
                         <% } %>
                         <a href="/product/<%= product.id %>" class="image-link">
@@ -375,7 +375,7 @@
                             <div class="product-price">¥<%= product.price %></div>
                             <% if (product.stock !== undefined) { %>
                                 <div class="<%= Number(product.stock) > 0 ? 'stock-ok' : 'stock-zero' %>" style="font-size: 11px; margin:3px 0;">
-                                    <%= Number(product.stock) > 0 ? `库存: ${product.stock}` : '暂无库存' %>
+                                    <%= Number(product.stock) > 0 ? `Stock: ${product.stock}` : 'Out of stock' %>
                                 </div>
                             <% } %>
                             
@@ -386,8 +386,8 @@
 
             <div class="pagination">
                 <% const qk = keyword ? `&keyword=${encodeURIComponent(keyword)}` : '' %>
-                <a href="/products/all?page=1<%= qk %>" class="<%= page===1?'disabled':'' %>">首页</a>
-                <a href="/products/all?page=<%= Math.max(1, page-1) %><%= qk %>" class="<%= page===1?'disabled':'' %>">上一页</a>
+                <a href="/products/all?page=1<%= qk %>" class="<%= page===1?'disabled':'' %>">First</a>
+                <a href="/products/all?page=<%= Math.max(1, page-1) %><%= qk %>" class="<%= page===1?'disabled':'' %>">Previous</a>
                 <% (pagesToShow || []).forEach(p => { %>
                     <% if (p.p) { %>
                         <a href="/products/all?page=<%= p.p %><%= qk %>" class="<%= p.active?'current-page':'' %>"><%= p.label %></a>
@@ -395,23 +395,23 @@
                         <a href="#" class="disabled"><%= p.label %></a>
                     <% } %>
                 <% }) %>
-                <a href="/products/all?page=<%= Math.min(totalPages, page+1) %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">下一页</a>
-                <a href="/products/all?page=<%= totalPages %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">末页</a>
+                <a href="/products/all?page=<%= Math.min(totalPages, page+1) %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">Next</a>
+                <a href="/products/all?page=<%= totalPages %><%= qk %>" class="<%= page===totalPages?'disabled':'' %>">Last</a>
             </div>
             <div class="page-info">
-                共 <%= totalPages %> 页，当前第 <%= page %> 页；显示第 <%= startItem %>-<%= endItem %> 个结果（每页 <%= limit %> 个）
+                Total <%= totalPages %> pages, current page <%= page %>; showing <%= startItem %>-<%= endItem %> results (per page <%= limit %>)
             </div>
         <% } else { %>
             <div class="no-results">
-                <h3>未找到相关商品</h3>
-                <p>抱歉，没有找到与 "<%= keyword %>" 相关的商品。</p>
-                <p>建议：</p>
+                <h3>No products found</h3>
+                <p>Sorry, no products matched "<%= keyword %>".</p>
+                <p>Suggestions:</p>
                 <ul>
-                    <li>检查拼写是否正确</li>
-                    <li>尝试使用更通用的关键词</li>
-                    <li>减少关键词数量</li>
+                    <li>Check for typos</li>
+                    <li>Try more general keywords</li>
+                    <li>Use fewer keywords</li>
                 </ul>
-                <a href="/homepage.html" class="back-home">返回首页</a>
+                <a href="/homepage" class="back-home">Back to Home</a>
             </div>
         <% } %>
     </div>

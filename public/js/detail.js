@@ -31,7 +31,7 @@
       // 修改为错误样式
       icon.innerHTML = '✕';
       icon.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
-      title.textContent = '添加失败';
+      title.textContent = 'Add Failed';
       text.textContent = message;
 
       showCartNotification();
@@ -40,8 +40,8 @@
       setTimeout(() => {
         icon.innerHTML = '✓';
         icon.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-        title.textContent = '添加成功！';
-        text.textContent = '商品已成功添加到购物车';
+        title.textContent = 'Added Successfully!';
+        text.textContent = 'Item added to cart successfully';
       }, 3000);
     }
 
@@ -76,18 +76,18 @@
         if (response.ok) {
           showCartNotification();
         } else if (response.status === 401) {
-          showErrorNotification('请先登录后再添加商品到购物车');
+          showErrorNotification('Please log in before adding items to cart');
           setTimeout(() => {
             window.location.href = '/login.html';
           }, 2000);
         } else {
           const error = await response.text();
-          showErrorNotification('添加到购物车失败：' + error);
+          showErrorNotification('Failed to add to cart: ' + error);
         }
       } catch (error) {
         button.classList.remove('loading');
         console.error('添加到购物车时发生错误:', error);
-        showErrorNotification('网络错误，请稍后重试');
+        showErrorNotification('Network error. Please try again later');
       }
     }
 

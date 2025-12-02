@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>简单结算</title>
+  <title>Simple Checkout</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     .topbar{background:#fff;border-bottom:1px solid #eee;height:100px}
@@ -22,7 +22,7 @@
   </style>
 </head>
 <body>
-  <div class="topbar"><div class="inner"><a href="/homepage"><div class="logo"></div></a><a href="/cart" style="color:#333;text-decoration:none">返回购物车</a></div></div>
+  <div class="topbar"><div class="inner"><a href="/homepage"><div class="logo"></div></a><a href="/cart" style="color:#333;text-decoration:none">Back to Cart</a></div></div>
   <div class="section">
     <% if (items && items.length) { %>
       <% items.forEach(function(it){ %>
@@ -31,10 +31,10 @@
           <div class="price">¥<%= (it.price * it.quantity).toFixed(2) %></div>
         </div>
       <% }) %>
-      <div class="total"><span>合计</span><span>¥<%= totalAmount.toFixed(2) %></span></div>
-      <div class="actions"><button class="btn btn-primary" id="confirmPay">确认支付</button></div>
+      <div class="total"><span>Total</span><span>¥<%= totalAmount.toFixed(2) %></span></div>
+      <div class="actions"><button class="btn btn-primary" id="confirmPay">Confirm Payment</button></div>
     <% } else { %>
-      <div style="text-align:center;color:#666">暂无商品</div>
+      <div style="text-align:center;color:#666">No items</div>
     <% } %>
   </div>
   <script>

@@ -39,7 +39,7 @@ class SearchManager {
         this.searchButton = document.querySelector('.search .sousuo');
 
         if (!this.searchForm || !this.searchInput || !this.searchButton) {
-            console.warn('搜索元素未找到');
+            console.warn('Search elements not found');
             return;
         }
 
@@ -200,15 +200,15 @@ class SearchManager {
             const response = await fetch(`/products/all?keyword=${encodeURIComponent(searchQuery)}&format=json`);
 
             if (!response.ok) {
-                throw new Error('搜索请求失败');
+                throw new Error('Search request failed');
             }
 
             const products = await response.json();
             this.displayResults(products, searchQuery);
 
         } catch (error) {
-            console.error('搜索失败:', error);
-            this.showError('搜索失败，请稍后重试');
+            console.error('Search failed:', error);
+            this.showError('Search failed. Please try again later');
         }
     }
 
@@ -216,7 +216,7 @@ class SearchManager {
         this.resultsContainer.innerHTML = `
             <div class="search-loading" style="padding: 20px; text-align: center; color: #666;">
                 <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid #ff6700; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <span style="margin-left: 10px;">搜索中...</span>
+                <span style="margin-left: 10px;">Searching...</span>
             </div>
             <style>
                 @keyframes spin {
@@ -232,8 +232,8 @@ class SearchManager {
         if (products.length === 0) {
             this.resultsContainer.innerHTML = `
                 <div class="no-results" style="padding: 20px; text-align: center; color: #666;">
-                    <p>未找到与 "${this.escapeHtml(query)}" 相关的商品</p>
-                    <p style="font-size: 12px; margin-top: 10px;">建议：检查拼写或尝试其他关键词</p>
+                    <p>No products found matching "${this.escapeHtml(query)}"</p>
+                    <p style="font-size: 12px; margin-top: 10px;">Tip: check spelling or try other keywords</p>
                 </div>
             `;
         } else {
@@ -266,7 +266,7 @@ class SearchManager {
 
             this.resultsContainer.innerHTML = `
                 <div class="search-results-header" style="padding: 10px 12px; background: #f8f8f8; border-bottom: 1px solid #e0e0e0; font-size: 12px; color: #666;">
-                    找到 ${products.length} 个相关商品
+                    Found ${products.length} related products
                 </div>
                 ${resultsHtml}
                 ${products.length > 8 ? `
@@ -279,7 +279,7 @@ class SearchManager {
                         color: #ff6700;
                         font-size: 14px;
                     " onclick="window.location.href='/products/all?keyword=${encodeURIComponent(query)}'">
-                        查看全部 ${products.length} 个结果 →
+                        View all ${products.length} results →
                     </div>
                 ` : ''}
             `;
@@ -328,7 +328,7 @@ class SearchManager {
                 this.hideSuggestions();
             }
         } catch (error) {
-            console.error('获取搜索建议失败:', error);
+            console.error('Failed to fetch search suggestions:', error);
             this.hideSuggestions();
         }
     }
@@ -343,7 +343,7 @@ class SearchManager {
                 this.displayHotSearches(hotSearches);
             }
         } catch (error) {
-            console.error('获取热门搜索词失败:', error);
+            console.error('Failed to fetch hot searches:', error);
         }
     }
 
@@ -383,12 +383,32 @@ class SearchManager {
 
     // 显示热门搜索词
     displayHotSearches(hotSearches) {
+        const MAP = {
+            '小米手机':'Xiaomi Phone',
+            '华为手机':'Huawei Phone',
+            '苹果手机':'Apple iPhone',
+            '三星手机':'Samsung Phone',
+            '手机壳':'Phone Case',
+            '手机膜':'Screen Protector',
+            '耳机':'Earphones',
+            '音箱':'Speaker',
+            '路由器':'Router',
+            '笔记本':'Laptop',
+            '平板':'Tablet',
+            '电视':'TV',
+            '相机':'Camera',
+            '充电宝':'Power Bank',
+            '水杯':'Bottle',
+            '插线板':'Power Strip'
+        };
         const hotSearchesHtml = `
             <div style="padding: 16px; border-bottom: 1px solid #f5f5f5;">
-                <div style="color: #666; font-size: 13px; margin-bottom: 12px; font-weight: 500;">🔥 热门搜索</div>
+                <div style="color: #666; font-size: 13px; margin-bottom: 12px; font-weight: 500;">🔥 Hot Searches</div>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    ${hotSearches.map(term => `
-                        <span class="hot-search-tag" style="
+                    ${hotSearches.map(term => {
+                        const text = MAP[term] || term;
+                        return `
+                        <span class="hot-search-tag" data-term="${this.escapeHtml(term)}" style="
                             background: #f8f9fa;
                             color: #666;
                             padding: 6px 12px;
@@ -400,9 +420,9 @@ class SearchManager {
                             white-space: nowrap;
                         " onmouseover="this.style.backgroundColor='#ff6700'; this.style.color='white'; this.style.borderColor='#ff6700'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 8px rgba(255,103,0,0.3)'" 
                            onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.color='#666'; this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                            ${this.escapeHtml(term)}
-                        </span>
-                    `).join('')}
+                            ${this.escapeHtml(text)}
+                        </span>`;
+                    }).join('')}
                 </div>
             </div>
         `;
@@ -415,7 +435,7 @@ class SearchManager {
         // 绑定点击事件
         this.hotSearchContainer.querySelectorAll('.hot-search-tag').forEach(tag => {
             tag.addEventListener('click', () => {
-                const term = tag.textContent.trim();
+                const term = tag.getAttribute('data-term') ? tag.getAttribute('data-term').trim() : tag.textContent.trim();
                 this.searchInput.value = term;
                 this.hideAllContainers();
                 this.performSearch(term);

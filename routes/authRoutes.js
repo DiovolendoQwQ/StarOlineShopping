@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
       console.error('注册失败: 密码不能为空或两次输入不一致');
       return res.send(`
                 <script>
-                    alert("密码不能为空或两次输入不一致");
+                    alert("Password cannot be empty or passwords do not match");
                     window.location.href = "/login.html";
                 </script>
             `);
@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
       console.error(`注册失败: 用户已存在 - ${register_email}`);
       return res.send(`
                 <script>
-                    alert("用户已存在，请登录");
+                    alert("User already exists. Please log in");
                     window.location.href = "/login.html";
                 </script>
             `);
@@ -72,7 +72,7 @@ router.post('/register', async (req, res) => {
 
     res.send(`
             <script>
-                alert("注册成功，正在跳转到主页");
+                alert("Sign up successful. Redirecting to homepage");
                 window.location.href = "/homepage";
             </script>
         `);
@@ -80,7 +80,7 @@ router.post('/register', async (req, res) => {
     console.error("注册失败:", err);
     res.send(`
             <script>
-                alert("注册失败，请稍后再试");
+                alert("Sign up failed. Please try again later");
                 window.location.href = "/login.html";
             </script>
         `);

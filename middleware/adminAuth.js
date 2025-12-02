@@ -14,7 +14,7 @@ function requireAdmin(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).json({
             success: false,
-            message: '请先登录'
+            message: 'Please log in'
         });
     }
 
@@ -26,7 +26,7 @@ function requireAdmin(req, res, next) {
     if (!isAdmin(user)) {
         return res.status(403).json({
             success: false,
-            message: '权限不足，需要管理员权限'
+            message: 'Insufficient permissions. Admin access required'
         });
     }
 
@@ -77,7 +77,7 @@ function requireAuth(req, res, next) {
     if (!req.session || !req.session.user) {
         return res.status(401).json({
             success: false,
-            message: '请先登录'
+            message: 'Please log in'
         });
     }
     
@@ -102,8 +102,8 @@ function requireAdminPage(req, res, next) {
     // 检查用户是否为管理员
     if (!isAdmin(user)) {
         return res.status(403).render('error', {
-            title: '权限不足',
-            message: '您没有权限访问此页面，需要管理员权限。',
+            title: 'Insufficient permissions',
+            message: 'You do not have access to this page. Admin privileges required.',
             error: {
                 status: 403,
                 stack: ''
